@@ -1,0 +1,84 @@
+[33mcommit cd20abf2d352e5875c883ab934f90c292fb09d53[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: shahabas ap <shahabasap5@gmail.com>
+Date:   Mon Feb 19 12:58:20 2024 +0530
+
+    fixed delivery charge is completed
+
+[33mcommit b532ac0ede3cdbc44d418c024f2c57ebdf317ff8[m
+Author: shahabas ap <shahabasap5@gmail.com>
+Date:   Mon Feb 19 12:12:03 2024 +0530
+
+    whishlist and wallet completed successfully
+
+[33mcommit 13efb69b6a46e68408d7e2e4827c960c9b05d53c[m
+Author: shahabas ap <shahabasap5@gmail.com>
+Date:   Fri Feb 16 08:59:17 2024 +0530
+
+    worked a little bit cart where a item is added to cart only once and 70% of wishlist is completed
+
+[33mcommit d021e896572a988279375633b23d6bcf303b4566[m
+Merge: 7501da4 bf647f5
+Author: shahabas ap <shahabasap5@gmail.com>
+Date:   Wed Feb 14 10:30:12 2024 +0530
+
+    WIP on (no branch): 7501da4 crop image in edit product is completed,order details added
+
+[33mcommit bf647f58e5db724385b49bed06a28e2aa67c5105[m
+Author: shahabas ap <shahabasap5@gmail.com>
+Date:   Wed Feb 14 10:30:12 2024 +0530
+
+    index on (no branch): 7501da4 crop image in edit product is completed,order details added
+
+[33mcommit 7501da4038b15cbe4d7f3c6dee6f4d4e5dc2e6c0[m
+Author: shahabas ap <shahabasap5@gmail.com>
+Date:   Tue Feb 13 21:03:28 2024 +0530
+
+    crop image in edit product is completed,order details added
+
+[33mcommit 67b5eee68df71ba7a13d1f412840c1b41bc88681[m
+Author: shahabas ap <shahabasap5@gmail.com>
+Date:   Sat Feb 10 14:20:09 2024 +0530
+
+    before crop completion
+
+[33mcommit 2c659c08aa7e7703fed4abc6e9602ee236abbc51[m
+Author: shahabas ap <shahabasap5@gmail.com>
+Date:   Sat Feb 10 09:32:21 2024 +0530
+
+    dashboard is almot finished
+
+[33mcommit 41d778c0fa46787bc5c399f6610489a5c5a63782[m
+Author: shahabas ap <shahabasap5@gmail.com>
+Date:   Wed Feb 7 21:02:17 2024 +0530
+
+    In order model address data type set as object ,cart item deletion error is fixed,shopping page  pagination is added
+
+[33mcommit 38642af29c0600db49f787ddeb29a7947fe70ef8[m
+Author: shahabas ap <shahabasap5@gmail.com>
+Date:   Wed Feb 7 13:00:27 2024 +0530
+
+    payment usjing razorpay is completed
+
+[33mcommit a4bf5e4a003663f692f3b53a40d24677cc1e7a83[m
+Author: shahabas ap <shahabasap5@gmail.com>
+Date:   Fri Feb 2 20:15:37 2024 +0530
+
+    all pagination in admin side is completed ,add address validation in profie is  completed
+
+[33mcommit 0552716c5f2805ed1cf6f7dbe1841cb53ee9eed3[m
+Author: shahabas ap <shahabasap5@gmail.com>
+Date:   Fri Feb 2 16:27:09 2024 +0530
+
+    work a little bit  edit product in admin side
+
+[33mcommit 103abcef9894f2182fe82b51850e066956924c3b[m
+Author: shahabas ap <shahabasap5@gmail.com>
+Date:   Thu Feb 1 10:06:11 2024 +0530
+
+    cart item count middle ware is finished,quantiy field in the cart is now wards read only
+
+[33mcommit dc9fa1f60264752d6183305071368f465af35dbe[m
+Author: shahabas ap <shahabasap5@gmail.com>
+Date:   Wed Jan 31 11:48:33 2024 +0530
+
+    first commit

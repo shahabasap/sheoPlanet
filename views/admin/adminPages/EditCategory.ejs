@@ -1,0 +1,80 @@
+<%- include('../layout/header.ejs') -%>
+
+      <!-- main-panel Starts -->
+      <div class="main-panel">
+        <%if(locals.category){%>
+          <form action="/admin/editCategory/<%=category._id%>" method="post">
+            <div class="container  mt-4">
+              <%if(locals.Duplicaion){%>
+                <small class="alert alert-dark text-center  mb-1 pt-2"
+                  style=" color: rgb(233, 33, 15);border: 1px solid rgb(231, 239, 239);" id="success-message">
+                  <%=locals.Duplicaion%>
+                </small>
+            </div>
+            <!-- Add JavaScript to automatically hide the alert after 3000 milliseconds (3 seconds) -->
+            <script>
+              setTimeout(function () {
+                document.getElementById('success-message').style.display = 'none';
+              }, 5000);
+            </script>
+            <%}%>
+
+
+              <div class="container  mt-4">
+                <div class="col-md-8 mb-3">
+                  <small class="alert alert-danger  text-center  mb-1" style="display: none; color: red;"
+                    id="null-message">The field can't Null</small>
+
+                </div>
+
+                <div class="col-md-8 mb-3">
+                  <label for="inputField">Category Name</label>
+                  <input type="text" class="form-control text-white" id="cname" placeholder="Enter product name"
+                    name="cname" value="<%=category.Cname%>" onkeyup="validation()" required>
+                </div>
+
+                <div class="col-md-8 mb-3">
+                  <label for="inputField">Catergory Description</label>
+                  <input type="text" class="form-control text-white" id="cdescription" placeholder="Enter color"
+                    name="cdescription" value="<%=category.Cdescription%>" onkeyup="validation()" required>
+                </div>
+                <div>
+                  <button type="submit" class="btn btn-primary btn-md mx-3">Submit</button>
+                </div>
+
+              </div>
+
+          </form>
+          <%}%>
+
+      </div>
+
+
+      <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+
+
+  <!-- validation--------------------------- -->
+  <script>
+    function validation() {
+      const cname = document.getElementById('cname').value;
+      const cdescription = document.getElementById('cdescription').value;
+      let err = document.getElementById('null-message')
+
+
+      if (cname.trim() == '' || cdescription.trim() == '') {
+        err.style.display = "block"
+        btn.disabled = true
+
+      } else {
+        err.style.display = "none"
+        btn.disabled = false
+
+      }
+    }
+    </script>
+    <%- include('../layout/footer.ejs') -%>
+
+  

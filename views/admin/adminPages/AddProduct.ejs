@@ -1,0 +1,346 @@
+<%- include('../layout/header.ejs') -%>
+
+        <!-- main-panel Starts -->
+        <div class="main-panel">
+          ErrorMessage
+         
+            <form action="/admin/AddProduct" method="post" enctype="multipart/form-data" id="myForm">
+                <div class="container  mt-4"> 
+                   <%if(locals.ErrorMessage){%>
+                <div class="col-md-8 mb-3">
+                  <small class="form-text text-center mt-1 " style=" color: red;" ><%=locals.ErrorMessage%></small>
+
+                  </div>
+                  <%}%>
+                <div class="col-md-8 mb-3">
+                  <small class="alert alert-danger  text-center  mb-1" style="display: none; color: red;" id="null-message">The field can't Null</small>
+
+                  </div>
+                <div class="col-md-8 mb-3">
+                    <label for="inputField">Product Name</label>
+                    <input type="text" class="form-control text-white" id="pname" placeholder="Enter product name" name="pname" onkeyup="validation()" required>
+                  </div>
+            
+                <div class="col-md-8 mb-3">
+                    <label for="inputField">Color</label>
+                    <input type="text" class="form-control text-white" id="pcolor" placeholder="Enter color" onkeyup="validation()" name="pcolor" required>
+                  </div>
+            
+                <div class="col-md-8 mb-3">
+                    <label for="inputField">Size</label>
+                    <input type="text" class="form-control text-white" id="psize" placeholder="Enter  the size" name="psize" onkeyup="validation()" required >
+                    <small class="form-text text-left mt-1 " style="display: none; color: red;" id="error1"></small>
+                  </div>
+                  <div class="col-md-8 mb-3">
+                    <label for="inputField">Category</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <select class="form-select" aria-label="Default select example" name="pcategory">
+                      <option selected>None</option>
+                      <% if (locals.Categories) { %>
+                        <% Categories.forEach((n) => { %>
+                          <option value="<%= n._id %>"><%= n.Cname %></option>
+                        <% }) %>
+                      <% } %>
+                    </select>
+                    
+                  </div>
+                  <div class="col-md-8 mb-3">
+                    <label for="inputField">Actual Price</label>
+                    <input type="text" class="form-control text-white" id="pprice" placeholder="Enter the Price" name="offerprice" onkeyup="validation()" required>
+                    <small class="form-text text-left mt-1 " style="display: none; color: red;" id="error2"></small>
+                  </div>
+                  <div class="col-md-8 mb-3">
+                    <label for="inputField">Offer Price</label>
+                    <input type="text" class="form-control text-white" id="offerprice" placeholder="Enter the Price" name="pprice" onkeyup="validation()" required>
+                    <small class="form-text text-left mt-1 " style="display: none; color: red;" id="error3"></small>
+                  </div>
+            
+                <div class="col-md-8 mb-3">
+                    <label for="inputField">Quantity</label>
+                    <input type="text" class="form-control text-white" id="pquantity" placeholder="Enter the Quantity" name="pquantity" onkeyup="validation()" required>
+                    <small class="form-text text-left mt-1 " style="display: none; color: red;" id="error4"></small>
+                  </div>
+            
+                <div class="col-md-8 mb-3">
+                    <label for="inputField">Product using gender</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <select class="form-select" aria-label="Default select example" name="pgender">
+                      <option value="Men" selected>Men</option>        
+                          <option value="Women">Women</option>
+                        
+                      
+                    </select>
+                    
+                  </div>
+               
+                  <div class="col-md-8 mb-3">
+                    <label for="inputField">Description</label>
+                    <textarea class="form-control text-white" id="pdescription" rows="5" placeholder="Enter the Description" onkeyup="validation()" name="pdescription" required></textarea>
+                </div>
+                
+                  <div class="col-md-8 mb-3">
+                    <label for="inputField"> Image-1</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="file" id="productImages-1"  name="productImages" accept="image/*"   required>
+                  </div>
+                  <div id="imagePreviewContainer-1"></div>
+                  <div class="col-md-8 mb-3">
+                    <label for="inputField"> Image-2</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="file" id="productImages-2"  name="productImages" accept="image/*"   >
+                  </div>
+                  <div id="imagePreviewContainer-2"></div>
+                  <div class="col-md-8 mb-3">
+                    <label for="inputField"> Image-3</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="file" id="productImages-3"  name="productImages" accept="image/*"  >
+                  </div>
+                  <div id="imagePreviewContainer-3"></div>
+                  <div class="col-md-8 mb-3">
+                    <label for="inputField"> Image-4</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="file" id="productImages-4"  name="productImages" accept="image/*"   >
+                  </div>
+                  <div id="imagePreviewContainer-4"></div>
+                  
+               
+                  <div>
+  
+                    <button type="submit" id="bttn" class="btn btn-primary btn-md mt-3 mb-3 mx-3">Submit</button>
+                </div>
+                  </div>
+           
+              </form>
+         
+        </div>
+
+        
+        <!-- main-panel ends -->
+      </div>
+      <!-- page-body-wrapper ends -->
+    </div>
+   
+
+   
+    
+    <!-- Image validation--------------------------------------- -->
+    <script>
+      document.getElementById('myForm').addEventListener('submit', function(event) {
+        // Get the file input element
+        var fileInput = document.getElementById('productImages');
+        
+        // Check the number of selected files
+        if (fileInput.files.length > 5) {
+          // Prevent the form submission if more than 5 files are selected
+          event.preventDefault();
+          alert('Please select a maximum of 5 images.');
+        }
+      });
+    </script>
+
+    
+    <script>
+    function validation()
+    {
+        const pname=document.getElementById('pname').value;
+        const pcolor=document.getElementById('pcolor').value;
+        const psize=document.getElementById('psize').value;
+        const pprice=document.getElementById('pprice').value;
+        const offerprice=document.getElementById('offerprice').value;
+        const pquantity=document.getElementById('pquantity').value;
+        const pdescription=document.getElementById('pdescription').value;
+        let err=document.getElementById('null-message')
+
+
+        if(pdescription.trim()=='' || pquantity.trim()=='' || offerprice.trim()=='' || pprice.trim()=='' || psize.trim()=='' || pname.trim()==''){
+            err.style.display="block"
+            btn.disabled=true
+            
+        }else{
+            err.style.display="none"
+            btn.disabled=false
+            
+        }
+    }
+  </script>
+<script>
+// Size  validation---------------------------
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Get a reference to the name input field
+    var numberInput = document.querySelector('input[id="psize"]');
+    var errorParagraph = document.getElementById('error1');
+    var btn=document.getElementById('bttn')
+
+    // Listen for input events on the name input field
+    numberInput.addEventListener("input", function(event) {
+        var enteredname = event.target.value;
+
+        // Check if the entered name is not valid (you can replace this with your validation logic)
+        if (!isValidName(enteredname)) {
+            errorParagraph.textContent = "size must be positive number";
+            errorParagraph.style.display = "block";
+            
+           
+
+            document.getElementById('name').style.border = "1px solid red";
+        } else {
+            // Clear the error message if the password is valid
+            errorParagraph.textContent = "";
+            errorParagraph.style.display = "none";
+           
+            document.getElementById('name').style.border = "";
+          
+           
+        }
+    });
+
+    // Function to validate password (replace this with your validation logic)
+    function isValidName(number) {
+        // This is a basic example, you might want to use a more robust validation
+        return parseInt(number) >=0;
+    }
+});
+// Actual price validation---------------------------
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Get a reference to the name input field
+    var numberInput = document.querySelector('input[id="pprice"]');
+    var errorParagraph = document.getElementById('error2');
+    var btn=document.getElementById('bttn')
+
+    // Listen for input events on the name input field
+    numberInput.addEventListener("input", function(event) {
+        var enteredname = event.target.value;
+
+        // Check if the entered name is not valid (you can replace this with your validation logic)
+        if (!isValidName(enteredname)) {
+            errorParagraph.textContent = "Actual price must be positive number";
+            errorParagraph.style.display = "block";
+            
+           
+
+            document.getElementById('name').style.border = "1px solid red";
+        } else {
+            // Clear the error message if the password is valid
+            errorParagraph.textContent = "";
+            errorParagraph.style.display = "none";
+           
+            document.getElementById('name').style.border = "";
+          
+           
+        }
+    });
+
+    // Function to validate password (replace this with your validation logic)
+    function isValidName(number) {
+        // This is a basic example, you might want to use a more robust validation
+        return parseInt(number) >=0;
+    }
+});
+// Offer price--------------------------
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Get a reference to the name input field
+    var numberInput = document.querySelector('input[id="offerprice"]');
+    var errorParagraph = document.getElementById('error3');
+    var btn=document.getElementById('bttn')
+
+    // Listen for input events on the name input field
+    numberInput.addEventListener("input", function(event) {
+        var enteredname = event.target.value;
+
+        // Check if the entered name is not valid (you can replace this with your validation logic)
+        if (!isValidName(enteredname)) {
+            errorParagraph.textContent = "Offer Price must be positive number";
+            errorParagraph.style.display = "block";
+            
+           
+
+            document.getElementById('name').style.border = "1px solid red";
+        } else {
+            // Clear the error message if the password is valid
+            errorParagraph.textContent = "";
+            errorParagraph.style.display = "none";
+           
+            document.getElementById('name').style.border = "";
+          
+           
+        }
+    });
+
+    // Function to validate password (replace this with your validation logic)
+    function isValidName(number) {
+        // This is a basic example, you might want to use a more robust validation
+        return parseInt(number) >=0;
+    }
+});
+
+// quantity-------------------------------------------------------------
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Get a reference to the name input field
+    var numberInput = document.querySelector('input[id="pquantity"]');
+    var errorParagraph = document.getElementById('error4');
+    var btn=document.getElementById('bttn')
+
+    // Listen for input events on the name input field
+    numberInput.addEventListener("input", function(event) {
+        var enteredname = event.target.value;
+
+        // Check if the entered name is not valid (you can replace this with your validation logic)
+        if (!isValidName(enteredname)) {
+            errorParagraph.textContent = "Quantity must be positive number";
+            errorParagraph.style.display = "block";
+            
+           
+
+            document.getElementById('name').style.border = "1px solid red";
+        } else {
+            // Clear the error message if the password is valid
+            errorParagraph.textContent = "";
+            errorParagraph.style.display = "none";
+           
+            document.getElementById('name').style.border = "";
+          
+           
+        }
+    });
+
+    // Function to validate password (replace this with your validation logic)
+    function isValidName(number) {
+        // This is a basic example, you might want to use a more robust validation
+        return parseInt(number) >=0;
+    }
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+  // Get references to input fields and button
+  const psizeInput = document.querySelector('input[id="psize"]');
+  const ppriceInput = document.querySelector('input[id="pprice"]');
+  const offerpriceInput = document.querySelector('input[id="offerprice"]');
+  const pquantityInput = document.querySelector('input[id="pquantity"]');
+  const btn = document.getElementById('bttn');
+
+  // Validation functions (combine into a single function for efficiency)
+  function validateInputs() {
+    const psize = isValidNumber(psizeInput.value);
+    const pprice = isValidNumber(ppriceInput.value);
+    const offerprice = isValidNumber(offerpriceInput.value);
+    const pquantity = isValidNumber(pquantityInput.value);
+
+    return psize && pprice && offerprice && pquantity;
+  }
+
+  // Initial validation and button state
+  btn.disabled = !validateInputs();
+
+  // Event listener for all input fields using event delegation
+  document.getElementById('myForm').addEventListener("input", (event) => {
+    if (event.target.tagName === 'INPUT') {
+      btn.disabled = !validateInputs();
+    }
+  });
+
+  // Validation functions (replace with your specific logic if needed)
+  function isValidNumber(value) {
+    const number = parseFloat(value);
+    return !isNaN(number) && number >= 0;
+  }
+});
+</script>
+<%- include('../layout/footer.ejs') -%>

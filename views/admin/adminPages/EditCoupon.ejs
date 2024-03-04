@@ -1,0 +1,233 @@
+<%- include('../layout/header.ejs') -%>
+
+      <!-- main-panel Starts -->
+      <div class="main-panel">
+          <form action="/admin/editCoupon" method="post">
+            <div class="container  mt-4">
+              <!-- <%if(locals.Duplicaion){%>
+                <small class="alert alert-dark text-center  mb-1 pt-2"
+                  style=" color: rgb(233, 33, 15);border: 1px solid rgb(231, 239, 239);" id="success-message">
+                  <%=locals.Duplicaion%>
+                </small>
+            </div>
+            <script>
+              setTimeout(function () {
+                document.getElementById('success-message').style.display = 'none';
+              }, 5000);
+            </script>
+            <%}%> -->
+
+
+              <div class="container  mt-4">
+                <div class="col-md-8 mb-3">
+                  <small class="alert alert-transparent border-white  text-center  mb-1" style="display: none; color: red;"
+                    id="null-message">The field can't Null</small>
+
+                </div>
+                <%if(locals.message){%>
+                <div class="col-md-8 mb-3">
+                  <small class="alert alert-transparent  border-white text-center  mb-1" style=" color: red;"
+                    id="info-message"><%=locals.message%></small>
+
+                </div>
+                <%}%>
+                <script>
+                    setTimeout(function () {
+                      document.getElementById('info-message').style.display = 'none';
+                    }, 5000);
+                  </script>
+                
+
+                <div class="col-md-8 mb-3">
+                  <label for="inputField">Coupon Name</label>
+                  <input type="text" class="form-control text-white" id="couponName" placeholder="Enter coupon name"
+                    name="couponName" value="<%=CouponData.name%>" onkeyup="validation()" required>
+                </div>
+                <div class="col-md-8 mb-3">
+                    <label for="inputField"> Coupon Code</label>
+                    <input type="text" class="form-control text-white" id="couponCode" placeholder="Enter  coupon code"
+                      name="couponCode" value="<%=CouponData.code%>" onkeyup="validation()" required>
+                      <small class="form-text text-left  mt-1 "
+                      style="display: none; color: red;" id="error1" required></small>
+                  </div>
+
+                  <div class="col-md-8 mb-3">
+                    <label for="inputField">Coupon Description</label>
+                    <textarea class="form-control text-white" cols="4" id="couponDescription" placeholder="Enter coupon description"
+                      name="couponDescription" onkeyup="validation()" required><%= CouponData.description %></textarea>
+                  </div>
+                  
+                <div class="col-md-4 mb-3">
+                    <label for="inputField">Exp Date</label>
+                    <input type="date" class="form-control text-white" id="ExprDate"
+                      name="ExprDate" value="<%=moment(CouponData.expireDate).format('YYYY-MM-DD')%>" onkeyup="validation()" required>
+                  </div>
+                   <div class="col-md-4 mb-3">
+                    <label for="inputField">Minimum Amount</label>
+                    <input type="number" class="form-control text-white" id="MinAmount" placeholder="Enter Min amount"
+                      name="MinAmount" value="<%=CouponData.minamount%>"  onkeyup="validation()" required>
+                      <small class="form-text text-left  mt-1 "
+                      style="display: none; color: red;" id="error2" required></small>
+                  </div>
+                   <div class="col-md-4 mb-3">
+                    <label for="inputField">Offer Amount</label>
+                    <input type="number" class="form-control text-white" id="offerAmount" placeholder="Enter offer amount"
+                      name="offerAmount" value="<%=CouponData.offeramount%>" onkeyup="validation()" required>
+                      <small class="form-text text-left  mt-1 "
+                      style="display: none; color: red;" id="error3" required></small>
+                  <input type="hidden" name="couponid" value="<%=CouponData._id%>">
+               
+              </div>
+              <div class="mt-3">
+                <button type="submit" id="btn-sub" class="btn btn-primary btn-md mx-3">Submit</button>
+              </div>
+
+
+          </form>
+          
+
+      </div>
+
+
+      <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+
+
+  <!-- validation--------------------------- -->
+  <script>
+function validation() {
+  let couponName = document.getElementById("couponName").value.trim();
+  let couponCode = document.getElementById("couponCode").value.trim();
+  let couponDescription = document.getElementById("couponDescription").value.trim();
+  let ExprDate = document.getElementById("ExprDate").valueAsDate;
+  let MinAmount = document.getElementById("MinAmount").value.trim();
+  let offerAmount = document.getElementById("offerAmount").value.trim();
+  let btn=document.getElementById('btn-sub')
+
+  if (couponName === '' || couponCode === '' || couponDescription === '' || !ExprDate || MinAmount === '' || offerAmount === '') {
+    document.getElementById('null-message').style.display = "block";
+    btn.disabled=true
+  } else {
+    document.getElementById('null-message').style.display = "none";
+    btn.disabled=false
+
+  }
+}
+// coupon code--------------
+document.addEventListener("DOMContentLoaded", function() {
+    // Get a reference to the name input field
+    var codeinput = document.querySelector('input[id="couponCode"]');
+    var errorParagraph = document.getElementById('error1');
+    var btn=document.getElementById('btn-sub')
+
+    // Listen for input events on the name input field
+    codeinput.addEventListener("input", function(event) {
+        var enteredname = event.target.value;
+
+        // Check if the entered name is not valid (you can replace this with your validation logic)
+        if (!isValidCode(enteredname)) {
+            errorParagraph.textContent = "code Must includes alpha-numerics characters";
+            errorParagraph.style.display = "block";
+            
+           
+
+            document.getElementById('couponCode').style.border = "1px solid red";
+        } else {
+            // Clear the error message if the password is valid
+            errorParagraph.textContent = "";
+            errorParagraph.style.display = "none";
+           
+            document.getElementById('couponCode').style.border = "";
+          
+           
+        }
+    });
+
+    function isValidCode(code) {
+        return /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]+$/.test(code)
+
+    }
+});
+// min amount----------------
+document.addEventListener("DOMContentLoaded", function() {
+    // Get a reference to the name input field
+    var numberInput = document.querySelector('input[id="MinAmount"]');
+    var errorParagraph = document.getElementById('error2');
+    var btn=document.getElementById('btn-sub')
+
+    // Listen for input events on the name input field
+    numberInput.addEventListener("input", function(event) {
+        var enteredname = event.target.value;
+
+        // Check if the entered name is not valid (you can replace this with your validation logic)
+        if (!isValidName(enteredname)) {
+            errorParagraph.textContent = "minum purchase amount must be greater than 500";
+            errorParagraph.style.display = "block";
+            
+           
+
+            document.getElementById('MinAmount').style.border = "1px solid red";
+        } else {
+            // Clear the error message if the password is valid
+            errorParagraph.textContent = "";
+            errorParagraph.style.display = "none";
+           
+            document.getElementById('MinAmount').style.border = "";
+          
+           
+        }
+    });
+
+    // Function to validate password (replace this with your validation logic)
+    function isValidName(number) {
+        // This is a basic example, you might want to use a more robust validation
+        return number>500;
+    }
+});
+
+// offer Amount---------------
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Get a reference to the name input field
+    var numberInput = document.querySelector('input[id="offerAmount"]');
+    var errorParagraph = document.getElementById('error3');
+    var btn=document.getElementById('btn-sub')
+
+    // Listen for input events on the name input field
+    numberInput.addEventListener("input", function(event) {
+        var enteredname = event.target.value;
+
+        // Check if the entered name is not valid (you can replace this with your validation logic)
+        if (!isValidName(enteredname)) {
+            errorParagraph.textContent = "Offer Amount must be less than 1000";
+            errorParagraph.style.display = "block";
+            
+           
+
+            document.getElementById('offerAmount').style.border = "1px solid red";
+        } else {
+            // Clear the error message if the password is valid
+            errorParagraph.textContent = "";
+            errorParagraph.style.display = "none";
+           
+            document.getElementById('offerAmount').style.border = "";
+          
+           
+        }
+    });
+
+    // Function to validate password (replace this with your validation logic)
+    function isValidName(number) {
+        // This is a basic example, you might want to use a more robust validation
+        return number<1000;
+    }
+});
+
+  </script>
+
+
+    <%- include('../layout/footer.ejs') -%>
+
+  

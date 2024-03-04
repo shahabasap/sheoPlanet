@@ -1,0 +1,204 @@
+
+<%- include('../layout/header.ejs') -%>
+        <main class="main">
+            <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
+                <div class="container">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">Login</a></li>
+                        <!-- <li class="breadcrumb-item active" aria-current="page">Login</li> -->
+                    </ol>
+                </div><!-- End .container -->
+            </nav><!-- End .breadcrumb-nav -->
+
+            <div class="login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17" style="background-image: url('/user/images/demos/demo-10/banners/loginPage.jpg')">
+            	<div class="container">
+            		<div class="form-box">
+            			<div class="form-tab">
+	            			<ul class="nav nav-pills nav-fill" role="tablist">
+							    <li class="nav-item">
+							        <a class="nav-link active" id="signin-tab-2" data-toggle="tab" href="#signin-2" role="tab" aria-controls="signin-2" aria-selected="false">Sign In</a>
+							    </li>
+							    
+							</ul>
+							<div class="tab-content">
+							    <div  class="tab-pane fade show active"   id="signin-2" role="tabpanel" aria-labelledby="signin-tab-2">
+							    	<form action="/login" method="post">
+                                        <% if(locals.message){ %>
+                                        <div class="text-center" id="email-Password-Validation">
+                                            <label class="text-danger"><%= locals.message%></label>
+                                          </div>
+                                          <%}%>
+                                           <!-- Add JavaScript to automatically hide the alert after 3000 milliseconds (3 seconds) -->
+                                        <script>
+                                            setTimeout(function() {
+                                                document.getElementById('email-Password-Validation').style.display = 'none';
+                                            }, 8000);
+                                        </script>
+                          
+                                        
+							    		<div class="form-group">
+							    			<label for="singin-email-2">Username or email address *</label>
+							    			<input type="email" class="form-control" id="email" name="email" placeholder="Enter Your Email Id" required value="<%=locals.email%>">
+                                            <small class="form-text text-left  mt-1" style="display: none; color: red;" id="error1"></small>
+
+							    		</div><!-- End .form-group -->
+
+							    		<div class="form-group">
+							    			<label for="singin-password-2">Password *</label>
+							    			<input type="password" class="form-control" id="password" name="password" placeholder="Enter Your password" required>
+                                            <small class="form-text text-left  mt-1" style="display: none; color: red;" id="error2"></small>
+
+							    		</div><!-- End .form-group -->
+
+							    		<div class="form-footer">
+							    			<button type="submit" id="bttn" class="btn btn-outline-primary-2">
+			                					<span>LOG IN</span>
+			            						<i class="icon-long-arrow-right"></i>
+			                				</button>
+                                    
+			                				<div class="custom-control custom-checkbox">
+												<input type="checkbox" class="custom-control-input" id="signin-remember-2">
+												<label class="custom-control-label" for="signin-remember-2">Remember Me</label>
+											</div><!-- End .custom-checkbox -->
+                                            
+                                            
+											<a href="/forgetPassword" class="forgot-link">Forgot Your Password?</a>
+							    		</div><!-- End .form-footer -->
+							    	</form>
+							    	<div class="form-choice">
+								    	<a href="/register"><p class="text-center">If you have no accounts?</p></a>
+								    	
+							    	</div><!-- End .form-choice -->
+							    </div><!-- .End .tab-pane -->
+							   
+							</div><!-- End .tab-content -->
+						</div><!-- End .form-tab -->
+            		</div><!-- End .form-box -->
+            	</div><!-- End .container -->
+            </div><!-- End .login-page section-bg -->
+        </main><!-- End .main -->
+
+      
+<script>
+
+    // DOM is handling here-------------------
+    document.addEventListener("DOMContentLoaded", function() {
+  // Get references to input fields and button
+  const emailInput = document.querySelector('input[id="email"]');
+  const passwordInput = document.querySelector('input[id="password"]');
+  const btn = document.getElementById('bttn');
+
+  // Validation functions (combine into a single function for efficiency)
+  function validateInputs() {
+    const emailValid = isValidEmail(emailInput.value);
+    const passwordValid = isValidPassword(passwordInput.value);
+
+    return  emailValid &&  passwordValid;
+  }
+
+  // Initial validation and button state
+  btn.disabled = !validateInputs();
+
+  // Event listeners for each input field
+  [ emailInput,  passwordInput].forEach(input => {
+    input.addEventListener("input", () => {
+      btn.disabled = !validateInputs();
+    });
+  });
+
+  
+  function isValidEmail(email) {
+     // This is a basic example, you might want to use a more robust validation
+     var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+  }
+
+  
+  function isValidPassword(password) {
+   // This is a basic example, you might want to use a more robust validation
+   return password.length >= 6 && /\S/.test(password);
+  }
+});
+
+
+
+// email validation----------------------------
+
+document.addEventListener("DOMContentLoaded", function() {
+        // Get a reference to the email input field
+        var emailInput = document.querySelector('input[id="email"]');
+        var errorParagraph = document.getElementById('error1');
+        var btn = document.getElementById('bttn');
+
+        // Listen for input events on the email input field
+        emailInput.addEventListener("input", function(event) {
+            var enteredEmail = event.target.value;
+
+            // Check if the entered email is not valid (you can replace this with your validation logic)
+            if (!isValidEmail(enteredEmail)) {
+                errorParagraph.textContent = "Invalid email address format";
+                errorParagraph.style.display = "block";
+                 
+        
+                document.getElementById('email').style.border = "1px solid red";
+            } else {
+                // Clear the error message if the email is valid
+                errorParagraph.textContent = "";
+                errorParagraph.style.display = "none";
+                emailInput.classList.remove('error-border');
+               
+                document.getElementById('email').style.border = "";
+            }
+        });
+
+        // Function to validate email (replace this with your validation logic)
+        function isValidEmail(email) {
+            // This is a basic example, you might want to use a more robust validation
+            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+    });
+    // password validation-------------------
+
+    document.addEventListener("DOMContentLoaded", function() {
+    // Get a reference to the password input field
+    var passwordInput = document.querySelector('input[id="password"]');
+    var errorParagraph = document.getElementById('error2');
+    var btn = document.getElementById('bttn');
+
+    // Listen for input events on the password input field
+    passwordInput.addEventListener("input", function(event) {
+        var enteredPassword = event.target.value;
+
+        // Check if the entered password is not valid (you can replace this with your validation logic)
+        if (!isValidPassword(enteredPassword)) {
+            
+            errorParagraph.textContent = "Password must be at least 6 characters";
+            errorParagraph.style.display = "block";
+            
+           
+            document.getElementById('password').style.border = "1px solid red";
+             
+        } else {
+            // Clear the error message if the password is valid
+            errorParagraph.textContent = "";
+            errorParagraph.style.display = "none";
+            
+            document.getElementById('password').style.border = "";
+             
+        }
+    });
+
+    // Function to validate password (replace this with your validation logic)
+    function isValidPassword(password) {
+        // This is a basic example, you might want to use a more robust validation
+        return password.length >= 6 && /\S/.test(password);
+    }
+});
+
+
+
+
+</script>
+<%- include('../layout/footer.ejs') -%>

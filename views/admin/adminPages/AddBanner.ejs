@@ -1,0 +1,53 @@
+<%- include('../layout/header.ejs') -%>
+
+      <!-- main-panel Starts -->
+      <div class="main-panel">
+          <h3 class="ms-5 mt-4">Banner</h3>
+        <form action="/admin/AddBanner" method="post" enctype="multipart/form-data">
+
+
+          <div class="container  mt-4">
+            
+                  <div class="col-md-8 mb-3">
+                    <label for="inputField">Title</label>
+                    <input type="text" class="form-control text-white" id="Btitle" placeholder="Enter product name"
+                      name="Btitle" onkeyup="validation()" required>
+                  </div>
+
+                  <div class="col-md-8 mb-3">
+                    <label for="inputField">URL</label>
+                    <input type="text" class="form-control text-white" id="Burl" placeholder="Enter color"
+                      name="Burl" onkeyup="validation()" required>
+                  </div>
+                  <div class="col-md-8 mb-3">
+                    <label for="inputField">Description</label>
+                    <input type="text" class="form-control text-white" id="Bdescription" placeholder="Enter color"
+                      name="Bdescription" onkeyup="validation()" required>
+                  </div>
+                  <div class="col-md-8 mb-3">
+                    <label for="inputField">Image</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="file"  id="Bimage" placeholder="Enter color"
+                      name="Bimage" onkeyup="validation()" required>
+                  </div>
+                  <div>
+                    <button type="submit" class="btn btn-primary btn-md mx-3">Submit</button>
+                  </div>
+          </div>
+
+        </form>
+
+      </div>
+
+
+      <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+
+
+
+  
+
+
+<%- include('../layout/footer.ejs') -%>
+

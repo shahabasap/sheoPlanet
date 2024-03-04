@@ -1,0 +1,260 @@
+<script>
+    document.getElementById('retryPaymentBtn').addEventListener('click', retryPayment);
+
+    function retryPayment() {
+        axios.post('/retryRazorPayment', {
+            orderId: '<%= orderLists._id %>'
+        })
+            .then(response => {
+                console.log('response:id:', response.data.orderId, 'Response data: ', response.data.paymentDetails);
+                razorpayRetryPayment(response.data.paymentDetails, response.data.orderId);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+
+            });
+    }
+    function razorpayRetryPayment(order, ID) {
+        console.log('id::', ID, 'order:>', order,);
+
+        var options = {
+            "key": "rzp_test_30bTTgzLa7YbmF",
+            "amount": order.amount,
+            "currency": "INR",
+            "name": "Shopin",
+            "description": "Test Transaction",
+            "image": "https://example.com/your_logo",
+            "order_id": order.order_id,
+            "handler": function (response) {
+                // alert(response.razorpay_payment_id);
+                // alert(response.razorpay_order_id);
+                // alert(response.razorpay_signature)
+                if (response.razorpay_payment_id) {
+                    verifyPayment(response);
+
+                }
+            },
+            "prefill": {
+                "name": "Shopin PVt Ltd",
+                "email": "anasbrototype@gmail.com",
+                "contact": "9000090000"
+            },
+            "notes": {
+                "address": "Shopin Corporate Office"
+            },
+            "theme": {
+                "color": "#F67777"
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+        rzp1.on('payment.failed', function (response) {
+
+            // alert(response.error.metadata.order_id);
+            alert(response.error.metadata.payment_id);
+
+
+        });
+
+    }
+
+    function verifyPayment(payment) {
+        console.log('verifyPayment called');
+        $.ajax({
+            url: '/retryVerifyPayment',
+            method: 'post',
+            data: {
+                payment
+            },
+            success: (response) => {
+                console.log('response came');
+                if (response.razorpayRetrySuccess) {
+
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Payment Succeeded',
+                        text: 'Your payment was successful!',
+                        timer: 2000, // Auto close after 2 seconds
+                        showConfirmButton: false, // Hide the "OK" button
+                    })
+                    window.location.reload();
+                }
+            }
+
+        })
+    }
+
+
+
+</script>
+<script>
+    // Add an event listener to the Download Invoice button
+    document.getElementById('downloadInvoiceBtn').addEventListener('click', async () => {
+        try {
+            const orderId = '<%=orderLists._id%>';
+
+            // Make an asynchronous request to the server to generate and download the PDF
+            const response = await fetch('/generatepdf', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    orderId: orderId,
+                }),
+            });
+
+            // Check if the request was successful (status code 200)
+            if (response.ok) {
+                // Create a Blob from the response data
+                const blob = await response.blob();
+
+                // Create a link element to trigger the download
+                const link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = ${orderId}_invoice.pdf;
+
+                // Append the link to the document and simulate a click to trigger the download
+                document.body.appendChild(link);
+                link.click();
+
+                // Remove the link element
+                document.body.removeChild(link);
+            } else {
+                // Handle errors if the request was not successful
+                console.error('Error:', response.statusText);
+                // Display an error message to the user if needed
+            }
+        } catch (error) {
+            // Handle any unexpected errors
+            console.error('Error:', error.message);
+            // Display an error message to the user if needed
+        }
+    });
+</script>
+
+
+
+
+
+
+
+
+<%- include('./layouts/footer') %>
+
+    <script>
+        function submitReturn() {
+            // Get the return reason from the input field
+            var returnReason = document.getElementById("returnReason").value
+
+            // Validate return reason
+            if (/^\s*$/.test(returnReason)) {
+                displayFlashMessage("Please provide a valid return reason.", "text-danger");
+                return;
+            }
+
+            const submitButton = document.getElementById('submitButton');
+
+            // Adjust the API endpoint and request payload based on your backend implementation
+            fetch('/ordePageUser/userOrderDetailsReturn', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    orderId: '<%=orderLists._id%>',
+                    returnReason: returnReason
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Handle the response from the server (e.g., show a success message)
+                    console.log(data);
+                    if (data.success) {
+                        submitButton.innerText = 'Success!';
+
+                    }
+
+
+                })
+                .catch(error => {
+                    // Handle errors
+                    console.error('Error:', error);
+                    displayFlashMessage("An error occurred while submitting the return.", "alert-danger");
+                });
+
+            // Close the modal after submitting
+            $('#returnOrderModal').modal('hide');
+            window.location.reload();
+
+
+        }
+        //calcelation order
+        function submitCancel() {
+            // Get the return reason from the input field
+            var cancelReason = document.getElementById("cancelReason").value
+            console.log(cancelReason);
+            // Validate return reason
+            if (/^\s*$/.test(cancelReason)) {
+                displayFlashMessage("Please provide a valid  reason.", "text-danger");
+                return;
+            }
+
+            const submitButton = document.getElementById('confirmCancelBtn');
+
+            // Adjust the API endpoint and request payload based on your backend implementation
+            fetch('/ordePageUser/userOrderDetails', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    orderId: '<%=orderLists._id%>',
+                    cancelReason: cancelReason
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    if (data.success) {
+                        submitButton.innerText = 'Success!';
+
+
+                    }
+
+
+                })
+                .catch(error => {
+                    // Handle errors
+                    console.error('Error:', error);
+                    displayFlashMessage("An error occurred while submitting the return.", "alert-danger");
+                });
+
+            // Close the modal after submitting
+            $('#returnOrderModal').modal('hide');
+            window.location.reload();
+
+
+        }
+
+
+
+
+
+        function displayFlashMessage(message, className) {
+            var flashMessage = document.getElementById("flashMessage");
+            flashMessage.innerHTML = message;
+            flashMessage.className = "alert " + className;
+            flashMessage.style.display = "block";
+
+            // Hide the flash message after a few seconds (adjust as needed)
+            setTimeout(function () {
+                flashMessage.style.display = "none";
+            }, 3000);
+        }
+
+
+
+
+    </script>

@@ -1,0 +1,424 @@
+<%- include('../layout/header.ejs') -%>
+
+
+    <main class="main">
+        <div class="container">
+            <% if(locals.RegVrifyMessage){ %>
+                <div class="text-center" id="email-Password-Validation">
+                    <label class="text-danger">
+                        <%= locals.RegVrifyMessage%>
+                    </label>
+                </div>
+                <%}%>
+                    <!-- Add JavaScript to automatically hide the alert after 3000 milliseconds (3 seconds) -->
+                    <script>
+                        setTimeout(function () {
+                            document.getElementById('email-Password-Validation').style.display = 'none';
+                        }, 8000);
+                    </script>
+                    <div class="intro-slider-container slider-container-ratio mb-2">
+                        <div class="intro-slider owl-carousel owl-simple owl-light owl-nav-inside" data-toggle="owl"
+                            data-owl-options='{"nav": false}'>
+                            <%if(locals.BannerData){%>
+                            <%BannerData.forEach((n)=>{%>
+                            <div class="intro-slide">
+                                <figure class="slide-image">
+                                    <picture>
+                                        <source media="(max-width: 480px)"
+                                            srcset="/uploads/<%=n.image%>">
+                                        <img src="/uploads/<%=n.image%>" alt="Image Desc">
+                                    </picture>
+                                </figure><!-- End .slide-image -->
+
+                                <div class="intro-content">
+                                    <h1 class="intro-subtitle"><%=n.title%></h><!-- End .h3 intro-subtitle -->
+                                    <h5 class="intro-title text-white mt-3"><%=n.description%></h5>
+                                    <!-- End .intro-title -->
+
+                                    <!-- <div class="intro-price text-white">from $9.99</div>End .intro-price -->
+
+                                   
+                                </div><!-- End .intro-content -->
+                            </div><!-- End .intro-slide -->
+                            <%})%>
+                        <%}%>
+                            
+
+                            
+                        </div><!-- End .intro-slider owl-carousel owl-simple -->
+                        <span class="slider-loader"></span><!-- End .slider-loader -->
+                    </div><!-- End .intro-slider-container -->
+        </div><!-- End .container -->
+
+
+
+        <div class="icon-boxes-container icon-boxes-separator bg-transparent">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="icon-box icon-box-side">
+                            <span class="icon-box-icon text-primary">
+                                <i class="icon-rocket"></i>
+                            </span>
+
+                            <div class="icon-box-content">
+                                <h3 class="icon-box-title">Free Shipping</h3><!-- End .icon-box-title -->
+                                <p>Orders $50 or more</p>
+                            </div><!-- End .icon-box-content -->
+                        </div><!-- End .icon-box -->
+                    </div><!-- End .col-sm-6 col-lg-3 -->
+
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="icon-box icon-box-side">
+                            <span class="icon-box-icon text-primary">
+                                <i class="icon-rotate-left"></i>
+                            </span>
+
+                            <div class="icon-box-content">
+                                <h3 class="icon-box-title">Free Returns</h3><!-- End .icon-box-title -->
+                                <p>Within 30 days</p>
+                            </div><!-- End .icon-box-content -->
+                        </div><!-- End .icon-box -->
+                    </div><!-- End .col-sm-6 col-lg-3 -->
+
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="icon-box icon-box-side">
+                            <span class="icon-box-icon text-primary">
+                                <i class="icon-info-circle"></i>
+                            </span>
+
+                            <div class="icon-box-content">
+                                <h3 class="icon-box-title">Get 20% Off 1 Item</h3><!-- End .icon-box-title -->
+                                <p>when you sign up</p>
+                            </div><!-- End .icon-box-content -->
+                        </div><!-- End .icon-box -->
+                    </div><!-- End .col-sm-6 col-lg-3 -->
+
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="icon-box icon-box-side">
+                            <span class="icon-box-icon text-primary">
+                                <i class="icon-life-ring"></i>
+                            </span>
+
+                            <div class="icon-box-content">
+                                <h3 class="icon-box-title">We Support</h3><!-- End .icon-box-title -->
+                                <p>24/7 amazing services</p>
+                            </div><!-- End .icon-box-content -->
+                        </div><!-- End .icon-box -->
+                    </div><!-- End .col-sm-6 col-lg-3 -->
+                </div><!-- End .row -->
+            </div><!-- End .container -->
+        </div><!-- End .icon-boxes-container -->
+
+
+
+        <div class="mb-4"></div><!-- End .mb-4 -->
+
+        <div class="container">
+            <div class="heading heading-center mb-3">
+                <h2 class="title-lg mb-2">Top Selling Products</h2><!-- End .title-lg text-center -->
+
+                <ul class="nav nav-pills justify-content-center" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="top-all-link" data-toggle="tab" href="#top-all-tab" role="tab"
+                            aria-controls="top-all-tab" aria-selected="true">All</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="top-women-link" data-toggle="tab" href="#top-women-tab" role="tab"
+                            aria-controls="top-women-tab" aria-selected="false">Women's</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="top-men-link" data-toggle="tab" href="#top-men-tab" role="tab"
+                            aria-controls="top-men-tab" aria-selected="false">Men's</a>
+                    </li>
+                </ul>
+            </div><!-- End .heading -->
+
+            <div class="tab-content">
+                <div class="tab-pane p-0 fade show active" id="top-all-tab" role="tabpanel"
+                    aria-labelledby="top-all-link">
+                    <div class="products just-action-icons-sm">
+                        <div class="row">
+                            <%if(locals.allproducts){%>
+                                <% allproducts.forEach((n)=>{ %>
+
+                                    <div class="col-8 col-md-6 col-lg-4 col-xl-5col">
+                                        <div class="product product-7 text-center ">
+                                            <figure class="product-media">
+                                                <!-- <span class="product-label label-circle label-top">Top</span> -->
+                                                <a href="/Product/<%=n._id%>">
+                                                    <img src="/uploads/<%=n.productImages[0].resizedFile%>"
+                                                        alt="Product image" class="product-image">
+                                                    <img src="/uploads/<%=n.productImages[0].resizedFile%>"
+                                                        alt="Product image" class="product-image-hover">
+                                                </a>
+
+                                                <div class="product-action-vertical">
+                                                    <a href="#"
+                                                        class="btn-product-icon btn-wishlist btn-expandable" onclick="addToWishlist('<%=n._id%>')"><span>add
+                                                            to wishlist</span></a>
+                                                    <a href="popup/quickView.html"
+                                                        class="btn-product-icon btn-quickview"
+                                                        title="Quick view"><span>Quick view</span></a>
+                                                </div><!-- End .product-action-vertical -->
+
+                                                <div class="product-action">
+                                                    <div class="btn-product btn-cart" onclick="addToCart('<%=n._id%>')">
+                                                        <span>add to
+                                                            cart</span></div>
+                                                </div><!-- End .product-action -->
+                                            </figure><!-- End .product-media -->
+
+                                            <div class="product-body">
+                                                <h3 class="product-title"><a href="/Product/<%=n._id%>">
+                                                        <%=n.pname%>
+                                                    </a></h3><!-- End .product-title -->
+                                                <div class="product-price">
+                                                    ₹<%=n.offerprice%>
+                                                </div><!-- End .product-price -->
+                                                <div class="ratings-container">
+                                                    <div class="ratings">
+                                                        <div class="ratings-val" style="width: 100%;"></div>
+                                                        <!-- End .ratings-val -->
+                                                    </div><!-- End .ratings -->
+                                                    <span class="ratings-text">( 6 Reviews )</span>
+                                                </div><!-- End .rating-container -->
+                                            </div><!-- End .product-body -->
+                                        </div><!-- End .product -->
+                                    </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
+
+                                    <% })} %>
+
+                        </div><!-- End .row -->
+                    </div><!-- End .products -->
+                </div><!-- .End .tab-pane -->
+                <div class="tab-pane p-0 fade" id="top-women-tab" role="tabpanel" aria-labelledby="top-women-link">
+                    <div class="products just-action-icons-sm">
+                        <div class="row">
+                            <%if(locals.WomensProduct){%>
+                                <% WomensProduct.forEach((n)=>{ %>
+
+                                    <div class="col-8 col-md-6 col-lg-4 col-xl-5col">
+                                        <div class="product product-7 text-center ">
+                                            <figure class="product-media">
+                                                <!-- <span class="product-label label-circle label-top">Top</span> -->
+                                                <a href="/Product/<%=n._id%>">
+                                                    <img src="/uploads/<%=n.productImages[0].resizedFile%>"
+                                                        alt="Product image" class="product-image">
+                                                    <img src="/uploads/<%=n.productImages[0].resizedFile%>"
+                                                        alt="Product image" class="product-image-hover">
+                                                </a>
+
+                                                <div class="product-action-vertical">
+                                                    <a href="#"
+                                                        class="btn-product-icon btn-wishlist btn-expandable"><span>add
+                                                            to wishlist</span></a>
+                                                    <a href="popup/quickView.html"
+                                                        class="btn-product-icon btn-quickview"
+                                                        title="Quick view"><span>Quick view</span></a>
+                                                </div><!-- End .product-action-vertical -->
+
+                                                <div class="product-action">
+                                                    <a href="#" class="btn-product btn-cart"
+                                                        onclick="addToCart('<%=n._id%>')"><span>add to
+                                                            cart</span></a>
+                                                </div><!-- End .product-action -->
+                                            </figure><!-- End .product-media -->
+
+                                            <div class="product-body">
+                                                <h3 class="product-title"><a href="/Product/<%=n._id%>">
+                                                        <%=n.pname%>
+                                                    </a></h3><!-- End .product-title -->
+                                                <div class="product-price">
+                                                    ₹<%=n.pprice%>
+                                                </div><!-- End .product-price -->
+                                                <div class="ratings-container">
+                                                    <div class="ratings">
+                                                        <div class="ratings-val" style="width: 100%;"></div>
+                                                        <!-- End .ratings-val -->
+                                                    </div><!-- End .ratings -->
+                                                    <span class="ratings-text">( 6 Reviews )</span>
+                                                </div><!-- End .rating-container -->
+                                            </div><!-- End .product-body -->
+                                        </div><!-- End .product -->
+                                    </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
+
+
+                                    <% })} %>
+
+                        </div><!-- End .row -->
+                    </div><!-- End .products -->
+                </div><!-- .End .tab-pane -->
+                <div class="tab-pane p-0 fade" id="top-men-tab" role="tabpanel" aria-labelledby="top-men-link">
+                    <div class="products just-action-icons-sm">
+                        <div class="row">
+                            <%if(locals.MenProduct){%>
+                                <% MenProduct.forEach((n)=>{ %>
+
+                                    <div class="col-8 col-md-6 col-lg-4 col-xl-5col">
+                                        <div class="product product-7 text-center ">
+                                            <figure class="product-media">
+                                                <!-- <span class="product-label label-circle label-top">Top</span> -->
+                                                <a href="/Product/<%=n._id%>">
+                                                    <img src="/uploads/<%=n.productImages[0].resizedFile%>"
+                                                        alt="Product image" class="product-image">
+                                                    <img src="/uploads/<%=n.productImages[0].resizedFile%>"
+                                                        alt="Product image" class="product-image-hover">
+                                                </a>
+
+                                                <div class="product-action-vertical">
+                                                    <a href="#"
+                                                        class="btn-product-icon btn-wishlist btn-expandable"><span>add
+                                                            to wishlist</span></a>
+                                                    <a href="popup/quickView.html"
+                                                        class="btn-product-icon btn-quickview"
+                                                        title="Quick view"><span>Quick view</span></a>
+                                                </div><!-- End .product-action-vertical -->
+
+                                                <div class="product-action">
+                                                    <a href="#" class="btn-product btn-cart"
+                                                        onclick="addToCart('<%=n._id%>')"><span>add to
+                                                            cart</span></a>
+                                                </div><!-- End .product-action -->
+                                            </figure><!-- End .product-media -->
+
+                                            <div class="product-body">
+                                                <h3 class="product-title"><a href="/Product/<%=n._id%>">
+                                                        <%=n.pname%>
+                                                    </a></h3><!-- End .product-title -->
+                                                <div class="product-price">
+                                                    ₹<%=n.pprice%>
+                                                </div><!-- End .product-price -->
+                                                <div class="ratings-container">
+                                                    <div class="ratings">
+                                                        <div class="ratings-val" style="width: 100%;"></div>
+                                                        <!-- End .ratings-val -->
+                                                    </div><!-- End .ratings -->
+                                                    <span class="ratings-text">( 6 Reviews )</span>
+                                                </div><!-- End .rating-container -->
+                                            </div><!-- End .product-body -->
+                                        </div><!-- End .product -->
+                                    </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
+
+
+                                    <% })} %>
+
+                        </div><!-- End .row -->
+                    </div><!-- End .products -->
+                </div><!-- .End .tab-pane -->
+            </div><!-- End .tab-content -->
+
+            <div class="more-container text-center mt-5">
+                <a href="category.html" class="btn btn-outline-lightgray btn-more btn-round"><span>View more
+                        products</span><i class="icon-long-arrow-right"></i></a>
+            </div><!-- End .more-container -->
+        </div><!-- End .container -->
+
+        <div class="mb-5"></div><!-- End .mb5 -->
+
+        <div class="container">
+            <div class="cta cta-horizontal cta-horizontal-box bg-image mb-4 mb-lg-6"
+                style="background-image: url(user/images/demos/demo-10/bg-1.jpg);">
+                <div class="row flex-column flex-lg-row align-items-lg-center">
+                    <div class="col">
+                        <h3 class="cta-title text-primary">New Deals! Start Daily at 12pm e.t.</h3>
+                        <!-- End .cta-title -->
+                        <p class="cta-desc">Get <em class="font-weight-medium">FREE SHIPPING* & 5% rewards</em> on
+                            every order with Molla Theme rewards program</p><!-- End .cta-desc -->
+                    </div><!-- End .col -->
+
+                    <div class="col-auto">
+                        <a href="#" class="btn btn-white-primary btn-round"><span>Add to Cart for $50.00/yr</span><i
+                                class="icon-long-arrow-right"></i></a>
+                    </div><!-- End .col-auto -->
+                </div><!-- End .row -->
+            </div><!-- End .cta-horizontal -->
+        </div><!-- End .container -->
+
+    </main><!-- End .main -->
+
+
+
+    <!-- add to cart address script----------------------- -->
+    <script>
+        async function addToCart(Pid) {
+            try {
+                const ProductQuantity = 1;
+
+                const response = await axios.post(`/addToCart/${Pid}`, {
+                    ProductQuantity
+                });
+
+                // Do something with the response data
+                console.log(response.data);
+
+                if (response.data.stockout == true) {
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'OutoOfStock',
+                        message: "The product is out of stoke"
+
+                    })
+                } else if (response.data.success == true) {
+
+                    // Display success message
+                    Swal.fire({
+                        title: 'Item Added to Cart',
+                        icon: 'success'
+                    }).then(() => {
+                        $('#User-Cart').load('/ #User-Cart > *');
+
+                    });
+                }else if (response.data.ExistProduct) {
+                      // Display success message
+                Swal.fire({
+                    title: 'Item already exist in cart ',
+                    icon: 'warning'
+                })
+                 }
+
+
+
+
+            } catch (error) {
+                Swal.fire({
+                    title: 'Failed to Add Item to Cart',
+                    icon: 'error'
+                });
+                console.error('Error fetching data:', error);
+            }
+        }
+    </script>
+
+    <!-- -------------------------------------------------------------Add to wishlist------------------------------------------- -->
+
+
+<script>
+    async function addToWishlist(PID) {
+        try {
+            const response = await axios.post(`/addToWishlist/${PID}`);
+
+            Swal.fire({
+                title: 'Item Added to Wishlist',
+                icon: 'success'
+            }).then(() => {
+                $('#header-right').load('/ #header-right > *');
+                console.log("wish list success");
+            });
+
+            console.log(response.data);
+
+        } catch (error) {
+            Swal.fire({
+                title: 'Failed to Add Item to Wishlist',
+                icon: 'error'
+            });
+            console.error('Error fetching data:', error);
+        }
+    }
+</script>
+
+
+
+    <%-include('../layout/footer.ejs')-%>

@@ -1,0 +1,29 @@
+<%- include('../layout/header.ejs') -%>
+
+    <main class="main">
+        <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
+            <div class="container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Pages</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">order failed</li>
+                </ol>
+            </div><!-- End .container -->
+        </nav><!-- End .breadcrumb-nav -->
+
+        <div class="error-content text-center"
+            style="background-image: url(/user/images/demos/demo-10/banners/loginPage.jpg)">
+            <div class="container">
+                <h2 class="error-title" style="color: white;">Your order has been pending ,Retry  the payment !</h2>
+                <!-- End .error-title -->
+                <h5 style="color: white;"> Thank you for choosing Shoe Planet</h5>
+                <a href="/IndividualOrderDetails/<%=id%>" class="btn btn-outline-primary-2 btn-minwidth-lg" style="color:white;">
+                    <span>Order Details</span>
+                    <i class="icon-long-arrow-right"></i>
+                </a>
+            </div><!-- End .container -->
+        </div><!-- End .error-content text-center -->
+    </main><!-- End .main -->
+
+
+    <%- include('../layout/footer.ejs') -%>

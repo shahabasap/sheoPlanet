@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Corona Admin</title>
+  <!-- Include SweetAlert CSS and JS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- plugins:css -->
+  <link rel="stylesheet" href="/Admin/vendors/mdi/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="/Admin/vendors/css/vendor.bundle.base.css">
+  <!-- endinject -->
+  <!-- Plugin css for this page -->
+  <link rel="stylesheet" href="/Admin/vendors/jvectormap/jquery-jvectormap.css">
+  <link rel="stylesheet" href="/Admin/vendors/flag-icon-css/css/flag-icon.min.css">
+  <link rel="stylesheet" href="/Admin/vendors/owl-carousel-2/owl.carousel.min.css">
+  <link rel="stylesheet" href="/Admin/vendors/owl-carousel-2/owl.theme.default.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
+
+  <!-- End plugin css for this page -->
+  <!-- inject:css -->
+  <!-- endinject -->
+  <!-- Layout styles -->
+  <link rel="stylesheet" href="/Admin/css/style.css">
+  <!-- End layout styles -->
+  <link rel="shortcut icon" href="/Admin/images/favicon.png" />
+  <!-- cropper.js---------------- -->
+  <link rel="stylesheet" href="./node_modules/cropperjs/dist/cropper.min.css">
+
+</head>
+
+<body>
+  <div class="container-scroller">
+    <!-- partial:partials/_sidebar.html -->
+    <nav class="sidebar sidebar-offcanvas" id="sidebar">
+      <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
+        <a class="sidebar-brand brand-logo" href="index.html"> <label for="" style="color: white;"><span
+              style="color: rgb(211, 163, 6);">shoe</span>Planet</label></a>
+        <a class="sidebar-brand brand-logo-mini" href="index.html"><img src="/Admin/images/logo-mini.svg"
+            alt="logo" /></a>
+      </div>
+      <ul class="nav">
+        <li class="nav-item profile">
+          <div class="profile-desc">
+            <div class="profile-pic">
+              <div class="count-indicator">
+                <img class="img-xs rounded-circle " src="/Admin/images/faces/face15.jpg" alt="">
+                <span class="count bg-success"></span>
+              </div>
+              <div class="profile-name">
+                <h5 class="mb-0 font-weight-normal">Henry Klein</h5>
+                <span>Gold Member</span>
+              </div>
+            </div>
+            <a href="#" id="profile-dropdown" data-toggle="dropdown"><i class="mdi mdi-dots-vertical"></i></a>
+            <div class="dropdown-menu dropdown-menu-right sidebar-dropdown preview-list"
+              aria-labelledby="profile-dropdown">
+              <a href="#" class="dropdown-item preview-item">
+                <div class="preview-thumbnail">
+                  <div class="preview-icon bg-dark rounded-circle">
+                    <i class="mdi mdi-settings text-primary"></i>
+                  </div>
+                </div>
+                <div class="preview-item-content">
+                  <p class="preview-subject ellipsis mb-1 text-small">Account settings</p>
+                </div>
+              </a>
+              <div class="dropdown-divider"></div>
+              <a href="#" class="dropdown-item preview-item">
+                <div class="preview-thumbnail">
+                  <div class="preview-icon bg-dark rounded-circle">
+                    <i class="mdi mdi-onepassword  text-info"></i>
+                  </div>
+                </div>
+                <div class="preview-item-content">
+                  <p class="preview-subject ellipsis mb-1 text-small">Change Password</p>
+                </div>
+              </a>
+              <div class="dropdown-divider"></div>
+              <a href="#" class="dropdown-item preview-item">
+                <div class="preview-thumbnail">
+                  <div class="preview-icon bg-dark rounded-circle">
+                    <i class="mdi mdi-calendar-today text-success"></i>
+                  </div>
+                </div>
+                <div class="preview-item-content">
+                  <p class="preview-subject ellipsis mb-1 text-small">To-do list</p>
+                </div>
+              </a>
+            </div>
+          </div>
+        </li>
+        <li class="nav-item nav-category">
+          <span class="nav-link">Navigation</span>
+        </li>
+        <li class="nav-item menu-items">
+          <a class="nav-link" href="/admin/adminhome">
+            <span class="menu-icon">
+              <i class="mdi mdi-speedometer"></i>
+            </span>
+            <span class="menu-title">Dashboard</span>
+          </a>
+        </li>
+
+        <li class="nav-item menu-items">
+          <a class="nav-link" href="/admin/UserManagement">
+            <span class="menu-icon">
+              <i class="mdi mdi-chart-bar"></i>
+            </span>
+            <span class="menu-title">User Managment</span>
+          </a>
+        </li>
+        <li class="nav-item menu-items">
+          <a class="nav-link" href="/admin/ProductManagement">
+            <span class="menu-icon">
+              <i class="mdi mdi-contacts"></i>
+            </span>
+            <span class="menu-title">Product Managment</span>
+          </a>
+        </li>
+
+        <li class="nav-item menu-items">
+          <a class="nav-link" href="/admin/CategoryManagement">
+            <span class="menu-icon">
+              <i class="mdi mdi-file-document-box"></i>
+            </span>
+            <span class="menu-title">Category Managment</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+      <!-- partial:partials/_navbar.html -->
+      <nav class="navbar p-0 fixed-top d-flex flex-row">
+        <div class="navbar-brand-wrapper d-flex d-lg-none align-items-center justify-content-center">
+          <a class="navbar-brand brand-logo-mini" href="index.html"><img src="/Admin/images/logo-mini.svg"
+              alt="logo" /></a>
+        </div>
+        <div class="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
+          <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+            <span class="mdi mdi-menu"></span>
+          </button>
+          <ul class="navbar-nav w-100">
+            <li class="nav-item w-100">
+              <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
+                <input type="text" class="form-control" placeholder="Search products">
+              </form>
+            </li>
+          </ul>
+          <ul class="navbar-nav navbar-nav-right">
+            <li class="nav-item dropdown d-none d-lg-block">
+              <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
+                aria-labelledby="createbuttonDropdown">
+                <h6 class="p-3 mb-0">Projects</h6>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item preview-item">
+                  <div class="preview-thumbnail">
+                    <div class="preview-icon bg-dark rounded-circle">
+                      <i class="mdi mdi-file-outline text-primary"></i>
+                    </div>
+                  </div>
+                  <div class="preview-item-content">
+                    <p class="preview-subject ellipsis mb-1">Software Development</p>
+                  </div>
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item preview-item">
+                  <div class="preview-thumbnail">
+                    <div class="preview-icon bg-dark rounded-circle">
+                      <i class="mdi mdi-web text-info"></i>
+                    </div>
+                  </div>
+                  <div class="preview-item-content">
+                    <p class="preview-subject ellipsis mb-1">UI Development</p>
+                  </div>
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item preview-item">
+                  <div class="preview-thumbnail">
+                    <div class="preview-icon bg-dark rounded-circle">
+                      <i class="mdi mdi-layers text-danger"></i>
+                    </div>
+                  </div>
+                  <div class="preview-item-content">
+                    <p class="preview-subject ellipsis mb-1">Software Testing</p>
+                  </div>
+                </a>
+                <div class="dropdown-divider"></div>
+                <p class="p-3 mb-0 text-center">See all projects</p>
+              </div>
+            </li>
+            <li class="nav-item nav-settings d-none d-lg-block">
+              <a class="nav-link" href="#">
+                <i class="mdi mdi-view-grid"></i>
+              </a>
+            </li>
+            <li class="nav-item dropdown border-left">
+              <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#" data-toggle="dropdown"
+                aria-expanded="false">
+                <i class="mdi mdi-email"></i>
+                <span class="count bg-success"></span>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
+                aria-labelledby="messageDropdown">
+                <h6 class="p-3 mb-0">Messages</h6>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item preview-item">
+                  <div class="preview-thumbnail">
+                    <img src="/Admin/images/faces/face4.jpg" alt="image" class="rounded-circle profile-pic">
+                  </div>
+                  <div class="preview-item-content">
+                    <p class="preview-subject ellipsis mb-1">Mark send you a message</p>
+                    <p class="text-muted mb-0"> 1 Minutes ago </p>
+                  </div>
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item preview-item">
+                  <div class="preview-thumbnail">
+                    <img src="/Admin/images/faces/face2.jpg" alt="image" class="rounded-circle profile-pic">
+                  </div>
+                  <div class="preview-item-content">
+                    <p class="preview-subject ellipsis mb-1">Cregh send you a message</p>
+                    <p class="text-muted mb-0"> 15 Minutes ago </p>
+                  </div>
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item preview-item">
+                  <div class="preview-thumbnail">
+                    <img src="/Admin/images/faces/face3.jpg" alt="image" class="rounded-circle profile-pic">
+                  </div>
+                  <div class="preview-item-content">
+                    <p class="preview-subject ellipsis mb-1">Profile picture updated</p>
+                    <p class="text-muted mb-0"> 18 Minutes ago </p>
+                  </div>
+                </a>
+                <div class="dropdown-divider"></div>
+                <p class="p-3 mb-0 text-center">4 new messages</p>
+              </div>
+            </li>
+            <li class="nav-item dropdown border-left">
+              <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#"
+                data-toggle="dropdown">
+                <i class="mdi mdi-bell"></i>
+                <span class="count bg-danger"></span>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
+                aria-labelledby="notificationDropdown">
+                <h6 class="p-3 mb-0">Notifications</h6>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item preview-item">
+                  <div class="preview-thumbnail">
+                    <div class="preview-icon bg-dark rounded-circle">
+                      <i class="mdi mdi-calendar text-success"></i>
+                    </div>
+                  </div>
+                  <div class="preview-item-content">
+                    <p class="preview-subject mb-1">Event today</p>
+                    <p class="text-muted ellipsis mb-0"> Just a reminder that you have an event today </p>
+                  </div>
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item preview-item">
+                  <div class="preview-thumbnail">
+                    <div class="preview-icon bg-dark rounded-circle">
+                      <i class="mdi mdi-settings text-danger"></i>
+                    </div>
+                  </div>
+                  <div class="preview-item-content">
+                    <p class="preview-subject mb-1">Settings</p>
+                    <p class="text-muted ellipsis mb-0"> Update dashboard </p>
+                  </div>
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item preview-item">
+                  <div class="preview-thumbnail">
+                    <div class="preview-icon bg-dark rounded-circle">
+                      <i class="mdi mdi-link-variant text-warning"></i>
+                    </div>
+                  </div>
+                  <div class="preview-item-content">
+                    <p class="preview-subject mb-1">Launch Admin</p>
+                    <p class="text-muted ellipsis mb-0"> New admin wow! </p>
+                  </div>
+                </a>
+                <div class="dropdown-divider"></div>
+                <p class="p-3 mb-0 text-center">See all notifications</p>
+              </div>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
+                <div class="navbar-profile">
+                  <img class="img-xs rounded-circle" src="/Admin/images/faces/face15.jpg" alt="">
+                  <p class="mb-0 d-none d-sm-block navbar-profile-name">Henry Klein</p>
+                  <i class="mdi mdi-menu-down d-none d-sm-block"></i>
+                </div>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
+                aria-labelledby="profileDropdown">
+                <h6 class="p-3 mb-0">Profile</h6>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item preview-item">
+                  <div class="preview-thumbnail">
+                    <div class="preview-icon bg-dark rounded-circle">
+                      <i class="mdi mdi-settings text-success"></i>
+                    </div>
+                  </div>
+                  <div class="preview-item-content">
+                    <p class="preview-subject mb-1">Settings</p>
+                  </div>
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item preview-item" href="/admin/logoutadmin">
+                  <div class="preview-thumbnail">
+                    <div class="preview-icon bg-dark rounded-circle">
+                      <i class="mdi mdi-logout text-danger"></i>
+                    </div>
+                  </div>gout
+                  <div class="preview-item-content">
+                    <p class="preview-subject mb-1">Log out</p>
+                  </div>
+                </a>
+                <div class="dropdown-divider"></div>
+                <p class="p-3 mb-0 text-center">Advanced settings</p>
+              </div>
+            </li>
+          </ul>
+          <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
+            data-toggle="offcanvas">
+            <span class="mdi mdi-format-line-spacing"></span>
+          </button>
+        </div>
+      </nav>
+      <!-- main-panel Starts -->
+      <div class="main-panel">
+
+        <form action="/admin/LoadEditedProduct/<%= ProductId%>" method="post" enctype="multipart/form-data" id="myForm">
+          <div class="container  mt-4">
+            <div class="col-md-8 mb-3">
+              <small class="alert alert-danger  text-center  mb-1" style="display: none; color: red;"
+                id="null-message">The field can't Null</small>
+
+            </div>
+            <div class="col-md-8 mb-3">
+              <label for="inputField">Product Name</label>
+              <input type="text" class="form-control text-white" id="pname" value="<%= productData.pname %>"
+                name="pname" onkeyup="validation()" required>
+            </div>
+
+            <div class="col-md-8 mb-3">
+              <label for="inputField">Color</label>
+              <input type="text" class="form-control text-white" id="pcolor" value="<%= productData.pcolor %>"
+                name="pcolor" onkeyup="validation()" required>
+            </div>
+
+            <div class="col-md-8 mb-3">
+              <label for="inputField">Size</label>
+              <input type="text" class="form-control text-white" id="psize" value="<%= productData.psize %>"
+                name="psize" onkeyup="validation()" required>
+              <small class="form-text text-left mt-1 " style="display: none; color: red;" id="error1"></small>
+            </div>
+            <div class="mb-3">
+              <label for="productCategory" class="form-label">Category</label>
+              <select class="form-select" style="background-color: white;" id="productCategory" name="pcategory"
+                required>
+                <% categories.forEach(category=> { %>
+                  <option value="<%= category._id %>" <%=productData.pcategory &&
+                    productData.pcategory.equals(category._id) ? 'selected' : '' %>><%= category.Cname %>
+                  </option>
+                  <% }); %>
+              </select>
+              <div class="invalid-feedback">
+                Please select the product category.
+              </div>
+            </div>
+            <div class="col-md-8 mb-3">
+              <label for="inputField">Actual Price</label>
+              <input type="text" class="form-control text-white" id="pprice" value="<%= productData.pprice %>"
+                name="pprice" onkeyup="validation()" required>
+              <small class="form-text text-left mt-1 " style="display: none; color: red;" id="error2"></small>
+            </div>
+            <div class="col-md-8 mb-3">
+              <label for="inputField">Offer Price</label>
+              <input type="text" class="form-control text-white" id="offerprice" value="<%= productData.offerprice %>"
+                name="offerprice" onkeyup="validation()" required>
+              <small class="form-text text-left mt-1 " style="display: none; color: red;" id="error3"></small>
+            </div>
+
+            <div class="col-md-8 mb-3">
+              <label for="inputField">Quantity</label>
+              <input type="text" class="form-control text-white" id="pquantity" value="<%= productData.pquantity%>"
+                name="pquantity" onkeyup="validation()" required>
+              <small class="form-text text-left mt-1 " style="display: none; color: red;" id="error4"></small>
+            </div>
+
+            <div class="col-md-8 mb-3">
+              <label for="inputField">Product for which
+                gender</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+              <select class="form-select" aria-label="Default select example" name="pgender">
+                <option value="Men" <%if(productData.pgender=='Men' ){%>selected <%}%>>Men
+                </option>
+                <option value="Women" <%if(productData.pgender=='Women' ){%>selected <%}%>>Women</option>
+              </select>
+
+
+
+            </div>
+            <div class="col-md-8 mb-3">
+              <label for="inputField">Description</label>
+              <textarea class="form-control text-white" id="pdescription" placeholder="Enter the Quantity" rows="5"
+                name="pdescription" onkeyup="validation()" required><%=productData.pdescription%></textarea>
+            </div>
+            <div class="d-flex" id="product-images">
+              <% for (let j=0; j < productData.productImages.length; j++) { %>
+                <div class="card text-center" style="width: 200px; margin-right: 10px;">
+                  <img src="/uploads/<%= productData.productImages[j].resizedFile%>" id="imagePreview<%=j%>"
+                    class="card-img-top" alt="...">
+                  <div class="card-body">
+                    <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cropModal<%= j %>" onclick="cropImage('<%= j %>')">Crop</button> -->
+                    <button type="button" class="btn btn-primary "
+                      onclick="editImage( '<%=j%>','<%=productData.productImages[j].resizedFile%>','<%=productData._id%>')">Crop</button>
+                    <button type="button" class="btn btn-danger"
+                      onclick="confirmDelete('<%= productData._id %>','<%= productData.pname %>','<%= j %>',)">Delete</button>
+                  </div>
+                </div>
+
+
+
+                <% } %>
+
+            </div>
+
+            <div class="col-md-8 mb-3">
+              <label for="inputField">Product Image</label>&nbsp;&nbsp;&nbsp;&nbsp;
+              <input type="file" id="productImages" name="productImages" accept="image/*" multiple>
+            </div>
+
+
+            <div>
+
+              <button type="submit" class="btn btn-primary btn-md mx-3" id="bttn">Submit</button>
+            </div>
+          </div>
+
+        </form>
+
+
+      </div>
+
+
+      <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+
+
+  <!-- SweetAlert script -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <style>
+    .text-black {
+      color: black !important;
+      /* Use !important to override default styles */
+    }
+  </style>
+  <!-- JavaScript section for user blocking/unblocking with SweetAlert -->
+  <script>
+    function confirmDelete(PId, Pname, iterating) {
+      var confirmationText = 'Are you sure you want delete the photo  ' + '?';
+
+      Swal.fire({
+        title: '<span class="text-black">Delete Photo',
+        text: confirmationText,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete!',
+        customClass: {
+          content: 'text-black',
+          text: 'text-black'
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Redirect to the block action
+          window.location.href = `/admin/deletePhoto/?pid=${PId}&image=${iterating}`;
+        }
+      });
+    }
+  </script>
+  <!-- Image validation--------------------------------------- -->
+  <script>
+    document.getElementById('myForm').addEventListener('submit', function (event) {
+      // Get the file input element
+      var fileInput = document.getElementById('productImages');
+
+      // Check the number of selected files
+      if (fileInput.files.length > 4) {
+        // Prevent the form submission if more than 5 files are selected
+        event.preventDefault();
+
+        // Use SweetAlert to display a custom message
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops',
+          text: 'Please select a maximum of 4 images.',
+        });
+      }
+    });
+  </script>
+
+
+
+  <script>
+    function validation() {
+      const pname = document.getElementById('pname').value;
+      const pcolor = document.getElementById('pcolor').value;
+      const psize = document.getElementById('psize').value;
+      const pprice = document.getElementById('pprice').value;
+      const offerprice = document.getElementById('offerprice').value;
+      const pquantity = document.getElementById('pquantity').value;
+      const pdescription = document.getElementById('pdescription').value;
+      let err = document.getElementById('null-message')
+      var btn = document.getElementById('bttn')
+
+
+      if (pdescription.trim() == '' || pquantity.trim() == '' || offerprice.trim() == '' || pprice.trim() == '' || psize.trim() == '' || pname.trim() == '') {
+        err.style.display = "block"
+        btn.disabled = true
+
+
+      } else {
+        err.style.display = "none"
+        btn.disabled = false
+
+      }
+    }
+  </script>
+  <script>
+    // Size  validation---------------------------
+
+    document.addEventListener("DOMContentLoaded", function () {
+      // Get a reference to the name input field
+      var numberInput = document.querySelector('input[id="psize"]');
+      var errorParagraph = document.getElementById('error1');
+      var btn = document.getElementById('bttn')
+
+      // Listen for input events on the name input field
+      numberInput.addEventListener("input", function (event) {
+        var enteredname = event.target.value;
+
+        // Check if the entered name is not valid (you can replace this with your validation logic)
+        if (!isValidName(enteredname)) {
+          errorParagraph.textContent = "size must be positive number";
+          errorParagraph.style.display = "block";
+
+
+
+          document.getElementById('name').style.border = "1px solid red";
+        } else {
+          // Clear the error message if the password is valid
+          errorParagraph.textContent = "";
+          errorParagraph.style.display = "none";
+
+          document.getElementById('name').style.border = "";
+
+
+        }
+      });
+
+      // Function to validate password (replace this with your validation logic)
+      function isValidName(number) {
+        // This is a basic example, you might want to use a more robust validation
+        return parseInt(number) >= 0;
+      }
+    });
+    // Actual price validation---------------------------
+
+    document.addEventListener("DOMContentLoaded", function () {
+      // Get a reference to the name input field
+      var numberInput = document.querySelector('input[id="pprice"]');
+      var errorParagraph = document.getElementById('error2');
+      var btn = document.getElementById('bttn')
+
+      // Listen for input events on the name input field
+      numberInput.addEventListener("input", function (event) {
+        var enteredname = event.target.value;
+
+        // Check if the entered name is not valid (you can replace this with your validation logic)
+        if (!isValidName(enteredname)) {
+          errorParagraph.textContent = "Actual price must be positive number";
+          errorParagraph.style.display = "block";
+
+
+
+          document.getElementById('name').style.border = "1px solid red";
+        } else {
+          // Clear the error message if the password is valid
+          errorParagraph.textContent = "";
+          errorParagraph.style.display = "none";
+
+          document.getElementById('name').style.border = "";
+
+
+        }
+      });
+
+      // Function to validate password (replace this with your validation logic)
+      function isValidName(number) {
+        // This is a basic example, you might want to use a more robust validation
+        return parseInt(number) >= 0;
+      }
+    });
+    // Offer price--------------------------
+
+    document.addEventListener("DOMContentLoaded", function () {
+      // Get a reference to the name input field
+      var numberInput = document.querySelector('input[id="offerprice"]');
+      var errorParagraph = document.getElementById('error3');
+      var btn = document.getElementById('bttn')
+
+      // Listen for input events on the name input field
+      numberInput.addEventListener("input", function (event) {
+        var enteredname = event.target.value;
+
+        // Check if the entered name is not valid (you can replace this with your validation logic)
+        if (!isValidName(enteredname)) {
+          errorParagraph.textContent = "Offer Price must be positive number";
+          errorParagraph.style.display = "block";
+
+
+
+          document.getElementById('name').style.border = "1px solid red";
+        } else {
+          // Clear the error message if the password is valid
+          errorParagraph.textContent = "";
+          errorParagraph.style.display = "none";
+
+          document.getElementById('name').style.border = "";
+
+
+        }
+      });
+
+      // Function to validate password (replace this with your validation logic)
+      function isValidName(number) {
+        // This is a basic example, you might want to use a more robust validation
+        return parseInt(number) >= 0;
+      }
+    });
+
+    // quantity-------------------------------------------------------------
+
+    document.addEventListener("DOMContentLoaded", function () {
+      // Get a reference to the name input field
+      var numberInput = document.querySelector('input[id="pquantity"]');
+      var errorParagraph = document.getElementById('error4');
+      var btn = document.getElementById('bttn')
+
+      // Listen for input events on the name input field
+      numberInput.addEventListener("input", function (event) {
+        var enteredname = event.target.value;
+
+        // Check if the entered name is not valid (you can replace this with your validation logic)
+        if (!isValidName(enteredname)) {
+          errorParagraph.textContent = "Quantity must be positive number";
+          errorParagraph.style.display = "block";
+
+
+
+          document.getElementById('name').style.border = "1px solid red";
+        } else {
+          // Clear the error message if the password is valid
+          errorParagraph.textContent = "";
+          errorParagraph.style.display = "none";
+
+          document.getElementById('name').style.border = "";
+
+
+        }
+      });
+
+      // Function to validate password (replace this with your validation logic)
+      function isValidName(number) {
+        // This is a basic example, you might want to use a more robust validation
+        return parseInt(number) >= 0;
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+      // Get references to input fields and button
+      const psizeInput = document.querySelector('input[id="psize"]');
+      const ppriceInput = document.querySelector('input[id="pprice"]');
+      const offerpriceInput = document.querySelector('input[id="offerprice"]');
+      const pquantityInput = document.querySelector('input[id="pquantity"]');
+      const btn = document.getElementById('bttn');
+
+      // Validation functions (combine into a single function for efficiency)
+      function validateInputs() {
+        const psize = isValidNumber(psizeInput.value);
+        const pprice = isValidNumber(ppriceInput.value);
+        const offerprice = isValidNumber(offerpriceInput.value);
+        const pquantity = isValidNumber(pquantityInput.value);
+
+        return psize && pprice && offerprice && pquantity;
+      }
+
+      // Initial validation and button state
+      btn.disabled = !validateInputs();
+
+      // Event listener for all input fields using event delegation
+      document.getElementById('myForm').addEventListener("input", (event) => {
+        if (event.target.tagName === 'INPUT') {
+          btn.disabled = !validateInputs();
+        }
+      });
+
+      // Validation functions (replace with your specific logic if needed)
+      function isValidNumber(value) {
+        const number = parseFloat(value);
+        return !isNaN(number) && number >= 0;
+      }
+    });
+
+  </script>
+  <!-- cropper js-------------------- -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+  <script>
+
+    // Just firing the cropping image---------------------
+
+    function editImage(index, imageName, id) {
+      const imageElement = document.getElementById(`imagePreview${index}`);
+      console.log("image", imageElement);
+      const cropperModalContent = `
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Crop Image</h5>
+      </div>
+      <div class="modal-body">
+        <div class="text-center">
+          <img id="cropperImage" src="${imageElement.src}" alt="Croppable Image" style="max-width: 100%;">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" onclick="cropImage('${imageName}', '${index}' , '${id}')">Crop</button>
+      </div>
+    </div>
+  </div>`;
+
+
+      Swal.fire({
+        title: 'Crop Image',
+        html: cropperModalContent,
+        showCancelButton: true,
+        showConfirmButton: false,
+        didOpen: () => {
+          const imageElement = document.getElementById('cropperImage');
+          cropper = new Cropper(imageElement, {
+            aspectRatio: 0.74, // Set your desired aspect ratio
+            viewMode: 1, // Set the view mode for the Cropper.js instance
+            cropBoxResizable: false,
+          });
+        },
+        willClose: () => {
+          if (cropper) {
+            cropper.destroy();
+          }
+        },
+      });
+    }
+
+    function cropImage(imageName, index, id) {
+      const imageElement = document.getElementById(`imagePreview${index}`);
+      if (cropper) {
+        const canvas = cropper.getCroppedCanvas();
+        canvas.toBlob(blob => {
+          const formData = new FormData();
+          formData.append('id', id)
+          formData.append('index', index);
+          formData.append('imageName', imageName);
+          formData.append('images', blob, 'croppedimage.webp'); // Adjust filename and extension if needed
+
+          fetch('/admin/uploadCroppedImage', {
+            method: 'POST',
+            body: formData,
+          })
+            .then(response => {
+              if (response.ok) {
+                $("#product-images").load(`/admin/editProduct/${id} #product-images`);
+                // Close the SweetAlert modal after cropping (if applicable)
+                Swal.close();
+                Swal.fire({
+                  icon: 'success',
+                  text: 'Image cropped successfully',
+                  customClass: {
+          content: 'text-black',
+          text: 'text-black'
+        }
+                });
+                
+
+              }
+              else
+              {
+                Swal.close();
+                Swal.fire({
+                  icon: 'error',
+                  text: 'Image is not updated,something wen wrong',
+                  customClass: {
+          content: 'text-black',
+          text: 'text-black'
+        }
+                });
+              }
+            })
+
+            .catch(error => {
+              // Handle fetch errors or unsuccessful response here
+              console.error('Error while uploading cropped image:', error);
+              // Optionally display an error message to the user
+            });
+        }, 'image/webp'); // Specify image format if needed (image/png, image/jpeg, etc.)
+      }
+    }
+
+  </script>
+
+  <!-- axios library-------------------------- -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+  <!-- SweetAlert script -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+  <!-- container-scroller -->
+  <!-- plugins:js -->
+  <script src="/Admin/vendors/js/vendor.bundle.base.js"></script>
+  <!-- endinject -->
+  <!-- Plugin js for this page -->
+  <script src="/Admin/vendors/chart.js/Chart.min.js"></script>
+  <script src="/Admin/vendors/progressbar.js/progressbar.min.js"></script>
+  <script src="/Admin/vendors/jvectormap/jquery-jvectormap.min.js"></script>
+  <script src="/Admin/vendors/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+  <script src="/Admin/vendors/owl-carousel-2/owl.carousel.min.js"></script>
+  <!-- End plugin js for this page -->
+  <!-- inject:js -->
+  <script src="/Admin/js/off-canvas.js"></script>
+  <script src="/Admin/js/hoverable-collapse.js"></script>
+  <script src="/Admin/js/misc.js"></script>
+  <script src="/Admin/js/settings.js"></script>
+  <script src="/Admin/js/todolist.js"></script>
+  <!-- endinject -->
+  <!-- Custom js for this page -->
+  <script src="/Admin/js/dashboard.js"></script>
+  <!-- End custom js for this page -->
+</body>
+
+</html>

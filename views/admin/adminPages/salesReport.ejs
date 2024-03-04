@@ -1,0 +1,187 @@
+<%- include('../layout/header.ejs') -%>
+
+      <!-- partial -->
+      <div class="main-panel">
+        <div class="content-wrapper">
+          <div class="container-fluid d-flex py-2 ps-3 bg-gray-dark justify-content-between p-3">
+
+            <!-- Left section for date input fields -->
+            <div class="me-auto">
+                <span class="text-light">Starting Date</span>&nbsp;&nbsp;
+                <input type="date" name="from" id="SalesStartDate" min="<%=locals.startDate%>" max="<%=locals.endDate%>">
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <span class="text-light">Ending Date</span>&nbsp;&nbsp;&nbsp;
+                <input type="date" name="to" id="SalesEndDate" min="<%=locals.startDate%>" max="<%=locals.endDate%>">
+            </div>
+        
+            <!-- Right section for download buttons -->
+            <div class=" ms-auto">
+              <button id="excelButton" onclick="dowloadDoc(this.value)" value="excel" class="btn btn-danger">DOWNLOAD EXCEL</button>
+              <button id="pdfButton" onclick="dowloadDoc(this.value)" value="pdf" class="btn btn-info ml-5">DOWNLOAD PDF</button>
+
+            </div>
+        
+        </div>
+        
+        
+        
+            <table class="table table-dark" id="salesEntireTable">
+                <thead>
+                  <tr >
+                    <th scope="col" >SNO</th>
+                    <th scope="col" >username</th>
+                    <th scope="col" >Order Date </th>
+                    <th scope="col" >Address</th>
+                    <th scope="col" >Total</th>
+                    <th scope="col">Payment</th>
+
+                  </tr>
+                
+                </thead>
+               
+                <tbody id="SalesTable">
+                  <%let temp=1%>
+                  <%if(locals.SalesReport){%>
+                  
+                    <%SalesReport.forEach((n)=>{%>
+                  <tr>
+                 <td><%=temp++%></td>
+                 <td><%=n.address.name%></td>
+                 <td> <%= moment(n.date).format('MMMM Do YYYY h:mm:s a')%></td>
+                 <td>
+                  <p>
+                  <%=n.address.buildingname%><br>
+                  <%=n.address.mobile%><br>
+                  <%=n.address.street%>,
+                  <%=n.address.city%><br>
+                  <%=n.address.state%>,
+                  <%=n.address.pincode%>
+                </p>
+
+                </td>
+                 <td><%=n.total%></td>
+                 <td><%=n.payment%></td>
+                </tr>
+                <%})%>
+                <%}%>
+                </tbody>
+              
+              </table>
+        </div>
+        
+        <!-- content-wrapper ends -->
+        <!-- partial:partials/_footer.html -->
+        <footer class="footer">
+          <div class="d-sm-flex justify-content-center justify-content-sm-between">
+            <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © bootstrapdash.com
+              2020</span>
+            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a
+                href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin
+                templates</a> from Bootstrapdash.com</span>
+          </div>
+        </footer>
+        <!-- partial -->
+      </div>
+      <!-- main-panel ends -->
+    </div>
+    <script defer>
+    document.addEventListener('DOMContentLoaded', function () {
+        var startDate = document.getElementById("SalesStartDate");
+        var EndDate = document.getElementById("SalesEndDate");
+    
+
+        // Function to handle the Axios request
+        function handleAxiosRequest() {
+            if (startDate.value && EndDate.value) {
+               
+
+                axios.post('/admin/SalesReporSearch', {
+                    start: startDate.value,
+                    End: EndDate.value
+                })
+                .then(function (response) {
+                    SortedTable=response.data.salaesReport
+                    displaySortedOrders(SortedTable)
+                    console.log("response is coming");
+                    console.log(SortedTable);
+                })
+                .catch(function (error) {
+                    // Handle errors here
+                    console.error(error);
+                });
+            }
+        }
+
+        // Attach event listeners to the date inputs
+        startDate.addEventListener('input', handleAxiosRequest);
+        EndDate.addEventListener('input', handleAxiosRequest);
+    });
+
+    function displaySortedOrders(OrderData) {
+    const tableRows = OrderData.map((n, index) => {
+        return `<tr>
+                 <td>${index + 1}</td>
+                 <td>${n.address.name}</td>
+                 <td>${moment(n.date).format('MMMM Do YYYY h:mm:s a')}</td>
+                 <td>
+                    <p>
+                        ${n.address.buildingname}<br>
+                        ${n.address.mobile}<br>
+                        ${n.address.street},
+                        ${n.address.city}<br>
+                        ${n.address.state},
+                        ${n.address.pincode}
+                    </p>
+                 </td>
+                 <td>${n.total}</td>
+                 <td>${n.payment}</td>
+                </tr>`;
+    });
+
+    // Join the array of HTML strings into a single string
+    const tableHTML = tableRows.join('');
+
+    // Set the innerHTML of the element with id 'SalesTable'
+    document.getElementById('SalesTable').innerHTML = tableHTML;
+}
+
+      
+    
+</script>
+
+
+<!-- Download  Sales Report------------------- -->
+<script>
+  function dowloadDoc(buttonValue){
+    var salestable = document.getElementById('salesEntireTable');
+
+    if (buttonValue === 'pdf') {
+        // Call function to print PDF
+        downloadPDF(salestable);
+    } else if (buttonValue === 'excel') {
+        // Call function to print Excel
+        downloadExcel(salestable);
+    }
+
+    }
+
+function downloadPDF(table) {
+    const printContents = table.outerHTML;
+    const originalContents = document.body.innerHTML;
+    document.body.innerHTML = printContents;
+    window.print();
+    document.body.innerHTML = originalContents;
+}
+
+function downloadExcel(table) {
+    const ws = XLSX.utils.table_to_sheet(table);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Sales Report");
+    XLSX.writeFile(wb, "sales_report.xlsx");
+}
+</script>
+
+<%- include('../layout/footer.ejs') -%>
+
+
+

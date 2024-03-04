@@ -1,0 +1,58 @@
+<%- include('../layout/header.ejs') -%>
+
+<main class="main">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 border mb-3">
+                <div class="p-2">
+                    <div class="mt-3" >
+                        <h5 class="text-center text-success">Order details</h5>
+                    </div>
+                    <div class="p-5">
+                        <label style="font-weight: 800;">Products</label>
+                        <table class="table">
+                            <tr>
+                                <th>Name</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Image</th>
+                            </tr>
+                            <% OrderDetails.products.forEach((p) => { %>
+                                <tr>
+                                    <td><%= p.name %></td>
+                                    <td><%= p.quantity %></td>
+                                    <td><%= p.price %></td>
+                                    <td><img src="/uploads/<%= p.image %>" alt="Product Image" style="width: 50px; height: 50px;"></td>
+                                </tr>
+                            <% }) %>
+                        </table>
+                        <div class="card-body border mb-3">
+                            <p class="card-text font-weight-bold">Grand Total: <span><%= OrderDetails.total %></span></p>
+                            <p class="card-text"><span style="font-weight: 800;">Payment:</span> <%= OrderDetails.payment %></p>
+                            <p class="card-text"><span style="font-weight: 800;">Order Status:</span> <%= OrderDetails.status %></p>
+                            <p class="card-text"><span style="font-weight: 800;">Paymnet Status:</span> <%= OrderDetails.paymentStatus %></p>
+                            <p class="card-text"><span style="font-weight: 800;">Order Placed Date:</span> <%= moment(OrderDetails.date).format('MMMM Do YYYY, h:mm:ss a') %></p>
+                            <p class="card-text"><span style="font-weight: 800;">Address:</span> <%= OrderDetails.address.name %><br><%= OrderDetails.address.buildingname %><br><%= OrderDetails.address.mobile %><br><%= OrderDetails.address.street %>, <%= OrderDetails.address.city %><br><%= OrderDetails.address.state %>, <%= OrderDetails.address.pincode %><br></p>
+                        </div>
+                        <%if(OrderDetails.paymentStatus=='Pending'){%>
+                          <div onclick="RetryPayment('<% OrderDetails._id%>')" class="btn btn-warning"> Retry Payment</div>
+                        <%}%>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    async function RetryPayment() {
+
+
+        
+    }
+</script>
+
+
+
+
+	<%- include('../layout/footer.ejs') -%>

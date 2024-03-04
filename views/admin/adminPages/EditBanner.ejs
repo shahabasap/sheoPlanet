@@ -1,0 +1,84 @@
+<%- include('../layout/header.ejs') -%>
+
+      <!-- main-panel Starts -->
+      <div class="main-panel">
+          <h3 class="ms-5 mt-4">Banner</h3>
+          <%if(locals.BannerData){%>
+        <form action="/admin/EditBanner" method="post" enctype="multipart/form-data" >
+
+
+          <div class="container  mt-4">
+                  <div class="col-md-8 mb-3">
+                  <small class="alert alert-danger  text-center  mb-1" style="display: none; color: red;"
+                  id="null-message">The field can't Null</small>
+                 </div>
+                  <div class="col-md-8 mb-3">
+                    <label for="inputField">Title</label>
+                    <input type="text" class="form-control text-white" id="Btitle" placeholder="Enter product name"
+                      name="Btitle" onkeyup="validation()" value="<%=BannerData.title%>" required>
+                  </div>
+
+                  <div class="col-md-8 mb-3">
+                    <label for="inputField">URL</label>
+                    <input type="text" class="form-control text-white" id="Burl" placeholder="Enter color"
+                      name="Burl" onkeyup="validation()" value="<%=BannerData.Url%>" required>
+                  </div>
+                  <div class="col-md-8 mb-3">
+                    <label for="inputField">Description</label>
+                    <input type="text" class="form-control text-white" id="Bdescription" placeholder="Enter color"
+                      name="Bdescription" onkeyup="validation()" value="<%=BannerData.description%>" required>
+                  </div>
+                  <div class="col-md-8 mb-3">
+                    <label for="inputField">Image</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="file"  id="Bimage" placeholder="Enter color"
+                      name="Bimage" >
+                  </div>
+                  <div>
+                    <input type="hidden" value="<%=BannerData._id%>" name="Bannerid">
+
+                  </div>
+
+                  <div>
+                    <button type="submit" id="bttn" class="btn btn-primary btn-md mx-3">Submit</button>
+                  </div>
+         
+          </div>
+
+        </form>
+        <%}%>
+
+      </div>
+
+
+      <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+  <script>
+    function validation() {
+      const Btitle = document.getElementById('Btitle').value;
+      const Burl = document.getElementById('Burl').value;
+      const Bdescription = document.getElementById('Bdescription').value;
+      let err = document.getElementById('null-message')
+      const btn=document.getElementById('bttn'); 
+
+
+      if (Btitle.trim() == '' || Burl.trim() == '' || Bdescription.trim() == '') {
+        err.style.display = "block"
+        btn.disabled = true
+
+      } else {
+        err.style.display = "none"
+        btn.disabled = false
+
+      }
+    }
+  </script>
+
+
+
+  
+
+
+<%- include('../layout/footer.ejs') -%>
+

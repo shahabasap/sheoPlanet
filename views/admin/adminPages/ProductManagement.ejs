@@ -1,0 +1,224 @@
+<%- include('../layout/header.ejs') -%>
+
+      <!-- main-panel Starts -->
+      <div class="main-panel">
+        <%if(locals.successMessage){%>
+          <small class="alert alert-secondary  text-center  mb-1 pt-2"
+            style=" color: rgb(99, 233, 15);border: 1px solid rgb(22, 33, 33);" id="success-message">
+            <%=locals.successMessage%>
+          </small>
+          <%}%>
+            <!-- Add JavaScript to automatically hide the alert after 3000 milliseconds (3 seconds) -->
+            <script>
+              setTimeout(function () {
+                document.getElementById('success-message').style.display = 'none';
+              }, 5000);
+            </script>
+            <div class="container d-flex justify-content-end">
+
+              <a href="/admin/AddProduct"><button type="button" class="btn btn-success btn-md mx-3 my-3 ">+ADD
+                  PRODUCT</button></a>
+            </div>
+
+
+            <table class="table table-dark">
+              <thead>
+                <tr>
+                  <th scope="col">SNO</th>
+                  <th scope="col">Product Name</th>
+                  <th scope="col">Product Category</th>
+                  <th scope="col">Product Stock</th>
+                  <th scope="col">Product Image</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Action</th>
+                  <th scope="col">Edit</th>
+                  <th scope="col">Delete</th>
+
+                </tr>
+              </thead>
+              <tbody>
+
+                <%if(locals.Products){%>
+                  <%Products.forEach((n)=>{%>
+                    <tr>
+                      <th scope="row">
+                        <%= ++skip%>
+                      </th>
+                      <td>
+                        <%= n.pname%>
+                      </td>
+                      <!-- <td><%= n.pprice%></td>
+                <td><%= n.pquantity%></td> -->
+                      <td>
+                        <%= n.pcategory.Cname%>
+                      </td>
+                      <td>
+                        <%= n.pquantity%>
+                      </td>
+                      <td>
+                        <% for (let j=0; j < n.productImages.length; j++) { %>
+                          <img src="/uploads/<%= n.productImages[j].resizedFile%>" alt="Product Image"
+                            style="width: 30px; height: 30px; margin-left: 5px;">
+                          <% } %>
+                                       
+                      </td>
+                      <td>
+                        <%if(n.is_listed==0){%>
+                          <label class="text-warning" for=""> unlisted</label>
+                          <%} else{%>
+                            <label for="" class="text-success">listed</label>
+                            <%}%>
+                      </td>
+                      <td>
+                        <% if (n.is_listed==0) { %>
+                          <button type="button" class="btn btn-danger"
+                            onclick="confirmList('<%= n._id %>', '<%= n.pname %>')">List</button>
+                          <% } else { %>
+                            <button type="button" class="btn btn-warning"
+                              onclick="confirmUnlist('<%= n._id %>', '<%= n.pname %>')">Unlist</button>
+                            <% } %>
+                      </td>
+                      <td><a href="/admin/editProduct/<%= n._id%>"><button type="button"
+                            class="btn btn-warning">Edit</button></a></td>
+                      <td> <button type="button" class="btn btn-danger"
+                          onclick="confirmDelete('<%= n._id %>', '<%= n.pname %>')">Delete</button></td>
+                    </tr>
+
+                    <%})}%>
+              </tbody>
+            </table>
+
+            <nav aria-label="Page navigation ">
+              <ul class="pagination justify-content-center mt-4">
+                <% if (currentPage> 1) { %>
+                  <li class="page-item">
+                    <a class="page-link" href="/admin/ProductManagement?page=<%= currentPage - 1 %>"
+                      aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                      <span class="sr-only">Previous</span>
+                    </a>
+                  </li>
+                  <% } else { %>
+                    <li class="page-item disabled">
+                      <span class="page-link" aria-hidden="true">&laquo;</span>
+                    </li>
+                    <% } %>
+
+                      <% for (let page=1; page <=totalPages; page++) { %>
+                        <li class="page-item <%= currentPage === page ? 'active' : '' %>">
+                          <a class="page-link" href="/admin/ProductManagement?page=<%= page %>">
+                            <%= page %>
+                          </a>
+                        </li>
+                        <% } %>
+
+                          <!-- <li class="page-item-total">of <%= totalPages %></li> -->
+
+                          <% if (currentPage < totalPages) { %>
+                            <li class="page-item">
+                              <a class="page-link" href="/admin/ProductManagement?page=<%= currentPage + 1 %>"
+                                aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                              </a>
+                            </li>
+                            <% } else { %>
+                              <li class="page-item disabled">
+                                <span class="page-link" aria-hidden="true">&raquo;</span>
+                              </li>
+                              <% } %>
+              </ul>
+            </nav>
+
+
+
+      </div>
+
+      <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+
+
+  
+  <style>
+    .text-black {
+      color: black !important;
+      /* Use !important to override default styles */
+    }
+  </style>
+  <!-- JavaScript section for user blocking/unblocking with SweetAlert -->
+  <script>
+    function confirmList(PId, Pname) {
+      var confirmationText = 'Are you sure you want to list the product ' + ' ' + Pname + '?';
+
+      Swal.fire({
+        title: '<span class="text-black">List the product?</span>',
+        text: confirmationText,
+        icon: 'success',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, list!',
+        customClass: {
+          content: 'text-black',
+          text: 'text-black'
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Redirect to the block action
+          window.location.href = `/admin/listing/${PId}`;
+        }
+      });
+    }
+
+    function confirmUnlist(PId, Pname) {
+      var confirmationText = 'Are you sure you want to unlist the product' + Pname + '?';
+
+      Swal.fire({
+        title: '<span class="text-black">Unlist the product?</span>',
+        text: confirmationText,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, unlist!',
+        customClass: {
+          content: 'text-black'
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Redirect to the unblock action
+          window.location.href = `/admin/listing/${PId}`;
+        }
+      });
+    }
+
+    // delete sweet alert-------------------------
+
+    function confirmDelete(PId, Pname) {
+      var confirmationText = 'Are you sure you want to delete the product' + Pname + '?';
+
+      Swal.fire({
+        title: '<span class="text-black">delete the product?</span>',
+        text: confirmationText,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete!',
+        customClass: {
+          content: 'text-black'
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Redirect to the unblock action
+          window.location.href = `/admin/deleteProduct/${PId}`;
+        }
+      });
+    }
+  </script>
+<%- include('../layout/footer.ejs') -%>
+
+
+  

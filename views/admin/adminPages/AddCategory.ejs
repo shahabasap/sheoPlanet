@@ -1,0 +1,84 @@
+<%- include('../layout/header.ejs') -%>
+
+      <!-- main-panel Starts -->
+      <div class="main-panel">
+
+        <form action="/admin/AddCategory" method="post">
+
+
+          <div class="container  mt-4">
+            <% if (locals.categoryAlreadyExists) { %>
+              <div id="category-checking-message" class="col-md-8 mb-3">
+                <label class="text-danger" for="inputField">
+                  <%= locals.categoryAlreadyExists %>
+                </label>
+              </div>
+              <% } else if (locals.categoryNotAdded) { %>
+                <div id="category-checking-message" class="col-md-8 mb-3">
+                  <label class="text-danger" for="inputField">
+                    <%= locals.categoryNotAdded %>
+                  </label>
+                </div>
+                <% } %>
+                  <script>
+                    setTimeout(function () {
+                      document.getElementById('category-checking-message').style.display = 'none';
+                    }, 3000);
+                  </script>
+
+                  <div class="col-md-8 mb-3">
+                    <small class="alert alert-danger  text-center  mb-1" style="display: none; color: red;"
+                      id="null-message">The field can't Null</small>
+
+                  </div>
+                  <div class="col-md-8 mb-3">
+                    <label for="inputField">Category Name</label>
+                    <input type="text" class="form-control text-white" id="cname" placeholder="Enter product name"
+                      name="cname" onkeyup="validation()" required>
+                  </div>
+
+                  <div class="col-md-8 mb-3">
+                    <label for="inputField">Catergory Description</label>
+                    <input type="text" class="form-control text-white" id="cdescription" placeholder="Enter color"
+                      name="cdescription" onkeyup="validation()" required>
+                  </div>
+                  <div>
+                    <button type="submit" class="btn btn-primary btn-md mx-3">Submit</button>
+                  </div>
+          </div>
+
+        </form>
+
+      </div>
+
+
+      <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+
+
+
+  <!-- validation--------------------------- -->
+  <script>
+    function validation() {
+      const cname = document.getElementById('cname').value;
+      const cdescription = document.getElementById('cdescription').value;
+      let err = document.getElementById('null-message')
+
+
+      if (cname.trim() == '' || cdescription.trim() == '') {
+        err.style.display = "block"
+        btn.disabled = true
+
+      } else {
+        err.style.display = "none"
+        btn.disabled = false
+
+      }
+    }
+  </script>
+
+
+<%- include('../layout/footer.ejs') -%>
+

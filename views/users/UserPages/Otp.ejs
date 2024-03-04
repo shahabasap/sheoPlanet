@@ -1,0 +1,109 @@
+<%- include('../layout/header.ejs') -%>
+
+    <main class="main">
+        <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
+            <div class="container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Login</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Register</li>
+                    <li class="breadcrumb-item active" aria-current="page">Otp</li>
+                </ol>
+            </div><!-- End .container -->
+        </nav><!-- End .breadcrumb-nav -->
+
+        <div class="login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17"
+            style="background-image: url('/user/images/demos/demo-10/banners/loginPage.jpg')">
+            <div class="container">
+                <div class="form-box">
+                    <div class="form-tab">
+                        <ul class="nav nav-pills nav-fill" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="signin-tab-2" data-toggle="tab" href="#signin-2"
+                                    role="tab" aria-controls="signin-2" aria-selected="false">OTP VERIFICTION</a>
+                            </li>
+
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" id="signin-2" role="tabpanel"
+                                aria-labelledby="signin-tab-2">
+                                <form action="/verify-otp/<%= email%>" method="Post">
+                                    <% if(locals.message){ %>
+                                        <div class="text-center" id="email-Password-Validation">
+                                            <label class="text-danger">
+                                                <%= locals.message%>
+                                            </label>
+                                        </div>
+                                        <!-- Add JavaScript to automatically hide the alert after 3000 milliseconds (3 seconds) -->
+                                        <script>
+                                            setTimeout(function () {
+                                                document.getElementById('email-Password-Validation').style.display = 'none';
+                                            }, 8000);
+                                        </script>
+                                        <%}%>
+                                            <div class="form-group">
+                                                <label for="singin-otp">Enter Your OTP</label>
+                                                <input type="text" class="form-control" id="singin-email-2" name="otp"
+                                                    required>
+                                            </div><!-- End .form-group -->
+                                            <div id="timer-container">
+                                                <label for="" class="text-danger"> Otp is valied for
+                                                    &nbsp;&nbsp;&nbsp;<span
+                                                        id="timer-display">1:00</span>&nbsp;&nbsp;&nbsp; seconds</label>
+                                            </div>
+
+
+
+                                            <div class="form-footer">
+                                                <button type="submit" id="verifying-button"
+                                                    class="btn btn-outline-primary-2">
+                                                    <span>VERIFY</span>
+                                                    <i class="icon-long-arrow-right"></i>
+                                                </button>
+                                                <a href="/send-otp/<%= email%>" class="forgot-link">RESEND?</a>
+                                            </div><!-- End .form-footer -->
+                                </form>
+                                <div class="form-choice">
+                                    <p class="text-center">BACK</p>
+                                    <div class="row">
+
+                                    </div><!-- End .row -->
+                                </div><!-- End .form-choice -->
+                            </div><!-- .End .tab-pane -->
+
+                        </div><!-- End .tab-content -->
+                    </div><!-- End .form-tab -->
+                </div><!-- End .form-box -->
+            </div><!-- End .container -->
+        </div><!-- End .login-page section-bg -->
+    </main><!-- End .main -->
+
+
+
+    <script>
+        const targetTime = Date.now() + 60 * 1000;
+        let remainingSeconds = 60;
+
+        function updateTimer() {
+            const currentTime = Date.now();
+            const secondsLeft = Math.floor((targetTime - currentTime) / 1000);
+
+            // Update timer display
+            document.getElementById("timer-display").textContent = `${Math.floor(secondsLeft / 60)}:${secondsLeft % 60}`;
+
+            if (secondsLeft === 0) {
+                document.getElementById("verifying-button").style.display = "none";
+                document.getElementById("timer-container").style.display = "none";
+
+                clearInterval(timerInterval);
+            }
+
+            remainingSeconds = secondsLeft;
+        }
+
+        const timerInterval = setInterval(updateTimer, 1000);
+        updateTimer();
+    </script>
+
+
+    <%- include('../layout/footer.ejs') -%>

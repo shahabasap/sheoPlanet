@@ -1,0 +1,360 @@
+<%- include('../layout/header.ejs') -%>
+
+    <main class="main">
+        <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
+            <div class="container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Login</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Register</li>
+                </ol>
+            </div><!-- End .container -->
+        </nav><!-- End .breadcrumb-nav -->
+
+        <div class="login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17"
+            style="background-image: url('/user/images/demos/demo-10/banners/loginPage.jpg')">
+            <div class="container">
+                <div class="form-box">
+                    <div class="form-tab">
+                        <ul class="nav nav-pills nav-fill" role="tablist">
+
+                            <li class="nav-link active">
+                                <a class="nav-link" id="register-tab-2" data-toggle="tab" href="#register-2" role="tab"
+                                    aria-controls="register-2" aria-selected="true">Register</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+
+                            <div class="tab-pane fade show active" id="register-2" role="tabpanel"
+                                aria-labelledby="register-tab-2">
+                                <% if(locals.message){ %>
+                                    <div class="mt-3">
+                                        <!-- Use an alert or any other suitable element -->
+                                        <div class="alert alert-danger" role="alert" id="verificationResult">
+                                            <%= locals.message %>
+                                        </div>
+                                    </div>
+
+                                    <!-- Add JavaScript to automatically hide the alert after 3000 milliseconds (3 seconds) -->
+                                    <script>
+                                        setTimeout(function () {
+                                            document.getElementById('verificationResult').style.display = 'none';
+                                        }, 3000);
+                                    </script>
+                                    <% } %>
+                                        <form action="/registration" method="post">
+
+
+                                            <div class="form-group">
+                                                <small class="form-text text-center  mb-1"
+                                                    style="display: none; color: red;" id="null-message">The field can't
+                                                    Null</small>
+
+                                                <label for="register-name">Name </label>
+                                                <input type="text" class="form-control" id="name" name="name"
+                                                    onkeyup="validation()" required>
+                                                <small class="form-text text-left mt-1 "
+                                                    style="display: none; color: red;" id="error1"></small>
+                                            </div><!-- End .form-group -->
+                                            <div class="form-group">
+                                                <label for="register-email-2">Email Id </label>
+                                                <input type="email" class="form-control" id="email" name="email"
+                                                    onkeyup="validation()" required>
+                                                <small class="form-text text-left  mt-1 "
+                                                    style="display: none; color: red;" id="error2" required></small>
+                                            </div><!-- End .form-group -->
+
+                                            <div class="form-group">
+                                                <label for="register-mobileNumber">Mobile Number </label>
+                                                <input type="text" class="form-control" id="mobileno" name="mobileno"
+                                                    onkeyup="validation()" required>
+                                                <small class="form-text text-left  mt-1"
+                                                    style="display: none; color: red;" id="error3"></small>
+                                            </div><!-- End .form-group -->
+                                            <div class="form-group">
+                                                <label for="register-password-2">Password </label>
+                                                <input type="password" class="form-control" id="password"
+                                                    name="password" onkeyup="validation()" required>
+                                                <small class="form-text text-left  mt-1"
+                                                    style="display: none; color: red;" id="error4"></small>
+                                            </div><!-- End .form-group -->
+                                            <input type="hidden" value="<%=locals.RefId%>" name="unAuthorisedRefId">
+
+                                            <div class="form-footer">
+                                                <button type="submit" id="bttn" class="btn btn-outline-primary-2">
+                                                    <span>SIGN UP</span>
+                                                    <i class="icon-long-arrow-right"></i>
+                                                </button>
+
+
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input"
+                                                        id="register-policy-2" required>
+                                                    <label class="custom-control-label" for="register-policy-2">I agree
+                                                        to the <a href="#">privacy policy</a> *</label>
+                                                </div><!-- End .custom-checkbox -->
+                                            </div><!-- End .form-footer -->
+
+                                        </form>
+                                        <div class="form-choice">
+                                            <p class="text-center">or sign in with</p>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <a href="#" class="btn btn-login btn-g">
+                                                        <i class="icon-google"></i>
+                                                        Login With Google
+                                                    </a>
+                                                </div><!-- End .col-6 -->
+                                                <div class="col-sm-6">
+                                                    <a href="#" class="btn btn-login  btn-f">
+                                                        <i class="icon-facebook-f"></i>
+                                                        Login With Facebook
+                                                    </a>
+                                                </div><!-- End .col-6 -->
+                                            </div><!-- End .row -->
+                                        </div><!-- End .form-choice -->
+                            </div><!-- .End .tab-pane -->
+                        </div><!-- End .tab-content -->
+                    </div><!-- End .form-tab -->
+                </div><!-- End .form-box -->
+            </div><!-- End .container -->
+        </div><!-- End .login-page section-bg -->
+    </main><!-- End .main -->
+
+
+
+    <script>
+        // name validation-----------------------------------
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get references to input fields and button
+            const nameInput = document.querySelector('input[id="name"]');
+            const emailInput = document.querySelector('input[id="email"]');
+            const mobileInput = document.querySelector('input[id="mobileno"]');
+            const passwordInput = document.querySelector('input[id="password"]');
+            const btn = document.getElementById('bttn');
+
+            // Validation functions (combine into a single function for efficiency)
+            function validateInputs() {
+                const nameValid = isValidName(nameInput.value);
+                const emailValid = isValidEmail(emailInput.value);
+                const mobileValid = isValidMobile(mobileInput.value);
+                const passwordValid = isValidPassword(passwordInput.value);
+
+                return nameValid && emailValid && mobileValid && passwordValid;
+            }
+
+            // Initial validation and button state
+            btn.disabled = !validateInputs();
+
+            // Event listeners for each input field
+            [nameInput, emailInput, mobileInput, passwordInput].forEach(input => {
+                input.addEventListener("input", () => {
+                    btn.disabled = !validateInputs();
+                });
+            });
+
+            function isValidName(name) {
+                // Check if the name has at least 5 characters and includes only alphabets
+                return name.length >= 5 && /^[a-zA-Z]+$/.test(name);
+            }
+
+
+            function isValidEmail(email) {
+                // This is a basic example, you might want to use a more robust validation
+                var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+
+            function isValidMobile(mobile) {
+                // This is a basic example, you might want to use a more robust validation
+                return mobile.length == 10;
+            }
+
+            function isValidPassword(password) {
+                // This is a basic example, you might want to use a more robust validation
+                return password.length >= 6 && /\S/.test(password);
+            }
+        });
+
+        // name validation---------------------------
+
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get a reference to the name input field
+            var nameInput = document.querySelector('input[id="name"]');
+            var errorParagraph = document.getElementById('error1');
+            var btn = document.getElementById('bttn')
+
+            // Listen for input events on the name input field
+            nameInput.addEventListener("input", function (event) {
+                var enteredname = event.target.value;
+
+                // Check if the entered name is not valid (you can replace this with your validation logic)
+                if (!isValidName(enteredname)) {
+                    errorParagraph.textContent = "name must be at least 5 letteres and only alphabets";
+                    errorParagraph.style.display = "block";
+
+
+
+                    document.getElementById('name').style.border = "1px solid red";
+                } else {
+                    // Clear the error message if the password is valid
+                    errorParagraph.textContent = "";
+                    errorParagraph.style.display = "none";
+
+                    document.getElementById('name').style.border = "";
+
+
+                }
+            });
+
+            // Function to validate password (replace this with your validation logic)
+            function isValidName(name) {
+                // Check if the name has at least 5 characters and includes only alphabets
+                return name.length >= 5 && /^[a-zA-Z]+$/.test(name);
+            }
+
+        });
+        // email validation----------------------------
+
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get a reference to the email input field
+            var emailInput = document.querySelector('input[id="email"]');
+            var errorParagraph = document.getElementById('error2');
+            var btn = document.getElementById('bttn');
+
+            // Listen for input events on the email input field
+            emailInput.addEventListener("input", function (event) {
+                var enteredEmail = event.target.value;
+
+                // Check if the entered email is not valid (you can replace this with your validation logic)
+                if (!isValidEmail(enteredEmail)) {
+                    errorParagraph.textContent = "Invalid email address format";
+                    errorParagraph.style.display = "block";
+
+
+                    document.getElementById('email').style.border = "1px solid red";
+                } else {
+                    // Clear the error message if the email is valid
+                    errorParagraph.textContent = "";
+                    errorParagraph.style.display = "none";
+                    emailInput.classList.remove('error-border');
+
+                    document.getElementById('email').style.border = "";
+                }
+            });
+
+            // Function to validate email (replace this with your validation logic)
+            function isValidEmail(email) {
+                // This is a basic example, you might want to use a more robust validation
+                var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+        });
+
+
+
+
+
+        // mobile validation-----------------------------------
+
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get a reference to the mobile input field
+            var mobileInput = document.querySelector('input[id="mobileno"]');
+            var errorParagraph = document.getElementById('error3');
+            var btn = document.getElementById('bttn');
+
+            // Listen for input events on the mobile input field
+            mobileInput.addEventListener("input", function (event) {
+                var entredName = event.target.value.toString();
+
+                // Check if the entered mobile is not valid (you can replace this with your validation logic)
+                if (!isValidMobile(entredName)) {
+                    errorParagraph.textContent = "mobile number must be  10 numbers";
+                    errorParagraph.style.display = "block";
+
+
+                    document.getElementById('mobile').style.border = "1px solid red";
+                } else {
+                    // Clear the error message if the mobile is valid
+                    errorParagraph.textContent = "";
+                    errorParagraph.style.display = "none";
+
+                    document.getElementById('mobile').style.border = "";
+                }
+            });
+
+            // Function to validate moble (replace this with your validation logic)
+            function isValidMobile(mobile) {
+                // This is a basic example, you might want to use a more robust validation
+                return mobile.length == 10;
+            }
+        });
+
+
+
+
+
+        // password validation-----------------------------------
+
+        // password validation-----------------------------------
+
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get a reference to the password input field
+            var passwordInput = document.querySelector('input[id="password"]');
+            var errorParagraph = document.getElementById('error4');
+            var btn = document.getElementById('bttn');
+
+            // Listen for input events on the password input field
+            passwordInput.addEventListener("input", function (event) {
+                var enteredPassword = event.target.value;
+
+                // Check if the entered password is not valid (you can replace this with your validation logic)
+                if (!isValidPassword(enteredPassword)) {
+
+                    errorParagraph.textContent = "Password must be at least 6 characters";
+                    errorParagraph.style.display = "block";
+
+
+                    document.getElementById('password').style.border = "1px solid red";
+
+                } else {
+                    // Clear the error message if the password is valid
+                    errorParagraph.textContent = "";
+                    errorParagraph.style.display = "none";
+
+                    document.getElementById('password').style.border = "";
+
+                }
+            });
+
+            // Function to validate password (replace this with your validation logic)
+            function isValidPassword(password) {
+                // This is a basic example, you might want to use a more robust validation
+                return password.length >= 6 && /\S/.test(password);
+            }
+        });
+
+
+        function validation() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const mobile = document.getElementById('mobileno').value;
+            const password = document.getElementById('password').value;
+            let err = document.getElementById('null-message')
+
+
+            if (name.trim() == '' || email.trim() == '' || mobile.trim() == '' || password.trim() == '') {
+                err.style.display = "block"
+
+            } else {
+                err.style.display = "none"
+
+            }
+        }
+
+
+
+
+
+    </script>
+    <%- include('../layout/footer.ejs') -%>

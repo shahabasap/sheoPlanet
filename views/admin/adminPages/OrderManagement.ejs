@@ -1,0 +1,307 @@
+<%- include('../layout/header.ejs') -%>
+
+      <!-- main-panel Starts -->
+      <div class="main-panel">
+        <%if(locals.successMessage){%>
+          <small class="alert alert-secondary  text-center  mb-1 pt-2"
+            style=" color: rgb(99, 233, 15);border: 1px solid rgb(22, 33, 33);" id="success-message">
+            <%=locals.successMessage%>
+          </small>
+          <%}%>
+            <!-- Add JavaScript to automatically hide the alert after 3000 milliseconds (3 seconds) -->
+            <script>
+              setTimeout(function () {
+                document.getElementById('success-message').style.display = 'none';
+              }, 5000);
+            </script>
+
+
+            <table class="table table-dark">
+              <thead>
+                <tr>
+                  <th scope="col">SNO</th>
+                  <th scope="col">Order Id</th>
+                  <th scope="col">User Name</th>
+                  <th scope="col">Price</th>
+                  <th scope="col">payment Method</th>
+                  <th scope="col">Order status</th>
+                  <th scope="col">Order Placed Date</th>
+                  <!-- <th scope="col">Payment Status </th> -->
+                  <th scope="col">Action</th>
+
+
+
+                </tr>
+              </thead>
+              <tbody id="order-table">
+                <% let temp=0%>
+                  <%if(locals.Orders){%>
+                    <%Orders.forEach((n)=>{%>
+                      <tr>
+                        <th scope="row">
+                          <%= ++skip%>
+                        </th>
+                        <td>
+                          <%= n.OID%>
+                        </td>
+                        <td>
+                          <%= n.userid.name%>
+                        </td>
+                        <td>
+                          <%= n.total%>
+                        </td>
+                        <td>
+                          <%= n.payment%>
+                        </td>
+                        <td id="ChagedStatus<%=n._id%>">
+                          <%if(n.status=="Placed" || n.status==="Shipping" || n.status=="Packing"  ){%>
+                            <div class="text-primary">
+                              <%=n.status%>
+                            </div>
+                            <%}else if(n.status==="Delivered" ) {%>
+                              <div class="text-success">
+                                <%=n.status%>
+                              </div>
+                              <%} else{%>
+                                <div class="text-danger">
+                                  <%=n.status%>
+                                </div>
+
+                                <%}%>
+                        </td>
+                        <td>
+                          <%= moment(n.date).format('MMMM Do YYYY, h:mm:ss a') %>
+                        </td>
+                        <!-- <td>
+                          <%if(n.paymentStatus=='Pending'){%>
+                          <div class="text-danger"><%=n.paymentStatus%></div>
+                          <%}else{%>
+                            <div class="text-success"><%=n.paymentStatus%></div>
+
+                            <%}%>
+                        </td> -->
+                        <td>
+                          <%if(n.status=='Cancel Order' || n.status=='Return Order' || n.status=='Delivered'){%>
+
+                            <%}else if(n.status=='Return Request'){%>
+                            
+                              <div onclick="ReturnRequest('<%=n._id%>','<%=n.ReturnReason%>')" class="btn btn-outline-warning">Return Request</div>
+
+                          <%}else{%>
+                          <select class="form-control" id="statusSelect<%=n._id%>"
+                            onchange="status('<%=n._id%>', this)">
+                            <%if(n.status=="Placed"){%>
+                            <option value="Placed">Placed</option>
+                            <option value="Packing">Packing</option>
+                            <option value="Shipping">Shipping</option>
+                            <option value="Delivered">Delivered</option>
+                            <option value="Cancel Order">Cancel Order</option>
+                            <%}else if(n.status=='Packing'){%>
+                            <option value="Packing">Packing</option>
+                            <option value="Shipping">Shipping</option>
+                            <option value="Delivered">Delivered</option>
+                            <option value="Cancel Order">Cancel Order</option>
+                           
+                            <%}else if(n.status=='Shipping'){%>
+                            <option value="Shipping">Shipping</option>
+                            <option value="Delivered">Delivered</option>
+                            <option value="Cancel Order">Cancel Order</option>
+                          
+                            <%}%>
+                          </select>
+                          <%}%>
+                        </td>
+                      </tr>
+                      
+                      <%})%>
+                      <%}%>
+              </tbody>
+            </table>
+
+            <nav aria-label="Page navigation ">
+              <ul class="pagination justify-content-center mt-4">
+                <% if (currentPage> 1) { %>
+                  <li class="page-item">
+                    <a class="page-link" href="/admin/OrderMangement?page=<%= currentPage - 1 %>" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                      <span class="sr-only">Previous</span>
+                    </a>
+                  </li>
+                  <% } else { %>
+                    <li class="page-item disabled">
+                      <span class="page-link" aria-hidden="true">&laquo;</span>
+                    </li>
+                    <% } %>
+
+                      <% for (let page=1; page <=totalPages; page++) { %>
+                        <li class="page-item <%= currentPage === page ? 'active' : '' %>">
+                          <a class="page-link" href="/admin/OrderMangement?page=<%= page %>">
+                            <%= page %>
+                          </a>
+                        </li>
+                        <% } %>
+
+                          <!-- <li class="page-item-total">of <%= totalPages %></li> -->
+
+                          <% if (currentPage < totalPages) { %>
+                            <li class="page-item">
+                              <a class="page-link" href="/admin/OrderMangement?page=<%= currentPage + 1 %>"
+                                aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                              </a>
+                            </li>
+                            <% } else { %>
+                              <li class="page-item disabled">
+                                <span class="page-link" aria-hidden="true">&raquo;</span>
+                              </li>
+                              <% } %>
+              </ul>
+            </nav>
+      </div>
+
+
+      <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+ <!-- SweetAlert script -->
+ <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <style>
+    .text-black {
+      color: black !important;
+      /* Use !important to override default styles */
+    }
+  </style>
+  <!-- JavaScript section for user blocking/unblocking with SweetAlert -->
+  <script>
+    function confirmList(PId, Pname) {
+      var confirmationText = 'Are you sure you want to list the product ' + ' ' + Pname + '?';
+
+      Swal.fire({
+        title: '<span class="text-black">List the product?</span>',
+        text: confirmationText,
+        icon: 'success',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, list!',
+        customClass: {
+          content: 'text-black',
+          text: 'text-black'
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Redirect to the block action
+          window.location.href = `/admin/listing/${PId}`;
+        }
+      });
+    }
+
+    function confirmUnlist(PId, Pname) {
+      var confirmationText = 'Are you sure you want to unlist the product' + Pname + '?';
+
+      Swal.fire({
+        title: '<span class="text-black">Unlist the product?</span>',
+        text: confirmationText,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, unlist!',
+        customClass: {
+          content: 'text-black'
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Redirect to the unblock action
+          window.location.href = `/admin/listing/${PId}`;
+        }
+      });
+    }
+
+    // delete sweet alert-------------------------
+
+    function confirmDelete(PId, Pname) {
+      var confirmationText = 'Are you sure you want to delete the product' + Pname + '?';
+
+      Swal.fire({
+        title: '<span class="text-black">delete the product?</span>',
+        text: confirmationText,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete!',
+        customClass: {
+          content: 'text-black'
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Redirect to the unblock action
+          window.location.href = `/admin/deleteProduct/${PId}`;
+        }
+      });
+    }
+  </script>
+
+
+  <!-- status change----------------------- -->
+  <script>
+
+    async function status(Oid, selectElement) {
+      try {
+
+        // Get the selected value from the <select> element
+        const selectedValue = selectElement.value;
+        console.log(selectedValue);
+
+        // Make a fetch request using Axios
+        const response = await axios.post(`/admin/updateStatus/${Oid}`, {
+          selectedValue
+        });
+        const currentStatus = response.data.status
+        // $('#order-table').load('/admin/CategoryManagement #order-table > *');
+        window.location.reload()
+
+
+
+        // Do something with the response data
+        console.log(response.data);
+        // window.location.reload()
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+
+
+  </script>
+  <script>
+    async function ReturnRequest(Oid, ReturnReason) {
+        try {
+            const { isConfirmed } = await Swal.fire({
+              text: `Are you sure you want to accept this return order?\nReason: ${ReturnReason}`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, return approved!',
+                cancelButtonText: 'No',
+                focusConfirm: false,
+                customClass: {
+          content: 'text-black',
+          text: 'text-black'
+        }
+            });
+
+            if (isConfirmed) {
+                const response = await axios.post(`/admin/updateStatus/${Oid}`, { selectedValue: 'Return Order',ReturnReason });
+                console.log(response.data);
+                window.location.reload();
+            } else {
+                console.log('Return request approval canceled');
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+</script>
+<%- include('../layout/footer.ejs') -%>

@@ -1,0 +1,1637 @@
+<%- include('../layout/header.ejs') -%>
+
+    <main class="main">
+        <div class="page-header text-center" style="background-image: url('/user/images/page-header-bg.jpg')">
+            <div class="container">
+                <h1 class="page-title">My Account<span>Shop</span></h1>
+            </div><!-- End .container -->
+        </div><!-- End .page-header -->
+        <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
+            <div class="container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">My Account</li>
+                </ol>
+            </div><!-- End .container -->
+        </nav><!-- End .breadcrumb-nav -->
+
+        <div class="page-content">
+            <div class="dashboard">
+                <div class="container">
+                    <div class="row">
+                        <aside class="col-md-4 col-lg-3">
+                            <ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="tab-dashboard-link" data-toggle="tab"
+                                        href="#tab-dashboard" role="tab" aria-controls="tab-dashboard"
+                                        aria-selected="true">Dashboard</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="tab-orders-link" data-toggle="tab" href="#tab-orders"
+                                        role="tab" aria-controls="tab-orders" aria-selected="false">Orders</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="tab-wallet-link" data-toggle="tab" href="#tab-wallet"
+                                        role="tab" aria-controls="tab-wallet" aria-selected="false">Wallet</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="tab-coupons-link" data-toggle="tab" href="#tab-coupons"
+                                        role="tab" aria-controls="tab-coupons" aria-selected="false">Coupons</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="tab-downloads-link" data-toggle="tab" href="#tab-Resetpass"
+                                        role="tab" aria-controls="tab-downloads" aria-selected="false">Reset
+                                        Password</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="tab-address-link" data-toggle="tab" href="#tab-address"
+                                        role="tab" aria-controls="tab-address" aria-selected="false">Adresses</a>
+                                </li>
+                                <li class="nav-item">
+                                    <!-- <a class="nav-link" id="tab-account-link" data-toggle="tab" href="#tab-account" role="tab" aria-controls="tab-account" aria-selected="false">Account Details</a> -->
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/logout">Sign Out</a>
+                                </li>
+                            </ul>
+                        </aside><!-- End .col-lg-3 -->
+
+                        <div class="col-md-8 col-lg-9">
+                            <div class="tab-content">
+                                <%if(locals.UserData){%>
+                       <!-- --------------------------------------------------- user info------------------------------- -->
+                                    <div class="tab-pane fade show active" id="tab-dashboard" role="tabpanel"
+                                        aria-labelledby="tab-dashboard-link">
+                                        <form action="/UpdateUser" method="post" id="updateUserForm">
+                                            <small class="form-text text-left  mt-1" style="display: none; color: red;"
+                                                id="error-message-form1">Field con not be null</small>
+                                            <%if(locals.msg){%>
+                                                <div class="alert alert-success">
+                                                    <%=locals.msg%>
+                                                </div>
+                                                <%}%>
+                                                    <div class="col-md-10 ms-3 mb-3 px-5">
+                                                        <label for="inputField">Your Name</label>
+                                                        <input type="text" class="form-control text-dark" id="Pname"
+                                                            value="<%=UserData.name%>" name="name"
+                                                            onkeyup="Pvalidation()" required>
+                                                        <small class="form-text text-left mt-1 "
+                                                            style="display: none; color: red;" id="error1"></small>
+                                                    </div>
+                                                    <div class="col-md-10 ms-3 mb-3 px-5">
+                                                        <label for="inputField">Your Email Id</label>
+                                                        <input type="text" class="form-control text-dark" id="Pemail"
+                                                            value="<%= UserData.email %>" name="email"
+                                                            onkeyup="Pvalidation()" required disabled>
+                                                        <small class="form-text text-left mt-1 "
+                                                            style="display: none; color: red;" id="error1"></small>
+                                                    </div>
+                                                    <div class="col-md-10 ms-3 mb-3 px-5">
+                                                        <label for="inputField">Phone Number</label>
+                                                        <input type="text" class="form-control text-dark" id="Pmob"
+                                                            value="<%= UserData.mobile %>" name="mobile"
+                                                            onkeyup="Pvalidation()" required>
+                                                        <small class="form-text text-left mt-1 "
+                                                            style="display: none; color: red;" id="error1"></small>
+                                                    </div>
+                                                    <div class="col-md-10 ms-3 mb-3 px-5">
+                                                        <input type="submit" class="btn btn-primary"
+                                                            value="Update Details" id="Pro-button"
+                                                            onclick="showConfirmation(event)">
+                                                    </div>
+                                        </form>
+                                        <div class="col-md-10 ms-3 mb-3 px-5">
+                                            <label for="inputField">Referral Link</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control text-dark" id="ReferId" 
+                                                       value="http://127.0.0.1:3003/register?RefId=<%= UserData.RefId %>"
+                                                       name="ReferId" required disabled>
+                                            </div>
+                                            <button class="btn btn-primary btn-md" onclick="copyReferralLink()">Copy</button>
+                                        </div>
+                                        
+                                    </div>
+                                    <%}%>
+                       <!-- --------------------------------------------------User Orders------------------------------------------------------ -->
+                                        <div class="tab-pane fade" id="tab-orders" role="tabpanel"
+                                            aria-labelledby="tab-orders-link">
+                                            <p>Your orders are here</p>
+                                            <div id="User-Order">
+                                                <% let temp=0 %>
+                                                    <% if (locals.UserOrders) { %>
+                                                        <% UserOrders.forEach((n)=> { %>
+                                                            <div class="col-lg-12">
+                                                                <div class="card card-dashboard">
+                                                                    <div class="card-body">
+                                                                        
+                                                                        <table class="table">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th>image</th>
+                                                                                    <th>name</th>
+                                                                                    <th>Quantiy</th>
+                                                                                    <th>Total Price</th>
+                                                                                    <th>Order Status</th>
+                                                                                    <th></th>
+
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                <% n.products.forEach((p) => { %>
+                                                                                    <tr>
+                                                                                        
+                                                                                        <td><img src="/uploads/<%= p.image %>" alt="Product Image" style="width: 50px; height: 50px;"> </td>
+                                                                                        <td><p><%= p.name %></p> </td>
+                                                                                        <td><%= p.quantity %></td>
+                                                                                        <td><%= p.totalprice %></td>
+                                                                                        <td><%= n.status%></td>
+                                                                                                           
+                                                                                       
+                                                                                    </tr>
+                                                                                    <% }) %>
+                                                                                </tbody>
+                                                                            </table>
+                                                                            <% if(n.CancelDate){ %>
+                                                                                <p><span style="font-weight: 800;">Order Cancelled Date :</span>&nbsp;&nbsp;&nbsp;<%= moment(n.CancelDate).format('MMMM Do YYYY, h:mm:ss a') %></p>
+                                                                            <% } %>
+                                                                            <div class="d-flex justify-content-start">
+                                                                                
+                                                                                <a href="/loadInvoice/<%=n._id%>">Download invoice ?</a>
+                                                                                </div>
+                                                                            <div class="d-flex justify-content-end">
+                                                                                
+                                                                                <label  for=""><span style="font-weight: 600;">Grand Total:</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <%=n.total%></label>
+                                                                                </div>
+                                                                            <div class="d-flex justify-content-between">
+                                                                                <% if(n.status=="Placed" || n.status==="Shipping"){ %>
+                                                                                    <button class="btn btn-danger" onclick="CancelOrder('<%= n._id%>')">Cancel Order</button>
+                                                                                <% } else if(n.status==="Delivered") { %>
+                                                                                    <button class="btn btn-warning" onclick="ReturnRequest('<%= n._id%>')">Return</button>
+                                                                                <% } %>
+                                                                            <div class="cont d-flex justify-content-end">
+                                                                                <a href="/IndividualOrderDetails/<%=n._id%>"><button type="button" class="btn btn-primary">Details</button></a> <br>
+                                                                            </div>
+                                                                            
+                                                                           
+ 
+                                                                            </div>
+                                                                                                          
+                                                                                                    
+                                                                                                    
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <% }) %>
+                                                                <% } %>
+                                            </div>
+
+                                            <a href="category.html" class="btn btn-outline-primary-2">
+                                                <span>GO SHOP</span><i class="icon-long-arrow-right"></i>
+                                            </a>
+                                        </div><!-- .End .tab-pane -->
+                        <!-- ---------------------------------------------------------------Wallet--------------------------------------------------                 -->
+                                    <div class="tab-pane fade" id="tab-wallet" role="tab-wallet"
+                                    aria-labelledby="tab-wallet-link">
+                                    <div class="col-lg-6">
+                                        <div class="card card-dashboard" style="background-color: #f5f1cb; border: 1px solid #d2b48c; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);" >
+                                            <div class="card-body" id="wallet-amount">
+                                                <h3 class="card-title" style="color: #3e3e3e;" >Wallet Information</h3>
+                                        
+                                                <div class="balance-info" >
+                                                    <p style="font-size: 18px; color: #3e3e3e;">Available Balance: ₹<%=UserData.walletAmount%></p>
+                                                </div>
+                                        
+                                                <a href="#" class="btn btn-outline-secondary" data-toggle="modal" data-target="#wallet-history" id="wallet-history-btn" style="color: #3e3e3e; border-color: #3e3e3e;">View Wallet History</a>
+                                            </div><!-- End .card-body -->
+                                        </div><!-- End .card-dashboard -->
+                                        
+                                        
+                                    </div><!-- End .col-lg-6 -->
+                                </div><!-- .End .tab-pane -->
+<!------------------------------ wallet history modal----------------------->
+        <div class="modal" id="wallet-history" tabindex="-1" role="dialog" aria-labelledby="contactModalLabel" aria-hidden="true" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content p-2">
+            <div class="modal-header bg-transparent text-white">
+                <h5 class="modal-title" id="contactModalLabel">Wallet History</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-5">
+                <% if (locals.UserWallet) { %>
+                    <% for(let i=0 ; i < UserWallet.length ;i++) {%>
+                        <div class="alert alert-transparent border mb-3" role="alert">
+                            <h5 class="alert-heading mb-3"><%= moment(UserWallet[i].wallet_history.date).format('MMMM Do YYYY, h:mm:ss a') %></h5>
+                            
+                            <!-- Example content for the alert -->
+                            <p class="mb-1">
+                                <% if (UserWallet[i].wallet_history.transaction == '+') { %>
+                                    <span class="text-success fs-5"><%= UserWallet[i].wallet_history.transaction %><%= UserWallet[i].wallet_history.amount %></span>
+                                <% } else { %>
+                                    <span class="text-danger fs-5"><%= UserWallet[i].wallet_history.transaction %><%= UserWallet[i].wallet_history.amount %></span>
+                                <% } %>
+                            </p>
+                            
+                            <p><%= UserWallet[i].wallet_history.message %></p>
+                            <%if(UserWallet[i].wallet_history.reason){%>
+                            <p class="text-danger">Return order amount refunded</p>
+                            <%}%>
+                        </div>
+                    <% } %>
+                <% } %>
+            </div>
+            
+        </div>
+    </div>
+        </div>
+<!-- -------------------------------------------------------------------------------------coupons------------------------------------------ -->
+                    <div class="tab-pane fade" id="tab-coupons" role="tab-coupons"
+                                    aria-labelledby="tab-coupons-link">
+                                    <div>
+                                        <h3>Coupons</h3>
+                                        <% if (locals.CouponData) { %>
+                                            <div class="row">
+                                                <% CouponData.forEach((n) => { %>
+                                                    <div class="col-lg-6">
+                                                        <div class="card card-dashboard" style="border: 1px solid #d2b48c; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);height:300px">
+                                                            <div class="card-body" id="wallet-amount">
+                                                                <h3 class="card-title" style="color: #3e3e3e;"><%= n.name %></h3>
+                                                                <div class="balance-info">
+                                                                    <small style="font-size: 14px; color: #3e3e3e;"><span style="font-weight: 600;">Code:</span><%= n.code %></small><br>
+                                                                    <small style="font-size: 14px; color: #3e3e3e;"><span style="font-weight: 600;">Description:</span><%= n.description %></small><br>
+                                                                    <small style="font-size: 14px; color: #3e3e3e;"><span style="font-weight: 600;">Exp.Date:</span><%= moment(n.expireDate).format('MMMM Do YYYY hh:mm:ss a')%></small><br>
+                                                                    <small style="font-size: 14px; color: #3e3e3e;">You need to purchase with a minimum <%= n.minamount %> amount. You will get <%= n.offeramount %></small>
+                                                                </div>
+                                                            </div><!-- End .card-body -->
+                                                        </div><!-- End .card-dashboard -->
+                                                    </div><!-- End .col-lg-6 -->
+                                                <% }) %>
+                                            </div><!-- End .row -->
+                                        <% } %>
+                                    </div>
+                                    
+                                    
+                                </div><!-- .End .tab-pane -->
+
+            <!-- --------------------------------------------------------------------Reset Password---------------------------------------------- -->
+                                        <%if(locals.UserData){%>
+                                            <div class="tab-pane fade" id="tab-Resetpass" role="tabpanel"
+                                                aria-labelledby="tab-downloads-link">
+                                                <form action="" onsubmit="ResPass('<%=UserData._id%>'); return false;">
+
+                                                    <small class="form-text text-left  mt-1"
+                                                        style="display: none; color: red;" id="success-message">Field
+                                                        cannot be null</small>
+                                                    <div class="form-group">
+                                                        <label for="singin-otp">Older Password</label>
+                                                        <input type="password" class="form-control" id="old-password"
+                                                            name="old-password" placeholder="Enter your older password"
+                                                            onkeyup="is_null()" required>
+                                                        <small class="form-text text-left  mt-1"
+                                                            style="display: none; color: red;" id="Pass1"></small>
+
+                                                    </div><!-- End .form-group -->
+
+                                                    <div class="form-group">
+                                                        <label for="singin-otp">New Password</label>
+                                                        <input type="password" class="form-control" id="new-password"
+                                                            name="new-password" placeholder="Enter your new password"
+                                                            onkeyup="is_null()" required>
+                                                        <small class="form-text text-left  mt-1"
+                                                            style="display: none; color: red;" id="Pa2s1"></small>
+
+                                                    </div><!-- End .form-group -->
+
+                                                    <div class="form-group">
+                                                        <label for="singin-otp">Confirm New Password</label>
+                                                        <input type="password" class="form-control" id="re-new-password"
+                                                            name="re-new-password" onkeyup="is_null()"
+                                                            placeholder="Re-enter your new password " required>
+                                                        <small class="form-text text-left  mt-1"
+                                                            style="display: none; color: red;" id="Pass3"></small>
+
+                                                    </div><!-- End .form-group -->
+
+                                                    <div class="form-footer">
+                                                        <button type="submit" id="verifying-button"
+                                                            class="btn btn-outline-primary-2">
+                                                            <span>Submit</span>
+                                                            <i class="icon-long-arrow-right"></i>
+                                                        </button>
+                                                    </div><!-- End .form-footer -->
+                                                </form>
+                                            </div><!-- .End .tab-pane -->
+                                            <%}%>
+                   <!-- --------------------------------------------------------------- User Address --------------------------------------------------                        -->
+                                                <div class="tab-pane fade" id="tab-address" role="tabpanel"
+                                                    aria-labelledby="tab-address-link">
+
+                                                    <div class="row" id="Adress-card">
+
+                                                        <% if(locals.UserData){ %>
+                                                            <%let temp=1%>
+                                                                <% UserData.address.forEach((n)=>{%>
+                                                                    <<div class="col-lg-4">
+                                                                        <div class="card card-dashboard">
+                                                                            <button type="button"
+                                                                                class="btn btn btn-danger close-button"
+                                                                                aria-label="Close"
+                                                                                onclick="deleteAddress('<%=n._id%>','<%=UserData._id%>')">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                            <div class="card-body">
+                                                                                <h3 class="card-title">Address:
+                                                                                    <%=temp++%>
+                                                                                </h3>
+                                                                                <!-- End .card-title -->
+
+                                                                                <p>
+                                                                                    <%=n.name%><br>
+                                                                                        <%=n.buildingname%><br>
+                                                                                            <%=n.street%>, <%=n.city%>
+                                                                                                    <br>
+                                                                                                    <%=n.state%>,
+                                                                                                        <%=n.pincode%>
+                                                                                                            <br>
+                                                                                                            <%=n.mobile%>
+                                                                                                                <br>
+                                                                                                                <a href=""
+                                                                                                                    data-toggle="modal"
+                                                                                                                    data-target="#editAddress<%=n._id%>">Edit
+                                                                                                                    <i
+                                                                                                                        class="icon-edit"></i></a>
+                                                                                </p>
+                                                                            </div><!-- End .card-body -->
+                                                                        </div><!-- End .card-dashboard -->
+                                                    </div><!-- End .col-lg-6 -->
+
+                                                    <!-- edit address Modal -->
+                                                    <div class="modal" id="editAddress<%=n._id%>" tabindex="-1"
+                                                        role="dialog" aria-labelledby="contactModalLabel"
+                                                        aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header bg-primary text-white">
+                                                                    <h5 class="modal-title" id="contactModalLabel">
+                                                                        Contact
+                                                                        Information</h5>
+                                                                    <button type="button" class="close"
+                                                                        data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <!-- Form to capture contact information -->
+                                                                    <form
+                                                                        onsubmit="event.preventDefault(); submitForm('<%=n._id%>')">
+                                                                        <div class="form-group mx-4">
+                                                                            <label for="name">Name:</label>
+                                                                            <input type="text" class="form-control"
+                                                                                id="name" name="CustomerName"
+                                                                                value="<%=n.name%>" pattern="^\S+$"
+                                                                                required>
+                                                                            <div class="invalid-feedback">field can not
+                                                                                be null</div>
+
+                                                                        </div>
+                                                                        <div class="form-group mx-4">
+                                                                            <label for="buildingname">Building
+                                                                                Name/House Name:</label>
+                                                                            <input type="text" class="form-control"
+                                                                                value="<%=n.buildingname%>"
+                                                                                id="buildingname" name="BuildingName"
+                                                                                required>
+                                                                        </div>
+                                                                        <div class="form-group mx-4">
+                                                                            <label for="mobile">Mobile:</label>
+                                                                            <input type="text" class="form-control"
+                                                                                id="mobile" name="mobile"
+                                                                                value="<%=n.mobile%>" required>
+                                                                        </div>
+                                                                        <div class="form-group mx-4">
+                                                                            <label for="street">Street:</label>
+                                                                            <input type="text" class="form-control"
+                                                                                id="street" name="street"
+                                                                                value="<%=n.street%>" required>
+                                                                        </div>
+                                                                        <div class="form-group mx-4">
+                                                                            <label for="city">City:</label>
+                                                                            <input type="text" class="form-control"
+                                                                                id="city" name="city"
+                                                                                value="<%=n.city%>" required>
+                                                                        </div>
+                                                                        <div class="form-group mx-4">
+                                                                            <label for="state">State:</label>
+                                                                            <input type="text" class="form-control"
+                                                                                id="state" name="state"
+                                                                                value="<%=n.state%>" required>
+                                                                        </div>
+                                                                        <div class="form-group mx-4">
+                                                                            <label for="pincode">Pincode:</label>
+                                                                            <input type="text" class="form-control"
+                                                                                id="pincode" name="pincode"
+                                                                                value="<%=n.pincode%>" required>
+                                                                        </div>
+                                                                        <!-- Add more fields as needed -->
+
+                                                                        <!-- Submit button -->
+                                                                        <button type="submit"
+                                                                            class="btn btn-primary mx-4 mb-3">Save
+                                                                            Changes</button>
+
+                                                                    </form>
+                                                                </div>
+                                                                <!-- <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    </div> -->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <%})%>
+                                                        <%}%>
+
+                                                </div><!-- End .row -->
+                                                <div class="col-md-10 ms-1 mt-2 ">
+                                                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                                                        data-target="#UserContactModal">
+                                                        Add New Address
+                                                    </button>
+
+                                                </div>
+
+                                                <!-- -----------------------------------------------add adress Modal ------------------------------------------------------->
+                                                <div class="modal" id="UserContactModal" tabindex="-1" role="dialog"
+                                                    aria-labelledby="contactModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header bg-primary text-white">
+                                                                <h5 class="modal-title" id="contactModalLabel">Contact
+                                                                    Information</h5>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <!-- Form to capture contact information -->
+                                                                <form onsubmit="AddAddress(); return false;"
+                                                                    id="AddaddressForm">
+                                                                    <div id="errorMessages"></div>
+                                                                    <div class="form-group mx-4">
+                                                                        <label for="name">Name:</label>
+                                                                        <input type="text" class="form-control"
+                                                                            id="Aname" name="CustomerName" required>
+                                                                        <small class="form-text text-left  mt-1"
+                                                                            style="display: none; color: red;"
+                                                                            id="error123"></small>
+
+                                                                    </div>
+                                                                    <div class="form-group mx-4">
+                                                                        <label for="buildingname">Building Name/House
+                                                                            Name:</label>
+                                                                        <input type="text" class="form-control"
+                                                                            id="Abuildingname" name="BuildingName"
+                                                                            required>
+                                                                        <small class="form-text text-left  mt-1"
+                                                                            style="display: none; color: red;"
+                                                                            id="error2"></small>
+
+                                                                    </div>
+                                                                    <div class="form-group mx-4">
+                                                                        <label for="mobile">Mobile:</label>
+                                                                        <input type="text" class="form-control"
+                                                                            id="Amobile" name="mobile" required>
+                                                                        <small class="form-text text-left  mt-1"
+                                                                            style="display: none; color: red;"
+                                                                            id="error3"></small>
+
+                                                                    </div>
+                                                                    <div class="form-group mx-4">
+                                                                        <label for="street">Street:</label>
+                                                                        <input type="text" class="form-control"
+                                                                            id="Astreet" name="street" required>
+                                                                        <small class="form-text text-left  mt-1"
+                                                                            style="display: none; color: red;"
+                                                                            id="error4"></small>
+
+                                                                    </div>
+                                                                    <div class="form-group mx-4">
+                                                                        <label for="city">City:</label>
+                                                                        <input type="text" class="form-control"
+                                                                            id="Acity" name="city" required>
+                                                                        <small class="form-text text-left  mt-1"
+                                                                            style="display: none; color: red;"
+                                                                            id="error5"></small>
+
+                                                                    </div>
+                                                                    <div class="form-group mx-4">
+                                                                        <label for="state">State:</label>
+                                                                        <input type="text" class="form-control"
+                                                                            id="Astate" name="state" required>
+                                                                        <small class="form-text text-left  mt-1"
+                                                                            style="display: none; color: red;"
+                                                                            id="error6"></small>
+
+                                                                    </div>
+                                                                    <div class="form-group mx-4">
+                                                                        <label for="pincode">Pincode:</label>
+                                                                        <input type="text" class="form-control"
+                                                                            id="Apincode" name="pincode" required>
+                                                                        <small class="form-text text-left  mt-1"
+                                                                            style="display: none; color: red;"
+                                                                            id="error7"></small>
+
+                                                                    </div>
+                                                                    <!-- Add more fields as needed -->
+
+                                                                    <!-- Submit button -->
+                                                                    <button type="submit"
+                                                                        class="btn btn-primary mx-4  mb-3"
+                                                                        id="addAddress">Save
+                                                                        Changes</button>
+                                                                </form>
+                                                            </div>
+                                                            <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div> -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+
+
+                            </div><!-- .End .tab-pane -->
+
+                            
+                        </div>
+                    </div><!-- End .col-lg-9 -->
+                </div><!-- End .row -->
+            </div><!-- End .container -->
+        </div><!-- End .dashboard -->
+        </div><!-- End .page-content -->
+    </main><!-- End .main -->
+
+
+
+    <!-- Address adding modal -->
+    <div class="modal fade" id="signin-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i class="icon-close"></i></span>
+                    </button>
+
+                    <div class="form-box">
+                        <div class="form-tab">
+                            <ul class="nav nav-pills nav-fill" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="signin-tab" data-toggle="tab" href="#signin"
+                                        role="tab" aria-controls="signin" aria-selected="true">Sign In</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="register-tab" data-toggle="tab" href="#register" role="tab"
+                                        aria-controls="register" aria-selected="false">Register</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="tab-content-5">
+                                <div class="tab-pane fade show active" id="signin" role="tabpanel"
+                                    aria-labelledby="signin-tab">
+                                    <form action="#">
+                                        <div class="form-group">
+                                            <label for="singin-email">Username or email address *</label>
+                                            <input type="text" class="form-control" id="singin-email"
+                                                name="singin-email" required>
+                                        </div><!-- End .form-group -->
+
+                                        <div class="form-group">
+                                            <label for="singin-password">Password *</label>
+                                            <input type="password" class="form-control" id="singin-password"
+                                                name="singin-password" required>
+                                        </div><!-- End .form-group -->
+
+                                        <div class="form-footer">
+                                            <button type="submit" class="btn btn-outline-primary-2">
+                                                <span>LOG IN</span>
+                                                <i class="icon-long-arrow-right"></i>
+                                            </button>
+
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input"
+                                                    id="signin-remember">
+                                                <label class="custom-control-label" for="signin-remember">Remember
+                                                    Me</label>
+                                            </div><!-- End .custom-checkbox -->
+
+                                            <a href="#" class="forgot-link">Forgot Your Password?</a>
+                                        </div><!-- End .form-footer -->
+                                    </form>
+                                    <div class="form-choice">
+                                        <p class="text-center">or sign in with</p>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <a href="#" class="btn btn-login btn-g">
+                                                    <i class="icon-google"></i>
+                                                    Login With Google
+                                                </a>
+                                            </div><!-- End .col-6 -->
+                                            <div class="col-sm-6">
+                                                <a href="#" class="btn btn-login btn-f">
+                                                    <i class="icon-facebook-f"></i>
+                                                    Login With Facebook
+                                                </a>
+                                            </div><!-- End .col-6 -->
+                                        </div><!-- End .row -->
+                                    </div><!-- End .form-choice -->
+                                </div><!-- .End .tab-pane -->
+                                <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
+                                    <form action="#">
+                                        <div class="form-group">
+                                            <label for="register-email">Your email address *</label>
+                                            <input type="email" class="form-control" id="register-email"
+                                                name="register-email" required>
+                                        </div><!-- End .form-group -->
+
+                                        <div class="form-group">
+                                            <label for="register-password">Password *</label>
+                                            <input type="password" class="form-control" id="register-password"
+                                                name="register-password" required>
+                                        </div><!-- End .form-group -->
+
+                                        <div class="form-footer">
+                                            <button type="submit" class="btn btn-outline-primary-2">
+                                                <span>SIGN UP</span>
+                                                <i class="icon-long-arrow-right"></i>
+                                            </button>
+
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="register-policy"
+                                                    required>
+                                                <label class="custom-control-label" for="register-policy">I agree to the
+                                                    <a href="#">privacy policy</a> *</label>
+                                            </div><!-- End .custom-checkbox -->
+                                        </div><!-- End .form-footer -->
+                                    </form>
+                                    <div class="form-choice">
+                                        <p class="text-center">or sign in with</p>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <a href="#" class="btn btn-login btn-g">
+                                                    <i class="icon-google"></i>
+                                                    Login With Google
+                                                </a>
+                                            </div><!-- End .col-6 -->
+                                            <div class="col-sm-6">
+                                                <a href="#" class="btn btn-login  btn-f">
+                                                    <i class="icon-facebook-f"></i>
+                                                    Login With Facebook
+                                                </a>
+                                            </div><!-- End .col-6 -->
+                                        </div><!-- End .row -->
+                                    </div><!-- End .form-choice -->
+                                </div><!-- .End .tab-pane -->
+                            </div><!-- End .tab-content -->
+                        </div><!-- End .form-tab -->
+                    </div><!-- End .form-box -->
+                </div><!-- End .modal-body -->
+            </div><!-- End .modal-content -->
+        </div><!-- End .modal-dialog -->
+    </div><!-- End .modal -->
+    <!-- Address  modal -->
+    <div class="modal fade" id="signin-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i class="icon-close"></i></span>
+                    </button>
+
+                    <div class="form-box">
+                        <div class="form-tab">
+                            <ul class="nav nav-pills nav-fill" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="signin-tab" data-toggle="tab" href="#signin"
+                                        role="tab" aria-controls="signin" aria-selected="true">Sign In</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="register-tab" data-toggle="tab" href="#register" role="tab"
+                                        aria-controls="register" aria-selected="false">Register</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="tab-content-5">
+                                <div class="tab-pane fade show active" id="signin" role="tabpanel"
+                                    aria-labelledby="signin-tab">
+                                    <form action="#">
+                                        <div class="form-group">
+                                            <label for="singin-email">Username or email address *</label>
+                                            <input type="text" class="form-control" id="singin-email"
+                                                name="singin-email" required>
+                                        </div><!-- End .form-group -->
+
+                                        <div class="form-group">
+                                            <label for="singin-password">Password *</label>
+                                            <input type="password" class="form-control" id="singin-password"
+                                                name="singin-password" required>
+                                        </div><!-- End .form-group -->
+
+                                        <div class="form-footer">
+                                            <button type="submit" class="btn btn-outline-primary-2">
+                                                <span>LOG IN</span>
+                                                <i class="icon-long-arrow-right"></i>
+                                            </button>
+
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input"
+                                                    id="signin-remember">
+                                                <label class="custom-control-label" for="signin-remember">Remember
+                                                    Me</label>
+                                            </div><!-- End .custom-checkbox -->
+
+                                            <a href="#" class="forgot-link">Forgot Your Password?</a>
+                                        </div><!-- End .form-footer -->
+                                    </form>
+                                    <div class="form-choice">
+                                        <p class="text-center">or sign in with</p>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <a href="#" class="btn btn-login btn-g">
+                                                    <i class="icon-google"></i>
+                                                    Login With Google
+                                                </a>
+                                            </div><!-- End .col-6 -->
+                                            <div class="col-sm-6">
+                                                <a href="#" class="btn btn-login btn-f">
+                                                    <i class="icon-facebook-f"></i>
+                                                    Login With Facebook
+                                                </a>
+                                            </div><!-- End .col-6 -->
+                                        </div><!-- End .row -->
+                                    </div><!-- End .form-choice -->
+                                </div><!-- .End .tab-pane -->
+                                <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
+                                    <form action="#">
+                                        <div class="form-group">
+                                            <label for="register-email">Your email address *</label>
+                                            <input type="email" class="form-control" id="register-email"
+                                                name="register-email" required>
+                                        </div><!-- End .form-group -->
+
+                                        <div class="form-group">
+                                            <label for="register-password">Password *</label>
+                                            <input type="password" class="form-control" id="register-password"
+                                                name="register-password" required>
+                                        </div><!-- End .form-group -->
+
+                                        <div class="form-footer">
+                                            <button type="submit" class="btn btn-outline-primary-2">
+                                                <span>SIGN UP</span>
+                                                <i class="icon-long-arrow-right"></i>
+                                            </button>
+
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="register-policy"
+                                                    required>
+                                                <label class="custom-control-label" for="register-policy">I agree to the
+                                                    <a href="#">privacy policy</a> *</label>
+                                            </div><!-- End .custom-checkbox -->
+                                        </div><!-- End .form-footer -->
+                                    </form>
+                                    <div class="form-choice">
+                                        <p class="text-center">or sign in with</p>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <a href="#" class="btn btn-login btn-g">
+                                                    <i class="icon-google"></i>
+                                                    Login With Google
+                                                </a>
+                                            </div><!-- End .col-6 -->
+                                            <div class="col-sm-6">
+                                                <a href="#" class="btn btn-login  btn-f">
+                                                    <i class="icon-facebook-f"></i>
+                                                    Login With Facebook
+                                                </a>
+                                            </div><!-- End .col-6 -->
+                                        </div><!-- End .row -->
+                                    </div><!-- End .form-choice -->
+                                </div><!-- .End .tab-pane -->
+                            </div><!-- End .tab-content -->
+                        </div><!-- End .form-tab -->
+                    </div><!-- End .form-box -->
+                </div><!-- End .modal-body -->
+            </div><!-- End .modal-content -->
+        </div><!-- End .modal-dialog -->
+    </div><!-- End .modal -->
+
+<!-- copy the link ------------------------- -->
+
+    <script>
+        function copyReferralLink() {
+            var referralLink = document.getElementById("ReferId");
+            
+            navigator.clipboard.writeText(referralLink.value)
+                .then(() => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'link copied',
+                        showConfirmButton: false,
+                        timer: 1500, // Set the timer to close automatically after 1.5 seconds
+                    })                })
+                .catch((err) => {
+                    console.error('Unable to copy to clipboard', err);
+                });
+        }
+    </script>
+<
+
+    <!-- ------------------add address------------------------------------- -->
+    <script>
+        async function AddAddress() {
+            try {
+
+                CustomerName = document.getElementById('Aname').value
+                BuildingName = document.getElementById('Abuildingname').value
+                mobile = document.getElementById('Amobile').value
+                street = document.getElementById('Astreet').value
+                city = document.getElementById('Acity').value
+                state = document.getElementById('Astate').value
+                pincode = document.getElementById('Apincode').value
+                // Add more fields as needed
+
+
+                const response = await axios.post(`/addaddress`, { CustomerName, BuildingName, mobile, street, city, state, pincode });
+
+                if (response.data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Address updated successfully!',
+                        showConfirmButton: false,
+                        timer: 1500, // Set the timer to close automatically after 1.5 seconds
+                    }).then(() => {
+
+                        $('#Adress-card').load('/dashboard #Adress-card > *');
+
+                    });
+                    // Reset the form values
+                    document.getElementById('AddaddressForm').reset();
+
+                    // Close the modal (assuming you have jQuery)
+                    $(`#UserContactModal`).modal('hide');
+
+
+
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Failed to update address',
+                        text: response.data.message, // Display the server-side error message
+                    });
+                }
+            } catch (error) {
+                console.error('Error submitting form:', error);
+
+                // Display an error message using SweetAlert
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Internal Server Error',
+                    text: 'Failed to submit the form. Please try again.',
+                });
+            }
+        }
+
+    </script>
+
+    <!-- edit address script----------------------- -->
+    <script>
+        async function submitForm(addressId) {
+            try {
+
+                CustomerName = document.getElementById('name').value
+                BuildingName = document.getElementById('buildingname').value
+                mobile = document.getElementById('mobile').value
+                street = document.getElementById('street').value
+                city = document.getElementById('city').value
+                state = document.getElementById('state').value
+                pincode = document.getElementById('pincode').value
+                // Add more fields as needed
+
+
+                const response = await axios.post(`/editAddress/${addressId}`, { CustomerName, BuildingName, mobile, street, city, state, pincode });
+
+                if (response.data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Address updated successfully!',
+                        showConfirmButton: false,
+                        timer: 1500, // Set the timer to close automatically after 1.5 seconds
+                    }).then(() => {
+
+                        $('#Adress-card').load('/dashboard #Adress-card > *');
+
+                    });
+
+
+                    // Close the modal (assuming you have jQuery)
+                    $(`#editAddress${addressId}`).modal('hide');
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Failed to update address',
+                        text: response.data.message, // Display the server-side error message
+                    });
+                }
+            } catch (error) {
+                console.error('Error submitting form:', error);
+
+                // Display an error message using SweetAlert
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Internal Server Error',
+                    text: 'Failed to submit the form. Please try again.',
+                });
+            }
+        }
+
+    </script>
+<script>
+    async function ReturnRequest(OId) {
+    try {
+        const { value: reason, isConfirmed } = await Swal.fire({
+            title: "Return Order",
+            html: '<input type="text" id="swal-input2" class="swal-input2" placeholder="Enter the reason for return order">',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, Return it!',
+            cancelButtonText: 'No',
+            focusConfirm: false,
+            preConfirm: () => {
+                return document.getElementById('swal-input2').value;
+            }
+        });
+
+        if (isConfirmed) {
+            if (reason !== undefined && reason.trim() !== '') {
+                try {
+                    const response = await axios.post(`/ReturnOrderRequest/${OId}`, { reason });
+
+                    if (response.data.success==true) {
+                        console.log("i am working");
+                        Swal.fire({
+                            title: 'Return Order Request!',
+                            text: response.data.message,
+                            icon: 'success',
+                        }).then(() => {
+                            $('#User-Order').load('/dashboard #User-Order > *');
+                        });
+                    } else {
+                        console.log("i am not working");
+                        Swal.fire({
+                            title: 'Return Order Request!',
+                            text: response.data.message,
+                            icon: 'error',
+                        });
+                    }
+                } catch (error) {
+                    console.error("Error while making the axios request:", error);
+                }
+            }
+        } else {
+            Swal.fire({
+                title: 'Return Order Request!',
+                text: 'You cancelled return order request',
+                icon: 'error',
+            });
+        }
+    } catch (error) {
+        console.error("Error in the main try-catch block:", error);
+    }
+}
+
+</script>
+
+
+<!-- //    Cancel order------------------------------ -->
+
+ <script>
+
+async function CancelOrder(Oid) {
+    try {
+        // Display SweetAlert with an input field for the reason
+        const { value: reason, isConfirmed } = await Swal.fire({
+            title: 'Cancel Order',
+            html: '<input type="text" id="swal-input1" class="swal2-input" placeholder="Enter reason for cancellation">',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, cancel it!',
+            cancelButtonText: 'No',
+            focusConfirm: false,
+            preConfirm: () => {
+                return document.getElementById('swal-input1').value;
+            }
+        });
+
+        // Check if the user confirmed the action
+        if (isConfirmed) {
+            // Check if the user entered a reason
+            if (reason !== undefined && reason.trim() !== '') {
+                // User confirmed, send request to cancel the order with the reason
+                const response = await axios.post(`/orderCancellation/${Oid}`, { reason });
+                console.log("value is passing");
+
+                // Display success SweetAlert with the response message
+                Swal.fire({
+                    title: 'Order Cancelled!',
+                    text: response.data.message,
+                    icon: 'success',
+                }).then(() => {
+                    $('#User-Order').load('/dashboard #User-Order > *');
+                    $('#wallet-amount').load('/dashboard #wallet-amount > *');
+                    $('#wallet-history').load('/dashboard #wallet-history > *');
+                });
+            } else {
+                // User did not provide a reason
+                Swal.fire('Cancelled', 'Order cancellation was cancelled or no reason provided.', 'info');
+            }
+        } else {
+            // User clicked "No" or closed the modal
+            console.log("User cancelled");
+        }
+
+    } catch (error) {
+        console.error('Error fetching data:', error);
+
+        // Display error SweetAlert
+        Swal.fire({
+            title: 'Error!',
+            text: 'Failed to cancel order. Please try again.',
+            icon: 'error',
+        });
+    }
+}
+
+
+    </script>
+
+
+
+
+    <!-- Delete Address---------------------- -->
+    <script>// Updated function to show confirmation SweetAlert before deleting the address
+        async function deleteAddress(addressId, userId) {
+            try {
+                // Display confirmation SweetAlert
+                const confirmResult = await Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'Do you really want to delete this address?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                });
+
+                // Check if the user confirmed the action
+                if (confirmResult.isConfirmed) {
+                    // User confirmed, send request to delete the address
+                    const response = await axios.post('/deleteAddress', {
+                        addressId,
+                        userId
+                    });
+
+
+                    if (response.data.success) {
+                        // Display success message using SweetAlert or other methods
+                        Swal.fire('Success!', response.data.message, 'success')
+                            .then(() => {
+                                $('#Adress-card').load('/dashboard #Adress-card > *');
+                            });
+                        // Update UI elements or reload data as needed
+                    } else {
+                        // Display error message
+                        Swal.fire('Error!', response.data.message, 'error');
+                    }
+                } else {
+                    // User canceled the action
+                    Swal.fire('Cancelled', 'Address deletion was cancelled :)', 'info');
+                }
+            } catch (error) {
+                console.error('Error deleting address:', error);
+
+                // Display error SweetAlert
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Failed to delete address. Please try again.',
+                    icon: 'error',
+                });
+            }
+        }
+    </script>
+
+
+    <!-- validation to add adress--------------------- -->
+
+
+
+    <script>
+        function validateAndSubmit(event) {
+            event.preventDefault();
+            // Get form elements
+            const form = document.getElementById("addressForm");
+            const elements = form.elements;
+            const errorDiv = document.getElementById("errorMessages");
+            errorDiv.textContent = ""; // Clear previous error message
+
+            let hasErrors = false;
+
+            // Iterate through form elements for validation and trim
+            for (let i = 0; i < elements.length; i++) {
+                const element = elements[i];
+
+                // Skip non-input elements
+                if (element.tagName !== "INPUT") {
+                    continue;
+                }
+
+                // Trim the value
+                element.value = element.value.trim();
+
+                // Validate if it's a required field
+                if (element.required && element.value === "") {
+                    // Display validation error message only once
+                    if (!hasErrors) {
+                        errorDiv.textContent = 'Please fill out all required fields.';
+                        hasErrors = true;
+                    }
+                }
+            }
+
+            if (hasErrors) {
+                // Display SweetAlert for validation errors
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validation Error',
+                    text: 'Please fill out all required fields.',
+                });
+            } else {
+                // If no errors, submit the form
+                // Display SweetAlert for successful form submission
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Form Submitted!',
+                    text: 'Your address has been successfully submitted.',
+                }).then(() => {
+                    // Proceed with form submission
+                    form.submit();
+                });
+            }
+        }
+    </script>
+
+
+    <!-- reset password--------------------------------------------- -->
+    <script>
+        async function ResPass(Uid) {
+            try {
+                const olderPass = document.getElementById('old-password').value;
+                const newPass = document.getElementById('new-password').value;
+                const newRePass = document.getElementById('re-new-password').value;
+
+                if (newPass !== newRePass) {
+                    document.getElementById('success-message').innerHTML = "New passwords are not the same";
+                    return; // Exit the function if passwords don't match
+                }
+
+                const confirm = await Swal.fire({
+                    title: 'Confirm Password Reset',
+                    text: "Are you sure you want to reset your password?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, Reset Password'
+                });
+
+                if (confirm.isConfirmed) {
+                    const response = await axios.post(`/resetPassword/${Uid}`, {
+                        olderPass, newPass, newRePass
+                    });
+
+                    if (response.data.success) {
+                        Swal.fire(
+                            'Password Reset Successful!',
+                            'Your password has been updated successfully.',
+                            'success'
+                        );
+                    } else {
+                        Swal.fire(
+                            'Password Reset Failed',
+                            'The old password is incorrect. Please try again.',
+                            'error'
+                        );
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+    </script>
+
+    <!-- Input field canot be null------------------------------------- -->
+    <script>
+        function is_null() {
+
+            const olderPass = document.getElementById('old-password').value;
+            const newPass = document.getElementById('new-password').value;
+            const newRePass = document.getElementById('re-new-password').value;
+            if (olderPass.trim() == '' || newPass.trim() == '' || newRePass.trim() == '') {
+
+                document.getElementById("success-message").style.display = "block"
+
+            } else {
+                document.getElementById("success-message").style.display = "none"
+            }
+
+
+        }
+    </script>
+
+    <!-- Add address validation------------------------------------------------------------- -->
+
+    <!-- Button diabling--------------- -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get references to input fields and button
+            const nameInput = document.querySelector('input[id="Aname"]');
+            const buildingNameInput = document.querySelector('input[id="Abuildingname"]');
+            const mobileInput = document.querySelector('input[id="Amobile"]');
+            const streetInput = document.querySelector('input[id="Astreet"]');
+            const cityInput = document.querySelector('input[id="Acity"]');
+            const stateInput = document.querySelector('input[id="Astate"]');
+            const pincodeInput = document.querySelector('input[id="Apincode"]');
+            const btn = document.getElementById("addAddress")
+            const errorMessages = document.getElementById('errorMessages');
+
+            // Validation functions
+            function validateInputs() {
+                const nameValid = isValidName1(nameInput.value);
+                const buildingNameValid = isValidName(buildingNameInput.value);
+                const mobileValid = isValidMob(mobileInput.value);
+                const streetValid = isValidName(streetInput.value);
+                const cityValid = isValidName(cityInput.value);
+                const stateValid = isValidName(stateInput.value);
+                const pincodeValid = isValidPin(pincodeInput.value);
+
+                return nameValid && buildingNameValid && mobileValid && streetValid && cityValid && stateValid && pincodeValid;
+            }
+
+
+
+            // Initial validation and button state
+            btn.disabled = !validateInputs();
+
+            // Event listeners for each input field
+            [nameInput, buildingNameInput, mobileInput, streetInput, cityInput, stateInput, pincodeInput].forEach(input => {
+                input.addEventListener("input", () => {
+                    btn.disabled = !validateInputs();
+                });
+            })
+
+            function isValidName1(name) {
+                // Check if the name has at least 5 characters and includes only alphabets
+                return name.length >= 5 && /^[a-zA-Z]+$/.test(name);
+            }
+        });
+        function isValidName(address) {
+            // Check if the name has at least 5 characters and includes only alphabets
+            return address.trim() !== '' && /^[a-zA-Z0-9]+$/.test(address);
+        }
+        // Function to validate password (replace this with your validation logic)
+        function isValidMob(mobile) {
+            // Check if the name has at least 5 characters and includes only alphabets
+            return mobile.length == 10 && /^\d+$/.test(mobile)
+                ;
+        }
+        function isValidPin(pincode) {
+            // Check if the name has at least 5 characters and includes only alphabets
+            return pincode.length == 6 && /^\d+$/.test(pincode)
+                ;
+        }
+
+    </script>
+
+    <!-- Name----------------- -->
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get a reference to the name input field
+            var nameInput = document.querySelector('input[id="Aname"]');
+            var errorParagraph = document.getElementById('error123');
+            var btn = document.getElementById('bttn')
+
+            // Listen for input events on the name input field
+            nameInput.addEventListener("input", function (event) {
+                var enteredname = event.target.value;
+
+                // Check if the entered name is not valid (you can replace this with your validation logic)
+                if (!isValidName1(enteredname)) {
+                    errorParagraph.textContent = "name must be at least 5 letteres and only alphabet ";
+                    errorParagraph.style.display = "block";
+
+
+
+                    document.getElementById('Aname').style.border = "1px solid red";
+                } else {
+                    // Clear the error message if the password is valid
+                    errorParagraph.textContent = "";
+                    errorParagraph.style.display = "none";
+
+                    document.getElementById('Aname').style.border = "";
+
+
+                }
+            });
+
+            // Function to validate password (replace this with your validation logic)
+            function isValidName1(name) {
+                // Check if the name has at least 5 characters and includes only alphabets
+                return name.length >= 5 && /^[a-zA-Z]+$/.test(name);
+            }
+
+        });
+        // Building Name---------------------------
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get a reference to the name input field
+            var nameInput = document.querySelector('input[id="Abuildingname"]');
+            var errorParagraph = document.getElementById('error2');
+            // var btn=document.getElementById('bttn')
+
+            // Listen for input events on the name input field
+            nameInput.addEventListener("input", function (event) {
+                var enteredAddress = event.target.value;
+
+                // Check if the entered name is not valid (you can replace this with your validation logic)
+                if (!isValidName(enteredAddress)) {
+                    errorParagraph.textContent = "must be characters and not null";
+                    errorParagraph.style.display = "block";
+
+
+
+                    document.getElementById('Abuildingname').style.border = "1px solid red";
+                } else {
+                    // Clear the error message if the password is valid
+                    errorParagraph.textContent = "";
+                    errorParagraph.style.display = "none";
+
+                    document.getElementById('Abuildingname').style.border = "";
+
+
+                }
+            });
+
+            // Function to validate password (replace this with your validation logic)
+            function isValidName(address) {
+                // Check if the name has at least 5 characters and includes only alphabets
+                return address.trim() != '' && /^[a-zA-Z0-9]+$/.test(address)
+            }
+
+        });
+
+        // Mobile Number-----------------------------------
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get a reference to the name input field
+            var nameInput = document.querySelector('input[id="Amobile"]');
+            var errorParagraph = document.getElementById('error3');
+            // var btn=document.getElementById('bttn')
+
+            // Listen for input events on the name input field
+            nameInput.addEventListener("input", function (event) {
+                var enteredAddress = event.target.value;
+
+                // Check if the entered name is not valid (you can replace this with your validation logic)
+                if (!isValidMob(enteredAddress)) {
+                    errorParagraph.textContent = "Must be number with  10 digits";
+                    errorParagraph.style.display = "block";
+
+
+
+                    document.getElementById('Amobile').style.border = "1px solid red";
+                } else {
+                    // Clear the error message if the password is valid
+                    errorParagraph.textContent = "";
+                    errorParagraph.style.display = "none";
+
+                    document.getElementById('Amobile').style.border = "";
+
+
+                }
+            });
+
+            // Function to validate password (replace this with your validation logic)
+            function isValidMob(mobile) {
+                // Check if the name has at least 5 characters and includes only alphabets
+                return mobile.length == 10 && /^\d+$/.test(mobile)
+                    ;
+            }
+
+        });
+
+        // Street----------------------------------
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get a reference to the name input field
+            var nameInput = document.querySelector('input[id="Astreet"]');
+            var errorParagraph = document.getElementById('error4');
+            // var btn=document.getElementById('bttn')
+
+            // Listen for input events on the name input field
+            nameInput.addEventListener("input", function (event) {
+                var enteredAddress = event.target.value;
+
+                // Check if the entered name is not valid (you can replace this with your validation logic)
+                if (!isValidName(enteredAddress)) {
+                    errorParagraph.textContent = "must be characters and not null";
+                    errorParagraph.style.display = "block";
+
+
+
+                    document.getElementById('Astreet').style.border = "1px solid red";
+                } else {
+                    // Clear the error message if the password is valid
+                    errorParagraph.textContent = "";
+                    errorParagraph.style.display = "none";
+
+                    document.getElementById('Astreet').style.border = "";
+
+
+                }
+            });
+
+            // Function to validate password (replace this with your validation logic)
+            function isValidName(street) {
+                // Check if the name has at least 5 characters and includes only alphabets
+                return street.trim() != '' && /^[a-zA-Z0-9]+$/.test(street)
+            }
+
+        });
+        // city----------------------
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get a reference to the name input field
+            var nameInput = document.querySelector('input[id="Acity"]');
+            var errorParagraph = document.getElementById('error5');
+            // var btn=document.getElementById('bttn')
+
+            // Listen for input events on the name input field
+            nameInput.addEventListener("input", function (event) {
+                var enteredAddress = event.target.value;
+
+                // Check if the entered name is not valid (you can replace this with your validation logic)
+                if (!isValidName(enteredAddress)) {
+                    errorParagraph.textContent = "must be characters and not null";
+                    errorParagraph.style.display = "block";
+
+
+
+                    document.getElementById('Acity').style.border = "1px solid red";
+                } else {
+                    // Clear the error message if the password is valid
+                    errorParagraph.textContent = "";
+                    errorParagraph.style.display = "none";
+
+                    document.getElementById('Acity').style.border = "";
+
+
+                }
+            });
+
+            // Function to validate password (replace this with your validation logic)
+            function isValidName(city) {
+                // Check if the name has at least 5 characters and includes only alphabets
+                return city.trim() != '' && /^[a-zA-Z0-9]+$/.test(city)
+            }
+
+        });
+
+        // State---------------------------
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get a reference to the name input field
+            var nameInput = document.querySelector('input[id="Astate"]');
+            var errorParagraph = document.getElementById('error6');
+            // var btn=document.getElementById('bttn')
+
+            // Listen for input events on the name input field
+            nameInput.addEventListener("input", function (event) {
+                var enteredAddress = event.target.value;
+
+                // Check if the entered name is not valid (you can replace this with your validation logic)
+                if (!isValidName(enteredAddress)) {
+                    errorParagraph.textContent = "must be characters and not null";
+                    errorParagraph.style.display = "block";
+
+
+
+                    document.getElementById('Astate').style.border = "1px solid red";
+                } else {
+                    // Clear the error message if the password is valid
+                    errorParagraph.textContent = "";
+                    errorParagraph.style.display = "none";
+
+                    document.getElementById('Astate').style.border = "";
+
+
+                }
+            });
+
+            function isValidName(state) {
+                return state.trim() != '' && /^[a-zA-Z0-9]+$/.test(state)
+
+            }
+
+        });
+
+        // pincode------------------------
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get a reference to the name input field
+            var nameInput = document.querySelector('input[id="Apincode"]');
+            var errorParagraph = document.getElementById('error7');
+            // var btn=document.getElementById('bttn')
+
+            // Listen for input events on the name input field
+            nameInput.addEventListener("input", function (event) {
+                var enteredAddress = event.target.value;
+
+                // Check if the entered name is not valid (you can replace this with your validation logic)
+                if (!isValidPin(enteredAddress)) {
+                    errorParagraph.textContent = "Must be number with 6  digits";
+                    errorParagraph.style.display = "block";
+
+
+
+                    document.getElementById('Apincode').style.border = "1px solid red";
+                } else {
+                    // Clear the error message if the password is valid
+                    errorParagraph.textContent = "";
+                    errorParagraph.style.display = "none";
+
+                    document.getElementById('Apincode').style.border = "";
+
+
+                }
+            });
+
+            // Function to validate password (replace this with your validation logic)
+            function isValidPin(pincode) {
+                // Check if the name has at least 5 characters and includes only alphabets
+                return pincode.length == 6 && /^\d+$/.test(pincode)
+                    ;
+            }
+
+        });
+
+
+
+    </script>
+
+    <!-- Profile validation----------------------- -->
+    <script>
+        function Pvalidation() {
+            const pname = document.getElementById('Pname').value;
+            const pmail = document.getElementById('Pemail').value;
+            const pmob = document.getElementById('Pmob').value;
+            const btn = document.getElementById('Pro-button');
+
+            if (pname.trim() == '' || pmail.trim() == '' || pmob.trim() == '') {
+                document.getElementById("error-message-form1").style.display = "block";
+                btn.disabled = true;
+            } else {
+                document.getElementById("error-message-form1").style.display = "none";
+                btn.disabled = false;
+            }
+        }
+        function showConfirmation(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Do you want to update your details?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, update it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // If the user confirms, submit the form manually
+                    document.getElementById('updateUserForm').submit();
+                } else {
+                    // If the user cancels or closes the dialog without confirming, reload the page
+                    window.location.reload();
+                }
+            });
+        }
+
+        // Attach the showConfirmation function to the click event of the button
+        document.getElementById('Pro-button').addEventListener('click', showConfirmation);
+
+    </script>
+
+
+    <%- include('../layout/footer.ejs') -%>

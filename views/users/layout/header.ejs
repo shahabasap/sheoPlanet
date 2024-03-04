@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<!-- molla/index-10.html  22 Nov 2019 09:58:04 GMT -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>SHOE PLANET</title>
+    <meta name="keywords" content="HTML5 Template">
+    <meta name="description" content="Molla - Bootstrap eCommerce Template">
+    <meta name="author" content="p-themes">
+    <!-- Favicon -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/user/images/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/user/images/shoePlanet.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/user/images/shoePlanet.png">
+    <link rel="manifest" href="/user/images/icons/site.html">
+    <link rel="mask-icon" href="/user/images/icons/safari-pinned-tab.svg" color="#666666">
+    <link rel="shortcut icon" href="/user/images/icons/favicon.ico">
+    <meta name="apple-mobile-web-app-title" content="Molla">
+    <meta name="application-name" content="Molla">
+    <meta name="msapplication-TileColor" content="#cc9966">
+    <meta name="msapplication-config" content="/user/images/icons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="/user/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/user/css/plugins/owl-carousel/owl.carousel.css">
+    <link rel="stylesheet" href="/user/css/plugins/magnific-popup/magnific-popup.css">
+    <link rel="stylesheet" href="/user/css/plugins/jquery.countdown.css">
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="/user/css/style.css">
+    <link rel="stylesheet" href="/user/css/skins/skin-demo-10.css">
+    <link rel="stylesheet" href="/user/css/demos/demo-10.css">
+    <script src="https://kit.fontawesome.com/04de6da0c0.js" crossorigin="anonymous"></script>
+    <!-- Include other JS files as needed -->
+    <script src="http://example.com/path/to/other-file.js"></script>
+    <!-- Include Moment.js from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <!-- Razorpay------------------------------------- -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header header-8">
+            <div class="header-top">
+                <div class="container">
+                    <div class="header-left">
+                        <div class="header-dropdown">
+                            <a href="#">USD</a>
+                            <div class="header-menu">
+                                <ul>
+                                    <li><a href="#">Eur</a></li>
+                                    <li><a href="#">Usd</a></li>
+                                </ul>
+                            </div><!-- End .header-menu -->
+                        </div><!-- End .header-dropdown -->
+
+                        <div class="header-dropdown">
+                            <a href="#">Eng</a>
+                            <div class="header-menu">
+                                <ul>
+                                    <li><a href="#">English</a></li>
+                                    <li><a href="#">French</a></li>
+                                    <li><a href="#">Spanish</a></li>
+                                </ul>
+                            </div><!-- End .header-menu -->
+                        </div><!-- End .header-dropdown -->
+                    </div><!-- End .header-left -->
+
+                    <div class="header-right" id="header-right">
+                        <ul class="top-menu">
+                            <li>
+                                <a href="#">Links</a>
+                                <ul>
+                                    <% if(locals.loginedPerson) {%>
+                                        <!-- <li><a href="tel:#"><i class="icon-phone"></i>Call: +0123 456 789</a></li> -->
+                                        <%if(locals.WhishListItems){%>
+                                        <li id="UserWishlist"><a href="/wishlist"><i class="icon-heart-o"></i>My Wishlist
+                                                <span>(<%=locals.WhishListItems%>)</span></a></li>
+                                        <%}else{%> 
+                                            <li id="UserWishlist"><a href="/wishlist"><i class="icon-heart-o"></i>My Wishlist
+                                            <span>(0)</span></a></li>
+                                        <%}%>      
+                                        <!-- <li><a href="about.html">About Us</a></li> -->
+                                        <li><a href="/dashboard"> <i class="fa-regular fa-user"></i></a></li>
+
+                                        <div class="dropdown m-3">
+                                            <!-- Dropdown button/link -->
+                                            <a href="/login" class="dropdown-toggle" id="dropdownMenuLink"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+                                                <%= locals.loginedPerson%>
+                                            </a>
+
+                                            <!-- Dropdown menu -->
+                                            <div class="dropdown-menu dropdown-menu-right"
+                                                aria-labelledby="dropdownMenuLink">
+                                                <!-- Only login link -->
+                                                <div class="dropdown-logout">
+                                                    <a href="/logout"
+                                                        class="btn btn-sm btn-primary text-white">Logout</a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <%} else{%>
+                                            <!-- Your HTML code -->
+                                            <a href="/login"
+                                                style="padding: 4px 8px; font-size: 12px; border-radius: 15px;">Login</a>
+                                            <%}%>
+                                                <style>
+                                                    .oval-btn {
+                                                        border-radius: 20px;
+                                                        /* Adjust the border-radius value to control the oval shape */
+                                                    }
+                                                </style>
+
+                                </ul>
+                            </li>
+                        </ul><!-- End .top-menu -->
+                    </div><!-- End .header-right -->
+                </div><!-- End .container -->
+            </div><!-- End .header-top -->
+
+            <div class="header-middle sticky-header">
+                <div class="container">
+                    <div class="header-left">
+                        <button class="mobile-menu-toggler">
+                            <span class="sr-only">Toggle mobile menu</span>
+                            <i class="icon-bars"></i>
+                        </button>
+
+                        <a href="index.html" class="logo">
+                            <img src="/user/images/shoePlanet.png" alt="Molla Logo" width="105" height="25">
+                        </a>
+                    </div><!-- End .header-left -->
+
+                    <div class="header-right">
+                        <nav class="main-nav">
+                            <ul class="menu sf-arrows">
+                                <li class="megamenu-container active">
+                                    <a href="/" class="sf-with-ul">Home</a>
+
+                                </li>
+                                <li class="megamenu-container active">
+                                    <a href="/Shopping" class="sf-with-ul">Shop</a>
+
+                                </li>
+                                <li class="megamenu-container active">
+                                    <a href="#" class="sf-with-ul">About</a>
+
+                                </li>
+                                <li class="megamenu-container active">
+                                    <a href="#" class="sf-with-ul">contact</a>
+
+                                </li>
+
+
+
+
+                            </ul><!-- End .menu -->
+                        </nav><!-- End .main-nav -->
+
+                        <div class="header-search">
+                            <a href="#" class="search-toggle" role="button"><i class="icon-search"></i></a>
+                            <form action="#" method="get">
+                                <div class="header-search-wrapper">
+                                    <label for="q" class="sr-only">Search</label>
+                                    <input type="search" class="form-control" name="q" id="q" placeholder="Search in..."
+                                        required>
+                                </div><!-- End .header-search-wrapper -->
+                            </form>
+
+                        </div><!-- End .header-search -->
+
+                        <div class="dropdown cart-dropdown" id="User-Cart">
+                            <a href="/cart" class="dropdown-toggle" role="button" aria-haspopup="true"
+                                aria-expanded="false" data-display="static">
+                                <i class="icon-shopping-cart"></i>
+                                <%if(locals.ProductCount){%>
+                                    <span class="cart-count" id="cartNo">
+                                        <%=locals.ProductCount%>
+                                    </span>
+                                    <%}else{%>
+                                        <span class="cart-count">0</span>
+                                        <%}%>
+                            </a>
+                        </div><!-- End .cart 
+                       -dropdown -->
+                    </div><!-- End .header-right -->
+                </div><!-- End .container -->
+            </div><!-- End .header-middle -->
+        </header><!-- End .header -->

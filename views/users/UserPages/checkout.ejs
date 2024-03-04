@@ -1,0 +1,852 @@
+<%- include('../layout/header.ejs') -%>
+
+    <main class="main">
+        <div class="page-header text-center" style="background-image: url('/user/images/page-header-bg.jpg')">
+            <div class="container">
+                <h1 class="page-title">Checkout<span>Shop</span></h1>
+            </div><!-- End .container -->
+        </div><!-- End .page-header -->
+        <nav aria-label="breadcrumb" class="breadcrumb-nav">
+            <div class="container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Checkout</li>
+                </ol>
+            </div><!-- End .container -->
+        </nav><!-- End .breadcrumb-nav -->
+
+        <div class="page-content">
+            <div class="checkout">
+                <div class="container">
+                    
+                    <div class="checkout-discount">
+                        <form action="#">
+                            <div></div>
+                            <input type="text" class="form-control" required id="checkout-discount-input" >
+                            <label for="checkout-discount-input" class="text-truncate">Have a coupon? <span>Click here
+                                    to enter your code</span></label>
+                            </form>
+                    </div><!-- End .checkout-discount -->
+                    <div class="btn btn-primary mb-3" onclick="ApplyCoupon()">Apply</div>
+
+                    <form action="#">
+                        <div class="row">
+                            <div class="col-lg-9">
+                                <div class="address">
+                                    <div class="row">
+
+                                        <% if(locals.UserData){ %>
+                                            <%let temp=1%>
+                                                <% UserData.address.forEach((n)=>{%>
+                                                    <div class="col-lg-6">
+                                                        <div class="card card-dashboard">
+                                                            <div class="card-body">
+                                                                <input type="radio" name="addressSelection"
+                                                                    value="<%=n._id%>" id="address<%=n._id%>">
+                                                                <h3 class="card-title">Address:<%=temp++%>
+                                                                </h3>
+                                                                <!-- End .card-title -->
+
+                                                                <p>
+                                                                    <%=n.name%><br>
+                                                                        <%=n.buildingname%><br>
+                                                                            <%=n.street%>, <%=n.city%><br>
+                                                                                    <%=n.state%>, <%=n.pincode%><br>
+                                                                                            <%=n.mobile%><br>
+                                                                                                <!-- <a href="" data-toggle="modal" data-target="#editAddress<%=n._id%>">Edit <i class="icon-edit"></i></a> -->
+                                                                </p>
+                                                            </div><!-- End .card-body -->
+                                                        </div><!-- End .card-dashboard -->
+
+                                                    </div><!-- End .col-lg-6 -->
+
+
+
+                                                    <%})%>
+                                                        <%}%>
+
+                                    </div><!-- End .row -->
+                                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                                        data-target="#contactModal">
+                                        Add New Address
+                                    </button>
+
+                                </div>
+                            </div><!-- End .col-lg-9 -->
+
+
+                            <aside class="col-lg-3">
+                                <div class="summary">
+                                    <h3 class="summary-title">Your Order</h3><!-- End .summary-title -->
+
+                                    <table class="table table-summary">
+                                        <thead>
+                                            <tr>
+                                                <th>Product</th>
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+                                        <%if(locals.UserCart){%>
+                                            <tbody>
+
+                                                <% UserCart.products.forEach((n)=>{%>
+                                                    <tr>
+                                                        <td><a href="#">
+                                                                <%=n.name%>
+                                                            </a></td>
+                                                        <td><span>₹</span>
+                                                            <%=n.totalprice%>
+                                                        </td>
+                                                    </tr>
+                                                   
+
+                                                    <% })%>
+                                                    <tr id="Coupon-offer">
+                                                        
+                                                    </tr>
+                                                        
+                                                        <%if(UserCart.deliveryCharge==0){%>
+                                                        <tr>
+                                                            <td>Delivery Charge:</td>
+                                                            <td class="text-success">Free Delivery</td>
+                                                        </tr>
+                                                        <%}else{%>
+                                                        <tr>
+                                                            <td>Delivery Charge:</td>
+                                                            <td><span>₹</span>
+                                                                <%=UserCart.deliveryCharge%>
+                                                            </td>
+                                                        </tr>
+                                                        <%}%>
+
+                                                        <tr class="summary-total">
+                                                            <td>Total:</td>
+                                                            <td id=>
+                                                                <span>₹</span><label id="gtotal"><%=UserCart.grandTotal%></label> 
+                                                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                                                <label id="RedeemedGtotal" ></label>
+                                                            </td>
+                                                        </tr><!-- End .summary-total -->
+                                            </tbody>
+                                    </table><!-- End .table table-summary -->
+                                    <div id="special-div"></div>
+
+                                    <div>
+                                        <%if(UserCart.grandTotal<=1500){%>
+                                        <div>
+                                            <input type="radio" id="COD" name="payment" value="cash on delivery">
+                                            <label for="option1">cash on delivery</label><br>
+                                            <input type="radio" id="RAZORPAY" name="payment" value="Razorpay">
+                                            <label for="option1">Razorpay</label><br>
+                                            <input type="radio" id="Wallet" name="payment" value="wallet">
+                                            <label for="option1">Wallet</label>
+                                        </div>
+                                        <%}else{%>
+                                            <div>
+                                                <small style="color: red;">COD only got purchase below 1500 rupee</small><br>
+                                                <input type="radio" id="RAZORPAY" name="payment" value="Razorpay">
+                                                <label for="option1">Razorpay</label><br>
+                                                <input type="radio" id="Wallet" name="payment" value="wallet">
+                                                <label for="option1">Wallet</label>
+                                            </div>
+
+                                            <%}%>
+
+                                        <!-- <div>
+                                                <input type="radio" id="option2" name="payment" value="Wallet">
+                                                <label for="option2">Wallet</label>
+                                              </div> -->
+
+                                    </div>
+                                    <button type="submit" class="btn btn-outline-primary-2 btn-order btn-block"
+                                        id="placeOrder" onclick="PlaceOrder(event, '<%=UserCart._id%>')">
+                                        <span class="btn-text">Place Order</span>
+                                        <span class="btn-hover-text">Proceed to Checkout</span>
+                                    </button>
+
+                                    </a>
+                                    <%}%>
+                                </div><!-- End .summary -->
+                            </aside><!-- End .col-lg-3 -->
+                        </div><!-- End .row -->
+                    </form>
+                </div><!-- End .container -->
+            </div><!-- End .checkout -->
+        </div><!-- End .page-content -->
+    </main><!-- End .main -->
+
+
+
+    <!-- add adress Modal -->
+    <div class="modal" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="contactModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="contactModalLabel">Contact
+                        Information</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Form to capture contact information -->
+                    <form action="/chAddadress" method="post">
+                        <div class="form-group mx-4">
+                            <label for="name">Name:</label>
+                            <input type="text" class="form-control" id="name" name="CustomerName" required>
+                            <small class="form-text text-left  mt-1" style="display: none; color: red;"
+                                id="error123"></small>
+
+                        </div>
+                        <div class="form-group mx-4">
+                            <label for="buildingname">Building Name:</label>
+                            <input type="text" class="form-control" id="buildingname" name="BuildingName" required>
+                            <small class="form-text text-left  mt-1" style="display: none; color: red;"
+                                id="error2"></small>
+
+                        </div>
+                        <div class="form-group mx-4">
+                            <label for="mobile">Mobile:</label>
+                            <input type="text" class="form-control" id="mobile" name="mobile" required>
+                            <small class="form-text text-left  mt-1" style="display: none; color: red;"
+                                id="error3"></small>
+
+                        </div>
+                        <div class="form-group mx-4">
+                            <label for="street">Street:</label>
+                            <input type="text" class="form-control" id="street" name="street" required>
+                            <small class="form-text text-left  mt-1" style="display: none; color: red;"
+                                id="error4"></small>
+
+                        </div>
+                        <div class="form-group mx-4">
+                            <label for="city">City:</label>
+                            <input type="text" class="form-control" id="city" name="city" required>
+                            <small class="form-text text-left  mt-1" style="display: none; color: red;"
+                                id="error5"></small>
+
+                        </div>
+                        <div class="form-group mx-4">
+                            <label for="state">State:</label>
+                            <input type="text" class="form-control" id="state" name="state" required>
+                            <small class="form-text text-left  mt-1" style="display: none; color: red;"
+                                id="error6"></small>
+
+                        </div>
+                        <div class="form-group mx-4">
+                            <label for="pincode">Pincode:</label>
+                            <input type="text" class="form-control" id="pincode" name="pincode" required>
+                            <small class="form-text text-left  mt-1" style="display: none; color: red;"
+                                id="error7"></small>
+
+                        </div>
+                        <!-- Add more fields as needed -->
+
+                        <!-- Submit button -->
+                        <button type="submit" id="addAddress" class="btn btn-primary mx-4  mb-3">Save
+                            Changes</button>
+
+                    </form>
+                </div>
+                <!-- <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    </div> -->
+            </div>
+        </div>
+    </div>
+    <!-- Apply coupon---------------------------------------- -->
+    <script>
+       
+  async function ApplyCoupon() {
+    const CouponCode = document.getElementById('checkout-discount-input').value;
+    const response = await axios.post('/ApplyCoupon', { CouponCode });
+        
+    if (response.data.apply) {
+        document.getElementById('RedeemedGtotal').innerHTML = '₹' + response.data.newGrandTotal;
+        document.getElementById('gtotal').style.textDecoration = 'line-through';
+        document.getElementById('Coupon-offer').innerHTML = '<td>Coupon offer amount</td>' +
+        '<td>' + '<span>₹</span>' + `${response.data.offerAmount}` + '</td>' 
+        document.getElementById('special-div').innerHTML='<input type="hidden" id="coupon-offer-value" value="' + response.data.newGrandTotal + '">'+
+       '<input type="hidden" id="coupon-offer-id" value="' + response.data.couponId + '">';
+
+       Swal.fire({
+        title: "Redeem Coupon",
+        text: "Coupon applied successfully",
+        icon: "success"
+      });
+
+    } else if (response.data.failed) {
+    //   console.log("I am working");
+      Swal.fire({
+        title: "Coupon Error",
+        text: "Sorry, coupon code does not exist.",
+        icon: "error"
+      });
+    } 
+    else if(response.data.amount==false)
+                {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Minimum Purchase',
+                        text: response.data.message,
+                    });
+
+                }
+    else if(response.data.exceed)
+    {
+        Swal.fire({
+                        icon: 'warning',
+                        title: 'Date',
+                        text: response.data.message,
+                    });
+
+    }
+    else {
+      Swal.fire({
+        title: "Coupon Error",
+        text: "Sorry, the coupon is already used.",
+        icon: "error"
+      });
+    }
+  }
+
+    </script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+
+    <script>
+        async function PlaceOrder(event, CartId) {
+            try {
+                event.preventDefault();  // Prevent the default form submission behavior
+
+                const selectedAddressInput = document.querySelector('input[name="addressSelection"]:checked');
+                const paymentMethodInput = document.querySelector('input[name="payment"]:checked');
+                const GrandTotal = (document.getElementById("coupon-offer-value") ?? {}).value;
+                const Couponid=(document.getElementById("coupon-offer-id") ?? {}).value;
+        
+                // Check if either selectedAddress or paymentMethod is undefined or null
+                if (!selectedAddressInput || !paymentMethodInput) {
+                    // Display a SweetAlert error message
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: 'Please select an address and payment method.',
+                    });
+                    return;
+                }
+
+                const selectedAddress = selectedAddressInput.value;
+                const paymentMethod = paymentMethodInput.value;
+
+                const response = await axios.post(`/placeOrder/${CartId}`, {
+                    selectedAddress, paymentMethod,GrandTotal,Couponid
+                });
+
+
+
+                if (response.data.success) {
+                    
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Order Placed!',
+                        text: 'Your order has been placed successfully.',
+                    }).then(() => {
+                        // Redirect to the /success page
+                        window.location.href = '/OrderSuccess';
+                    });
+                }else if(response.data.wallet==true)
+                {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Order Placed!',
+                        text: 'Your order has been placed successfully.',
+                    }).then(() => {
+                        // Redirect to the /success page
+                        window.location.href = '/OrderSuccess';
+                    });
+
+                }else if(response.data.wallet==false)
+                {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Order is no Placed!',
+                        text: 'insufficient amount in wallet',
+                    })
+                }
+                 else if (response.data.Onlinepay) {
+                    razorpayPayment(response.data.Onlinepay,response.data.couponId)
+
+                }
+                else {
+                    // Display a SweetAlert error message
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: 'An error occurred while placing the order. Please try again.',
+                    });
+                }
+
+
+            } catch (error) {
+                console.error('Error placing order:', error);
+                // Display a SweetAlert error message if there's an error
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'An error occurred while placing the order. Please try again.',
+                });
+            }
+        }
+
+        function razorpayPayment(Order,CouponId) {
+         
+
+            var options = {
+                "key": "rzp_test_5MqNo4cRcOTItk",
+                "amount": Order.amount,
+                "currency": "INR",
+                "name": "Shoe Planet",
+                "description": "Test Transaction",
+                "image": "/user/images/shoePlanet.png",
+                "order_id": Order.id,
+                "handler": function (response) {
+                    
+               
+                        verifyPayment(response, Order,CouponId)
+               
+                }
+                
+                ,
+
+                "prefill": {
+                    "name": "Gaurav Kumar",
+                    "email": "gaurav.kumar@example.com",
+                    "contact": "9000090000"
+                },
+                "notes": {
+                    "address": "Razorpay Corporate Office"
+                },
+                "theme": {
+                    "color": "#3399cc"
+                }
+            };
+            var rzp1 = new Razorpay(options);
+
+            rzp1.open();
+            rzp1.on('payment.failed', function (response) {
+
+               faildPayment(response, Order);
+
+         });
+
+
+
+        }
+
+
+        // failed payment  --------------------------
+        function faildPayment(payment, order) {
+            console.log('faildPayment called',order);
+            $.ajax({
+                url: '/failedRazorPayment',
+                method: 'post',
+                data: {
+                    payment, order
+                },
+                success: (response) => {
+                    console.log('reponse from failed');
+                    (response.razorpayFailed)
+
+                    const param = response.params;
+                    const url = `/orderFailed/${order.receipt}`;
+                    window.location.href = url;
+
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Order Accepted ',
+                        text: 'Your payment was failed ! rery payment from order page',
+                        timer: 2000,
+                        showConfirmButton: false,
+                        willClose: () => {
+
+                            const param = response.params;
+                            const url = `/orderFailed/${order.receipt}`;
+                            window.location.href = url;
+                        }
+
+                    })
+                }
+            })
+        }
+
+
+        // verify payment------------
+        async function verifyPayment(payment, order,CouponId) {
+
+            const response = await axios.post(`/verify-Payment/`, {
+                payment, order,CouponId
+            });
+            if (response.data.payment == true) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'success',
+                    text: 'Payment is completed',
+                }).then(() => {
+                    // Redirect to the /success page
+                    window.location.href = '/OrderSuccess';
+                });
+            }
+             else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Order is not placed,Something happened in your payment',
+                });
+            }
+        }
+
+
+
+
+    </script>
+
+    <!-- Add address validation------------------------------------------------------------- -->
+
+    <!-- Button diabling--------------- -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get references to input fields and button
+            const nameInput = document.querySelector('input[id="name"]');
+            const buildingNameInput = document.querySelector('input[id="buildingname"]');
+            const mobileInput = document.querySelector('input[id="mobile"]');
+            const streetInput = document.querySelector('input[id="street"]');
+            const cityInput = document.querySelector('input[id="Acity"]');
+            const stateInput = document.querySelector('input[id="Astate"]');
+            const pincodeInput = document.querySelector('input[id="Apincode"]');
+            const btn = document.getElementById("addAddress")
+            const errorMessages = document.getElementById('errorMessages');
+
+            // Validation functions
+            function validateInputs() {
+                const nameValid = isValidName1(nameInput.value);
+                const buildingNameValid = isValidName(buildingNameInput.value);
+                const mobileValid = isValidMob(mobileInput.value);
+                const streetValid = isValidName(streetInput.value);
+                const cityValid = isValidName(cityInput.value);
+                const stateValid = isValidName(stateInput.value);
+                const pincodeValid = isValidPin(pincodeInput.value);
+
+                return nameValid && buildingNameValid && mobileValid && streetValid && cityValid && stateValid && pincodeValid;
+            }
+
+
+
+            // Initial validation and button state
+            btn.disabled = !validateInputs();
+
+            // Event listeners for each input field
+            [nameInput, buildingNameInput, mobileInput, streetInput, cityInput, stateInput, pincodeInput].forEach(input => {
+                input.addEventListener("input", () => {
+                    btn.disabled = !validateInputs();
+                });
+            })
+
+            function isValidName1(name) {
+                // Check if the name has at least 5 characters and includes only alphabets
+                return name.length >= 5 && /^[a-zA-Z]+$/.test(name);
+            }
+        });
+        function isValidName(address) {
+            // Check if the name has at least 5 characters and includes only alphabets
+            return address.trim() !== '' && /^[a-zA-Z0-9]+$/.test(address);
+        }
+        // Function to validate password (replace this with your validation logic)
+        function isValidMob(mobile) {
+            // Check if the name has at least 5 characters and includes only alphabets
+            return mobile.length == 10 && /^\d+$/.test(mobile)
+                ;
+        }
+        function isValidPin(pincode) {
+            // Check if the name has at least 5 characters and includes only alphabets
+            return pincode.length == 6 && /^\d+$/.test(pincode)
+                ;
+        }
+
+    </script>
+
+    <!-- Name----------------- -->
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get a reference to the name input field
+            var nameInput = document.querySelector('input[id="name"]');
+            var errorParagraph = document.getElementById('error123');
+            var btn = document.getElementById('bttn')
+
+            // Listen for input events on the name input field
+            nameInput.addEventListener("input", function (event) {
+                var enteredname = event.target.value;
+
+                // Check if the entered name is not valid (you can replace this with your validation logic)
+                if (!isValidName1(enteredname)) {
+                    errorParagraph.textContent = "name must be at least 5 letteres and only alphabet ";
+                    errorParagraph.style.display = "block";
+
+
+
+                    document.getElementById('name').style.border = "1px solid red";
+                } else {
+                    // Clear the error message if the password is valid
+                    errorParagraph.textContent = "";
+                    errorParagraph.style.display = "none";
+
+                    document.getElementById('name').style.border = "";
+
+
+                }
+            });
+
+            // Function to validate password (replace this with your validation logic)
+            function isValidName1(name) {
+                // Check if the name has at least 5 characters and includes only alphabets
+                return name.length >= 5 && /^[a-zA-Z]+$/.test(name);
+            }
+
+        });
+        // Building Name---------------------------
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get a reference to the name input field
+            var nameInput = document.querySelector('input[id="buildingname"]');
+            var errorParagraph = document.getElementById('error2');
+            // var btn=document.getElementById('bttn')
+
+            // Listen for input events on the name input field
+            nameInput.addEventListener("input", function (event) {
+                var enteredAddress = event.target.value;
+
+                // Check if the entered name is not valid (you can replace this with your validation logic)
+                if (!isValidName(enteredAddress)) {
+                    errorParagraph.textContent = "must be characters and not null";
+                    errorParagraph.style.display = "block";
+
+
+
+                    document.getElementById('buildingname').style.border = "1px solid red";
+                } else {
+                    // Clear the error message if the password is valid
+                    errorParagraph.textContent = "";
+                    errorParagraph.style.display = "none";
+
+                    document.getElementById('buildingname').style.border = "";
+
+
+                }
+            });
+
+            // Function to validate password (replace this with your validation logic)
+            function isValidName(address) {
+                // Check if the name has at least 5 characters and includes only alphabets
+                return address.trim() != '' && /^[a-zA-Z0-9]+$/.test(address)
+            }
+
+        });
+
+        // Mobile Number-----------------------------------
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get a reference to the name input field
+            var nameInput = document.querySelector('input[id="mobile"]');
+            var errorParagraph = document.getElementById('error3');
+            // var btn=document.getElementById('bttn')
+
+            // Listen for input events on the name input field
+            nameInput.addEventListener("input", function (event) {
+                var enteredAddress = event.target.value;
+
+                // Check if the entered name is not valid (you can replace this with your validation logic)
+                if (!isValidMob(enteredAddress)) {
+                    errorParagraph.textContent = "Must be number with  10 digits";
+                    errorParagraph.style.display = "block";
+
+
+
+                    document.getElementById('mobile').style.border = "1px solid red";
+                } else {
+                    // Clear the error message if the password is valid
+                    errorParagraph.textContent = "";
+                    errorParagraph.style.display = "none";
+
+                    document.getElementById('mobile').style.border = "";
+
+
+                }
+            });
+
+            // Function to validate password (replace this with your validation logic)
+            function isValidMob(mobile) {
+                // Check if the name has at least 5 characters and includes only alphabets
+                return mobile.length == 10 && /^\d+$/.test(mobile)
+                    ;
+            }
+
+        });
+
+        // Street----------------------------------
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get a reference to the name input field
+            var nameInput = document.querySelector('input[id="street"]');
+            var errorParagraph = document.getElementById('error4');
+            // var btn=document.getElementById('bttn')
+
+            // Listen for input events on the name input field
+            nameInput.addEventListener("input", function (event) {
+                var enteredAddress = event.target.value;
+
+                // Check if the entered name is not valid (you can replace this with your validation logic)
+                if (!isValidName(enteredAddress)) {
+                    errorParagraph.textContent = "must be characters and not null";
+                    errorParagraph.style.display = "block";
+
+
+
+                    document.getElementById('street').style.border = "1px solid red";
+                } else {
+                    // Clear the error message if the password is valid
+                    errorParagraph.textContent = "";
+                    errorParagraph.style.display = "none";
+
+                    document.getElementById('street').style.border = "";
+
+
+                }
+            });
+
+            // Function to validate password (replace this with your validation logic)
+            function isValidName(street) {
+                // Check if the name has at least 5 characters and includes only alphabets
+                return street.trim() != '' && /^[a-zA-Z0-9]+$/.test(street)
+            }
+
+        });
+        // city----------------------
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get a reference to the name input field
+            var nameInput = document.querySelector('input[id="city"]');
+            var errorParagraph = document.getElementById('error5');
+            // var btn=document.getElementById('bttn')
+
+            // Listen for input events on the name input field
+            nameInput.addEventListener("input", function (event) {
+                var enteredAddress = event.target.value;
+
+                // Check if the entered name is not valid (you can replace this with your validation logic)
+                if (!isValidName(enteredAddress)) {
+                    errorParagraph.textContent = "must be characters and not null";
+                    errorParagraph.style.display = "block";
+
+
+
+                    document.getElementById('city').style.border = "1px solid red";
+                } else {
+                    // Clear the error message if the password is valid
+                    errorParagraph.textContent = "";
+                    errorParagraph.style.display = "none";
+
+                    document.getElementById('city').style.border = "";
+
+
+                }
+            });
+
+            // Function to validate password (replace this with your validation logic)
+            function isValidName(city) {
+                // Check if the name has at least 5 characters and includes only alphabets
+                return city.trim() != '' && /^[a-zA-Z0-9]+$/.test(city)
+            }
+
+        });
+
+        // State---------------------------
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get a reference to the name input field
+            var nameInput = document.querySelector('input[id="state"]');
+            var errorParagraph = document.getElementById('error6');
+            // var btn=document.getElementById('bttn')
+
+            // Listen for input events on the name input field
+            nameInput.addEventListener("input", function (event) {
+                var enteredAddress = event.target.value;
+
+                // Check if the entered name is not valid (you can replace this with your validation logic)
+                if (!isValidName(enteredAddress)) {
+                    errorParagraph.textContent = "must be characters and not null";
+                    errorParagraph.style.display = "block";
+
+
+
+                    document.getElementById('state').style.border = "1px solid red";
+                } else {
+                    // Clear the error message if the password is valid
+                    errorParagraph.textContent = "";
+                    errorParagraph.style.display = "none";
+
+                    document.getElementById('state').style.border = "";
+
+
+                }
+            });
+
+            function isValidName(state) {
+                return state.trim() != '' && /^[a-zA-Z0-9]+$/.test(state)
+
+            }
+
+        });
+
+        // pincode------------------------
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get a reference to the name input field
+            var nameInput = document.querySelector('input[id="pincode"]');
+            var errorParagraph = document.getElementById('error7');
+            // var btn=document.getElementById('bttn')
+
+            // Listen for input events on the name input field
+            nameInput.addEventListener("input", function (event) {
+                var enteredAddress = event.target.value;
+
+                // Check if the entered name is not valid (you can replace this with your validation logic)
+                if (!isValidPin(enteredAddress)) {
+                    errorParagraph.textContent = "Must be number with 6  digits";
+                    errorParagraph.style.display = "block";
+
+
+
+                    document.getElementById('pincode').style.border = "1px solid red";
+                } else {
+                    // Clear the error message if the password is valid
+                    errorParagraph.textContent = "";
+                    errorParagraph.style.display = "none";
+
+                    document.getElementById('pincode').style.border = "";
+
+
+                }
+            });
+
+            // Function to validate password (replace this with your validation logic)
+            function isValidPin(pincode) {
+                // Check if the name has at least 5 characters and includes only alphabets
+                return pincode.length == 6 && /^\d+$/.test(pincode)
+                    ;
+            }
+
+        });
+
+
+
+    </script>
+
+
+
+    <%- include('../layout/footer.ejs') -%>
