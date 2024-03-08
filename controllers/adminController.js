@@ -68,7 +68,7 @@ const adminhomePage = async (req, res) => {
     const salesCalculation = await Order.aggregate([
       {
         $match:
-          { status: { $in: ['Cancel Order', 'Return Order'] } }
+          { status: { $nin: ['Cancel Order', 'Return Order'] } }
       },
       {
         $group: {

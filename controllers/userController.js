@@ -929,7 +929,7 @@ const addToCart = async (req, res) => {
        
         await cart.save();
 
-        return res.json(200, { success: true });
+        return res.json({ success: true });
       }
     }
     else {
