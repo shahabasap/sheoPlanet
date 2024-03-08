@@ -6,7 +6,7 @@ const app = express()
 const nocache = require('nocache')
 const path = require('path')
 const flash = require('express-flash');
-const Port = process.env.PORT || 3003
+const Port = process.env.PORT || 3001
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
