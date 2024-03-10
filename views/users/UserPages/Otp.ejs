@@ -27,7 +27,7 @@
                         <div class="tab-content">
                             <div class="tab-pane fade show active" id="signin-2" role="tabpanel"
                                 aria-labelledby="signin-tab-2">
-                                <form action="/verify-otp/<%= email%>" method="Post">
+                                
                                     <% if(locals.message){ %>
                                         <div class="text-center" id="email-Password-Validation">
                                             <label class="text-danger">
@@ -43,7 +43,7 @@
                                         <%}%>
                                             <div class="form-group">
                                                 <label for="singin-otp">Enter Your OTP</label>
-                                                <input type="text" class="form-control" id="singin-email-2" name="otp"
+                                                <input type="text" class="form-control" id="singin-email" name="otp"
                                                     required>
                                             </div><!-- End .form-group -->
                                             <div id="timer-container">
@@ -55,14 +55,14 @@
 
 
                                             <div class="form-footer">
-                                                <button type="submit" id="verifying-button"
+                                                <button type="submit" id="verifying-button" onclick="VerifyOtp('<%= email%>')"
                                                     class="btn btn-outline-primary-2">
                                                     <span>VERIFY</span>
                                                     <i class="icon-long-arrow-right"></i>
                                                 </button>
                                                 <a href="/send-otp/<%= email%>" class="forgot-link">RESEND?</a>
                                             </div><!-- End .form-footer -->
-                                </form>
+                            
                                 <div class="form-choice">
                                     <p class="text-center">BACK</p>
                                     <div class="row">
@@ -103,6 +103,64 @@
 
         const timerInterval = setInterval(updateTimer, 1000);
         updateTimer();
+    
+
+      
+    </script>
+
+    <script>
+          async function VerifyOtp(Email) {
+         
+    console.log("Function execution started");
+    
+    try {
+        const Otp=document.getElementById('singin-email').value
+        console.log("otp printing",Otp)
+        // Making the axios POST request
+        const response = await axios.post(`verify-otp/${Email}`,{otpdata:Otp});
+
+        console.log("hi dat",response.data);
+        // Check if the OTP is verified
+        if (response.data.verify) {
+            Swal.fire({
+                        icon: 'success',
+                        title: 'Registration ',
+                        text:response.data.message,
+                        timer: 2000,
+                        showConfirmButton: false,
+                        willClose: () => {
+
+                            const param = response.params;
+                            const url = `/`;
+                            window.location.href = url;
+                        }
+
+                    })
+            
+        } else {
+            Swal.fire({
+                        icon: 'error',
+                        title: 'Otp Error',
+                        text:response.data.message,
+                        timer: 2000,
+                        showConfirmButton: false,
+                        
+
+                    })
+            
+        }
+
+        // You can return something or resolve a promise here if needed
+        return response.data;
+    } catch (error) {
+        // Handle axios request errors
+        console.error("Error in VerifyOtp:", error.message);
+        // You can throw the error or handle it based on your use case
+        throw error;
+    }
+}
+
+
     </script>
 
 

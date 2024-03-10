@@ -60,7 +60,7 @@ const UnknownPage = async (req, res) => {
 const RegistrationLoad = async (req, res) => {
   try {
     const {RefId}=req.query
-    console.log("load register",RefId);
+    // console.log("load register",RefId);
     res.render('register',{RefId})
   } catch (error) {
     res.redirect('/500')
@@ -117,7 +117,7 @@ const UserRegistration = async (req, res) => {
       
       if(unAuthorisedRefId !== undefined || unAuthorisedRefId.trim() !== null )
       {
-        console.log("get in to codition",unAuthorisedRefId);
+        // console.log("get in to codition",unAuthorisedRefId);
         const ReferalBonus=await User.findOne({RefId:unAuthorisedRefId})
         if(ReferalBonus)
         {
@@ -266,7 +266,7 @@ async function deleteOTPAfterDelay(otpData) {
   try {
     await new Promise(resolve => setTimeout(resolve, 60 * 1000)); // Delay for 1 minute
     const OtpExpired = await OtpModel.deleteOne({ otp: otpData.otp });
-    console.log('OTP deleted successfully:', OtpExpired);
+    // console.log('OTP deleted successfully:', OtpExpired);
   } catch (error) {
     res.redirect('/500')
     console.error('Error deleting OTP:', error);
@@ -309,7 +309,7 @@ const sendOTP = async (req, res) => {
 
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        console.log("error",error);
+        // console.log("error",error);
         return res.status(500).json({ error: 'Failed to send OTP' });
       } else {
         req.session.Otp = email
@@ -325,21 +325,22 @@ const sendOTP = async (req, res) => {
 
 const verifyOTP = async (req, res) => {
   try {
-    const { otp } = req.body;
+    const { otpdata } = req.body;
     let email = req.params.id;
+    console.log("email",email);
+    console.log("otp",otpdata);
     const UserData = await User.findOne({ email })
 
     // Find the OTP document in the database
-    const otpDocument = await OtpModel.findOne({ email, otp });
+    const otpDocument = await OtpModel.findOne({ email:email, otp:otpdata });
     if (!otpDocument) {
-
-      return res.status(400).render('Otp', { message: "Otp is wrong", email: email });
+       return res.json({verify:false,message:"Otp is incorrect"})
     } else {
       // Check if OTP is still valid based on time limit (e.g., 5 minutes)
       if (!isOTPValid(otpDocument.timestamp)) {
         // Delete the expired OTP document
         await OtpModel.deleteOne({ email: email });
-        return res.status(400).json({ error: 'OTP has expired' });
+        return res.json({ veritify:false,message: 'OTP has expired' });
       }
       else {
 
@@ -353,8 +354,8 @@ const verifyOTP = async (req, res) => {
         req.session.Otp = 0
         //user session is creating
         req.session.user = email
-        req.flash('RegVerify', 'Registration  successfull')
-        res.status(200).redirect('/')
+       
+        return res.json({verify:true,message:"Registered successfully"})
       }
     }
   } catch (error) {
@@ -526,18 +527,17 @@ const FilterCategory = async (req, res) => {
       if (Category != null) filter.pcategory = Category;
       if (Size != null) filter.psize = Size;
 
-      let regex;  // Declare regex outside the conditional block
-       console.log("searchin value",SearchedProduct);
+      let regex;  
+    
       if (SearchedProduct != null && SearchedProduct.length > 1) {
-          regex = new RegExp(SearchedProduct, "i");
+          regex = new RegExp(SearchedProduct.split(/\s+/).join('\\s+'), 'i');
+          // const regex = new RegExp(escapedProduct.split(/\s+/).join('\\s+'), 'i');
           filter.$or = [
               { pname: regex },  // Assuming product name field is 'pname'
           ];
       }
 
-      console.log("filter", filter);
-      console.log("Regex", regex);
-
+      
       const sortedProducts = await Product.find(filter).populate('pcategory').sort({ offerprice: sortingValue });
       
       if (sortedProducts.length > 0) {

@@ -22,7 +22,7 @@
 					<div class="col-lg-9">
 						<div class="toolbox">
 							<form class="form-inline  ms-2 my-lg-0">
-								<input class="form-control mr-sm-2" type="search" id="SearchProduct" onchange="FilteringProduct()" placeholder="Search" aria-label="Search">
+								<input class="form-control mr-sm-2" type="search" id="SearchProduct" onkeyup="FilteringProduct()" placeholder="Search" aria-label="Search">
 								<!-- <button style="background-color: rgb(77, 77, 142);color: white;text-decoration: none;" onclick="FilteringProduct()" type="submit">Search</button> -->
 							  </form>
 
@@ -191,7 +191,8 @@
 					<aside class="col-lg-3 order-lg-first">
 						<div class="sidebar sidebar-shop">
 							<div class="widget widget-clean">
-								<button onclick="FilteringProduct()">Filter</button>
+								<button onclick="FilteringProduct()">Filter</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<button onclick="clearFilter()">Clear</button>
 							</div><!-- End .widget widget-clean -->
 
 							<div class="widget widget-collapsible">
@@ -321,7 +322,28 @@
 			</div><!-- End .container -->
 		</div><!-- End .page-content -->
 	</main><!-- End .main -->
+	<style>
+		.error-container {
+			border: 2px solid #ff5c5c; /* Border color */
+			border-radius: 10px; /* Curved edges */
+			padding: 10px; /* Padding inside the container */
+			background-color: #ffecec; /* Background color */
+			color: #ff0000; /* Text color */
+			text-align: center; /* Center the text */
+			width: 100%;
+		}
+	</style>
 	<script>
+
+	// clear filter-------------------------------
+
+	function clearFilter() {
+		
+		window.location.reload()
+	}
+  
+	
+
 		
 
 		async function FilteringProduct() {
@@ -334,7 +356,6 @@
 				const categoryValue = Category ? Category.value : null;
 				const sizeValue = Size ? Size.value : null;
 				const SearchedProduct=SearchProduct ? SearchProduct.value : null;
-				console.log("value",SearchedProduct);
 
                  
 				const response = await axios.post('/FilterProduct', {
@@ -347,8 +368,14 @@
 					if (response.data.success) {
 					 let FilterdProducts=response.data.sortedProducts
 						FilterProduct(FilterdProducts);
+						
 
 						
+					}
+					else
+					{
+						document.getElementById('ProducRow').innerHTML="<div class='error-container '>Oops! Product not found</div>"
+
 					}
 
 	
