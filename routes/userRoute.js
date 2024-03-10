@@ -83,6 +83,8 @@ user_route.get('/OrderSuccess',usersideMiddlware.UserSideSession,  orderControll
 user_route.get('/orderFailed/:id',usersideMiddlware.UserSideSession,  orderController.orderFailed)
 user_route.post('/verify-Payment', orderController.VerifyPayment)
 user_route.post('/failedRazorPayment', orderController.failedRazorPayment)
+user_route.post('/retryRazorPayment', orderController.retryRazorPayment )
+user_route.post('/retryVerifyPayment', orderController.retryVerifyPayment )
 user_route.get('/orderDetails/', orderController.OrderDetails)
 user_route.post('/ReturnOrderRequest/:id', orderController.ReturnOrder)
 user_route.get('/loadInvoice/:id', orderController.loadInvoice)
@@ -97,6 +99,9 @@ user_route.post('/ApplyCoupon', userController.ApplyCoupon)
 
 // Undefined Route comes------------------------------
 user_route.get('*', userController.errorPage)
+
+// Server side error page------------------------------
+user_route.get('/500', userController.servereError)
 
 
 

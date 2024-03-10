@@ -25,6 +25,7 @@ const ProductManagement = async (req, res) => {
 
   }
   catch (error) {
+    res.redirect('/500')
     console.log(error.message)
   }
 }
@@ -40,6 +41,7 @@ const AddProductPage = async (req, res) => {
 
   }
   catch (error) {
+    res.redirect('/500')
     console.log(error.message)
   }
 }
@@ -110,8 +112,7 @@ const AddProduct = async (req, res) => {
     }
   } catch (error) {
     console.error(error.message);
-    return res.status(500).send('Internal Server Error');
-  }
+    res.redirect('/500')  }
 };
 
 
@@ -135,6 +136,7 @@ const listingProduct = async (req, res) => {
 
   }
   catch (error) {
+    res.redirect('/500')
     console.log(error.message)
   }
 }
@@ -153,6 +155,7 @@ const LoadEditProduct = async (req, res) => {
     res.render('EditProduct', { ProductId: Pid, categories, productData });
   }
   catch (error) {
+    res.redirect('/500')
     console.log(error.message)
   }
 }
@@ -242,8 +245,7 @@ const editProduct = async (req, res) => {
     }
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
+    res.redirect('/500')  }
 };
 
 // Delete Product Image-----------------------
@@ -276,8 +278,7 @@ const deleteProductImage = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: 'Internal server error' });
-  }
+    res.redirect('/500')  }
 };
 
 
@@ -307,6 +308,7 @@ const deleteProduct = async (req, res) => {
 
   }
   catch (error) {
+    res.redirect('/500')
     console.log(error.message)
   }
 }
@@ -350,8 +352,9 @@ const uploadCroppedImg = async (req, res) => {
     res.status(200).json({ message: 'File uploaded successfully' });
   }
   catch (error) {
+    res.redirect('/500')
     console.log(error.message)
-    res.status(500).json({ error: 'Internal server error' });
+   
   }
 }
 

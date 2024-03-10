@@ -54,7 +54,13 @@
                           <%= n.payment%>
                         </td>
                         <td id="ChagedStatus<%=n._id%>">
-                          <%if(n.status=="Placed" || n.status==="Shipping" || n.status=="Packing"  ){%>
+                          <%if(n.paymentStatus=="Pending"){%>
+                            <div class="text-danger">
+                             Payment is Pending
+                            </div>
+
+
+                          <%} else if(n.status=="Placed" || n.status==="Shipping" || n.status=="Packing"  ){%>
                             <div class="text-primary">
                               <%=n.status%>
                             </div>
@@ -90,24 +96,25 @@
                           <%}else{%>
                           <select class="form-control" id="statusSelect<%=n._id%>"
                             onchange="status('<%=n._id%>', this)">
-                            <%if(n.status=="Placed"){%>
+                            <%if(n.status=="Placed" && n.paymentStatus=="success"){%>
                             <option value="Placed">Placed</option>
                             <option value="Packing">Packing</option>
                             <option value="Shipping">Shipping</option>
                             <option value="Delivered">Delivered</option>
                             <option value="Cancel Order">Cancel Order</option>
-                            <%}else if(n.status=='Packing'){%>
+                            <%}else if(n.status=='Packing' && n.paymentStatus=="success"){%>
                             <option value="Packing">Packing</option>
                             <option value="Shipping">Shipping</option>
                             <option value="Delivered">Delivered</option>
                             <option value="Cancel Order">Cancel Order</option>
                            
-                            <%}else if(n.status=='Shipping'){%>
+                            <%}else if(n.status=='Shipping' && n.paymentStatus=="success"){%>
                             <option value="Shipping">Shipping</option>
                             <option value="Delivered">Delivered</option>
                             <option value="Cancel Order">Cancel Order</option>
                           
                             <%}%>
+                             
                           </select>
                           <%}%>
                         </td>

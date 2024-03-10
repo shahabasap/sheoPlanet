@@ -36,6 +36,7 @@ const homePage = async (req, res) => {
    
 
   } catch (error) {
+    res.redirect('/500')
     console.log(error.message);
   }
 }
@@ -62,6 +63,7 @@ const RegistrationLoad = async (req, res) => {
     console.log("load register",RefId);
     res.render('register',{RefId})
   } catch (error) {
+    res.redirect('/500')
     console.log(error.message)
   }
 }
@@ -74,6 +76,7 @@ const securePasswordUserside = async (password) => {
     const passwordHash = bcrypt.hash(password, 10)
     return passwordHash;
   } catch (error) {
+    res.redirect('/500')
     console.log(error.message)
   }
 }
@@ -172,6 +175,7 @@ const loginload = async (req, res) => {
 
     res.render('login', { message: msg })
   } catch (error) {
+    res.redirect('/500')
     console.log(error.message);
   }
 
@@ -212,6 +216,7 @@ const
       }
 
     } catch (error) {
+      res.redirect('/500')
       console.log(error.message)
     }
   }
@@ -228,6 +233,7 @@ const UserLogout = async (req, res) => {
     })
 
   } catch (error) {
+    res.redirect('/500')
     console.log(error.message);
   }
 }
@@ -242,6 +248,7 @@ const OtpPage = async (req, res) => {
     res.render('Otp', { email: email })
 
   } catch (error) {
+    res.redirect('/500')
     console.log(error.message);
   }
 }
@@ -261,6 +268,7 @@ async function deleteOTPAfterDelay(otpData) {
     const OtpExpired = await OtpModel.deleteOne({ otp: otpData.otp });
     console.log('OTP deleted successfully:', OtpExpired);
   } catch (error) {
+    res.redirect('/500')
     console.error('Error deleting OTP:', error);
     // Handle the error appropriately, e.g., log it, send a notification, etc.
   }
@@ -370,6 +378,7 @@ const forggetPassword = async (req, res) => {
     res.render('forggetPassword')
 
   } catch (error) {
+    res.redirect('/500')
     console.log(error.message);
   }
 }
@@ -383,6 +392,7 @@ const sentResetPass = async (req, res) => {
     req.flash('success', 'Check your gmail for further actions');
     res.redirect("/login")
   } catch (error) {
+    res.redirect('/500')
     console.log(error.message);
   }
 }
@@ -433,6 +443,7 @@ const sendResetPasslink = async (email, res) => {
     }
 
   } catch (error) {
+    res.redirect('/500')
     console.log(error.message);
   }
 }
@@ -448,6 +459,7 @@ const resetpassword = async (req, res) => {
     res.render('resetPass', { UserId: userId, TokenId: token })
 
   } catch (error) {
+    res.redirect('/500')
     console.log(error.message);
   }
 }
@@ -499,6 +511,7 @@ const ShoppingPage = async (req, res) => {
     res.render('Shopping', { product,currentPage: page, totalPages, skip  })
 
   } catch (error) {
+    res.redirect('/500')
     console.log(error.message);
   }
 }
@@ -557,6 +570,7 @@ const IndividualProductPage = async (req, res) => {
 
 
   } catch (error) {
+    res.redirect('/500')
     console.log(error.message);
   }
 }
@@ -582,6 +596,7 @@ const UserDash = async (req, res) => {
     res.render('dashboard', { UserData, UserOrders, moment, msg,UserWallet ,CouponData})
 
   } catch (error) {
+    res.redirect('/500')
     console.log(error.message);
   }
 }
@@ -621,6 +636,7 @@ const UpdateData = async (req, res) => {
 
 
   } catch (error) {
+    res.redirect('/500')
     console.log(error.message);
   }
 }
@@ -803,6 +819,7 @@ const CartPage = async (req, res) => {
     res.render('cart', { cartExist })
 
   } catch (error) {
+    res.redirect('/500')
     console.log(error.message);
   }
 }
@@ -894,7 +911,7 @@ const addToCart = async (req, res) => {
           }
         );
 
-        return res.json(200, { success: true });
+        return res.json( { success: true });
       } else {
         
         // Create a new cart
@@ -1089,8 +1106,8 @@ const deleteProduct = async (req, res) => {
     }
   } catch (error) {
 
-   return res.status(404).send("Something went wrong")
-    console.log(error.message);
+    res.redirect('/500')
+    console.error(error);
   }
 }
 // checkout controlles  starting from here---------------------------
@@ -1104,6 +1121,7 @@ const CheckoutPage = async (req, res) => {
 
 
   } catch (error) {
+    res.redirect('/500')
     console.log(error.message);
   }
 }
@@ -1186,6 +1204,7 @@ const chAddAdress = async (req, res) => {
 
 
   } catch (error) {
+    res.redirect('/500')
     console.log(error.message);
   }
 }
@@ -1241,6 +1260,7 @@ const ApplyCoupon = async (req, res) => {
       }
     }
   } catch (error) {
+    res.redirect('/500')
     console.log(error.message);
   }
 };
@@ -1255,6 +1275,19 @@ const errorPage = async (req, res) => {
      res.render('404')
   }
   catch (error) {
+    res.redirect('/500')
+    console.log(error.message)
+  }
+
+}
+// 500 server side error-------------------------
+const servereError = async (req, res) => {
+  try {
+    
+     res.render('500')
+  }
+  catch (error) {
+    
     console.log(error.message)
   }
 
@@ -1294,7 +1327,8 @@ module.exports = {
   UnknownPage,
   errorPage,
   ApplyCoupon,
-  FilterCategory
+  FilterCategory,
+  servereError
 
 
 }

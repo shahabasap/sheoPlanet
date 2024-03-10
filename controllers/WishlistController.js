@@ -15,6 +15,7 @@ const LoadWishList = async (req, res) => {
        res.render('wishlist',{WhishListData})
     }
     catch (error) {
+      res.redirect('/500')
       console.log(error.message)
     }
   
@@ -48,8 +49,9 @@ const addToWishlist = async (req, res) => {
 
       res.status(200).json({ message: 'Item added to wishlist successfully' });
   } catch (error) {
+    res.redirect('/500')
       console.error(error.message);
-      res.status(500).json({ error: 'Internal Server Error' });
+      
   }
 };
 // Delete wishlist item-----------------------------------
@@ -76,8 +78,9 @@ const deleteWishlistItem = async (req, res) => {
       return res.json({ success: false, message: "Item not found in the wishlist" });
     }
   } catch (error) {
+    res.redirect('/500')
     console.error(error.message);
-    return res.status(500).json({ success: false, message: "Internal Server Error" });
+    
   }
 };
 

@@ -76,7 +76,7 @@ const OrderPost = async (req, res) => {
                 const total = Math.max(totalpriceInPaise, minimumAmount);
                 const PlaceOrder = await orderInstance.save()
                 if (PlaceOrder) {
-                    console.log("just before  genarating");
+                   
                     genarateRazorpay(PlaceOrder._id, total).then((response) => {
                         res.json({ Onlinepay: response,couponId:Couponid})
                     })
@@ -227,6 +227,7 @@ const OrderPost = async (req, res) => {
 }
 
      catch (error) {
+        res.redirect('/500')
         console.log(error.message);
     }
 }
@@ -289,6 +290,7 @@ const OrderCancel = async (req, res) => {
 
 
     } catch (error) {
+        res.redirect('/500')
         console.log(error.message);
     }
 }
@@ -301,6 +303,7 @@ const OrderSuccess = async (req, res) => {
         res.render('OrderPlaced')
 
     } catch (error) {
+        res.redirect('/500')
         console.log(error.message);
     }
 }
@@ -313,13 +316,13 @@ const orderFailed = async (req, res) => {
         res.render('OrderFailed',{id})
 
     } catch (error) {
+        res.redirect('/500')
         console.log(error.message);
     }
 }
 
 // Verify Paymnet--------------------------
-const
-    VerifyPayment = async (req, res) => {
+const VerifyPayment = async (req, res) => {
         try {
             const payment = req.body.payment
             const OrderData = req.body.order
@@ -398,8 +401,10 @@ const
             
 
         } catch (error) {
+           
             console.error('Error:', error);
             res.status(500).json({ payment: false, message: "Internal Server Error" });
+            res.redirect('/500')
         }
     }
 
@@ -407,10 +412,11 @@ const
     const failedRazorPayment = async (req, res) => {
         try {
           // console.log("body::>", req.body);
+          const userData=await User.findOne({email:req.session.user})
+          const UserId=userData._id
           const razorpay_payment_id = req.body.payment.error.metadata.payment_id;
           const razorpay_order_id = req.body.payment.error.metadata.order_id;
           const receiptID = req.body.order.receipt;
-            console.log("hi",razorpay_payment_id,"hello",razorpay_order_id,"orderData",receiptID);
             const update = await Order.updateOne(
                 { _id: receiptID },
                 {
@@ -422,11 +428,29 @@ const
                 },
                 { upsert: true } 
             );
-            
-          console.log("updated",update);
-      
+            const cart = await Cart.findOne({ userid: UserId });
+            if (cart && cart.products && cart.products.length > 0) {
+                for (let i = 0; i < cart.products.length; i++) {
+                    const productId = cart.products[i].productid;
+                    const count = cart.products[i].quantity;
+
+                    await Product.updateOne(
+                        { _id: productId },
+                        {
+                            $inc: {
+                                pquantity: -count
+                            }
+                        }
+                    );
+                }
+                await Cart.deleteOne({ userid: UserId }).then(() => {
+                    console.log("cart is deleted successfully");
+                })
+            }
+
           res.json({ razorpayFailed: true, params: receiptID });
         } catch (err) {
+            res.redirect('/500')
           // res.render('')
           console.log("razorpay-error>>", err.message);
         }
@@ -454,26 +478,64 @@ function genarateRazorpay(OrderId, Gtotal) {
 }
 
 // Retry payment--------------------------
+//retryRazorPayment
 const retryRazorPayment = async (req, res) => {
     try {
-      
-    }
-    catch (error) {
-      console.log(error.message)
-    }
+      const orderId = req.body.orderId;
   
-}
+      const order = await Order.findById(orderId);
+      if (!order) {
+        return res.status(404).json({ error: "Order not found." });
+      }
+      const razorpay_payment_id = order.paymentId;
+  
+
+  
+      const subTotal = order.total_amount;
+      const paymentDetails = await instance.payments.fetch(razorpay_payment_id);
+    //   console.log("retry payment get");
+      res.status(200).json({ paymentDetails: paymentDetails, order: orderId });
+    } catch (err) {
+      console.log("error", err.message);
+      res.status(500).json({ error: "Internal server error." });
+    }
+  };
 // verify payment-----------------------------
 
 const retryVerifyPayment = async (req, res) => {
     try {
-      
+        const payment = req.body.payment
+        const OrderData = req.body.ID
+
+        const UserData = await User.findOne({ email: req.session.user })
+        const userId = UserData._id
+        let hmac = crypto.createHmac('sha256', 'djjDUANiW3OP2wKc5ZebWoK7')
+        hmac.update(payment.razorpay_order_id + '|' + payment.razorpay_payment_id)
+        hmac = hmac.digest('hex')
+        if (hmac == payment.razorpay_signature) {
+            const UserOrder = await Order.findOne({ _id: OrderData })
+            console.log("user data",UserOrder)
+            if (UserOrder) {
+                UserOrder.paymentStatus = "success"
+                await UserOrder.save()
+            }
+            
+            
+
+                res.json({ payment: true });
+            }
+        
+        
+
+    } catch (error) {
+       
+        console.error('Error:', error);
+        res.status(500).json({ payment: false, message: "Internal Server Error" });
+        res.redirect('/500')
     }
-    catch (error) {
-      console.log(error.message)
-    }
-  
 }
+  
+
 // Order details------------------------------------------
 
 const OrderDetails = async (req, res) => {
@@ -484,6 +546,7 @@ const OrderDetails = async (req, res) => {
        res.render('OrderDetails',{OrderData})
     }
     catch (error) {
+        res.redirect('/500')
       console.log(error.message)
     }
   
@@ -500,6 +563,7 @@ const IndividualOrderDetails = async (req, res) => {
       }
     }
     catch (error) {
+        res.redirect('/500')
       console.log(error.message)
     }
   
@@ -549,8 +613,10 @@ const ReturnOrder = async (req, res) => {
             return res.json({ success: false, message: "Sorry, the order can't be returned now" });
         }
     } catch (error) {
+
         console.error(error.message);
-        return res.status(500).json({ success: false, message: "Internal server error" });
+        res.redirect('/500')
+
     }
 };
 
@@ -605,7 +671,8 @@ const loadInvoice = async (req, res) => {
   
     } catch (error) {
         console.log(error);
-      res.status(500).send('Internal Server Error');
+        res.redirect('/500')
+    
     }
   };
   

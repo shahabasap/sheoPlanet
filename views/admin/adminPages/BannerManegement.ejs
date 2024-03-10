@@ -67,9 +67,17 @@
     </div>
     <!-- page-body-wrapper ends -->
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<style>
+  .text-black {
+    color: black !important;
+    /* Use !important to override default styles */
+  }
+</style>
 
 <script>
   
@@ -92,6 +100,11 @@
           cancelButtonColor: '#d33',
           confirmButtonText: 'Yes',
           cancelButtonText: 'No',
+          customClass: {
+            title: 'text-black',
+          text: 'text-black',
+          content:'text-black'
+        }
         });
 
         if (userConfirmed.isConfirmed) {
@@ -105,7 +118,11 @@
               icon:'success',
               text:response.data.message,
               showConfirmButton:false,
-              timer:3000
+              timer:3000,
+              customClass: {
+              content: 'text-black',
+              title: 'text-black'
+        }
               
             }).then(()=>{
               window.location.reload()
@@ -118,7 +135,11 @@
         } else {
           Swal.fire({
               icon:'error',
-              text:"You cancelled the confirmation"
+              text:"You cancelled the confirmation",
+              customClass: {
+                 content: 'text-black',
+                 title: 'text-black'
+        }
             })
         }
       } catch (error) {
@@ -131,5 +152,5 @@
 
   
     
-<%- include('../layout/header.ejs') -%>
+<%- include('../layout/footer.ejs') -%>
   

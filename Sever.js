@@ -41,5 +41,5 @@ app.use('/', userRoute)
 
 app.listen(Port, () => {
   console.log(`server is runnig in the  port 3001`)
-  console.log(`http://127.0.0.1:3003/`);
+  console.log(`http://127.0.0.1:3001/`);
 })

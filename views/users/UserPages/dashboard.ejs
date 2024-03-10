@@ -164,7 +164,7 @@
                                                                                 <label  for=""><span style="font-weight: 600;">Grand Total:</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <%=n.total%></label>
                                                                                 </div>
                                                                             <div class="d-flex justify-content-between">
-                                                                                <% if(n.status=="Placed" || n.status==="Shipping"){ %>
+                                                                                <% if((n.status=="Placed" || n.status==="Shipping") && (n.paymentStatus=="success")){ %>
                                                                                     <button class="btn btn-danger" onclick="CancelOrder('<%= n._id%>')">Cancel Order</button>
                                                                                 <% } else if(n.status==="Delivered") { %>
                                                                                     <button class="btn btn-warning" onclick="ReturnRequest('<%= n._id%>')">Return</button>

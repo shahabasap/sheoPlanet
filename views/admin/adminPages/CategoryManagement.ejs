@@ -151,7 +151,8 @@
         confirmButtonText: 'Yes, list!',
         customClass: {
           content: 'text-black',
-          text: 'text-black'
+          text: 'text-black',
+          title: 'text-black'
         }
       }).then((result) => {
         if (result.isConfirmed) {
@@ -173,7 +174,8 @@
         cancelButtonColor: '#3085d6',
         confirmButtonText: 'Yes, unlist!',
         customClass: {
-          content: 'text-black'
+          content: 'text-black',
+          title: 'text-black'
         }
       }).then((result) => {
         if (result.isConfirmed) {
@@ -184,5 +186,5 @@
     }
     </script>
     
-<%- include('../layout/header.ejs') -%>
+<%- include('../layout/footer.ejs') -%>
   

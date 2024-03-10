@@ -24,6 +24,7 @@ const CategoryManagement = async (req, res) => {
     res.render('CategoryManagement', { categories, CategoryAddedMessage, updated, currentPage: page, totalPages, skip });
   }
   catch (error) {
+    res.redirect('/500')
     console.log(error.message)
   }
 }
@@ -38,6 +39,7 @@ const AddCategoryPage = async (req, res) => {
     res.render('AddCategory', { categoryAlreadyExists, categoryNotAdded });
   }
   catch (error) {
+    res.redirect('/500')
     console.log(error.message)
   }
 }
@@ -77,6 +79,7 @@ const AddCategory = async (req, res) => {
 
   }
   catch (error) {
+    res.redirect('/500')
     console.log(error.message)
   }
 }
@@ -101,6 +104,7 @@ const CategoryListing = async (req, res) => {
 
   }
   catch (error) {
+    res.redirect('/500')
     console.log(error.message)
   }
 }
@@ -119,6 +123,7 @@ const  loadEditCategory= async (req, res) => {
 
   }
   catch (error) {
+    res.redirect('/500')
     console.log(error.message)
   }
 }
@@ -161,6 +166,7 @@ const editCategory  = async (req, res) => {
     }
   }
   catch (error) {
+    res.redirect('/500')
     console.log(error.message)
   }
 }

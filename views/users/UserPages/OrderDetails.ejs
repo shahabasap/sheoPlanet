@@ -35,7 +35,7 @@
                             <p class="card-text"><span style="font-weight: 800;">Address:</span> <%= OrderDetails.address.name %><br><%= OrderDetails.address.buildingname %><br><%= OrderDetails.address.mobile %><br><%= OrderDetails.address.street %>, <%= OrderDetails.address.city %><br><%= OrderDetails.address.state %>, <%= OrderDetails.address.pincode %><br></p>
                         </div>
                         <%if(OrderDetails.paymentStatus=='Pending'){%>
-                          <div onclick="RetryPayment('<% OrderDetails._id%>')" class="btn btn-warning"> Retry Payment</div>
+                          <div id="retryPaymentBtn" class="btn btn-warning"> Retry Payment</div>
                         <%}%>
                     </div>
                 </div>
@@ -45,11 +45,96 @@
 </main>
 
 <script>
-    async function RetryPayment() {
+    document.getElementById('retryPaymentBtn').addEventListener('click', retryPayment);
 
+    function retryPayment() {
+        axios.post('/retryRazorPayment', {
+            orderId: '<%= OrderDetails._id %>'
+        })
+            .then(response => {
+                console.log('response:id:', response.data.order, 'Response data: ', response.data.paymentDetails);
+                razorpayRetryPayment(response.data.paymentDetails, response.data.order);
+            })
+            .catch(error => {
+                console.error('Error:', error);
 
-        
+            });
     }
+    function razorpayRetryPayment(order, ID) {
+        console.log('id::', ID, 'order:>', order,);
+
+        var options = {
+            "key": "rzp_test_5MqNo4cRcOTItk",
+            "amount": order.amount,
+            "currency": "INR",
+            "name": "Shopin",
+            "description": "Test Transaction",
+            "image": "/user/images/shoePlanet.png",
+            "order_id": order.order_id,
+            "handler": function (response) {
+                console.log("response is working");
+                // alert(response.razorpay_payment_id);
+                // alert(response.razorpay_order_id);
+                // alert(response.razorpay_signature)
+                if (response.razorpay_payment_id) {
+                    verifyPayment(response,ID);
+
+                }
+            },
+            "prefill": {
+                "name": "ShoePlanet PVt Ltd",
+                "email": "shahabasmhd@gmail.com",
+                "contact": "9000090000"
+            },
+            "notes": {
+                "address": "shoeplane Corporate Office"
+            },
+            "theme": {
+                "color": "#F67777"
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+        rzp1.on('payment.failed', function (response) {
+
+            // alert(response.error.metadata.order_id);
+            alert(response.error.metadata.payment_id);
+
+
+        });
+
+    }
+
+    function verifyPayment(payment,ID) {
+        console.log('verifyPayment called');
+        $.ajax({
+            url: '/retryVerifyPayment',
+            method: 'post',
+            data: {
+                payment,
+                ID
+            },
+            success: (response) => {
+                console.log('response came');
+                if (response.payment) {
+
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Payment Succeeded',
+                        text: 'Your payment was successful!',
+                        timer: 2000, // Auto close after 2 seconds
+                        showConfirmButton: false, // Hide the "OK" button
+                    })
+                    window.location.reload();
+                }
+            }
+
+        })
+    }
+
+
+
 </script>
 
 
