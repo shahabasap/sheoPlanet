@@ -46,7 +46,6 @@ user_route.post('/UpdateResetPassword/', userController.UpdateResetPassword)
 
 user_route.get('/Shopping', userController.ShoppingPage)
 user_route.get('/Product/:id', userController.IndividualProductPage)
-user_route.post('/FilterProduct', userController.FilterCategory)
 
 
 // user dashboard----------------------------------------.

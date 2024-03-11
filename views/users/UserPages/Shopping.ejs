@@ -21,18 +21,27 @@
 				<div class="row">
 					<div class="col-lg-9">
 						<div class="toolbox">
-							<form class="form-inline  ms-2 my-lg-0">
-								<input class="form-control mr-sm-2" type="search" id="SearchProduct" onkeyup="FilteringProduct()" placeholder="Search" aria-label="Search">
+							<div class="form-inline  ms-2 my-lg-0">
+								<input class="form-control mr-sm-2" type="search" id="SearchProduct" placeholder="Search right here" onchange="FilteringProduct()" value="<%=SearchedProduct%>" aria-label="Search">
+								<button style="background-color: rgb(12, 54, 131);
+								border: 1px solid;
+								color: #fff;
+								padding: 2px 6px;
+								cursor: pointer;
+								font-size: 16px;
+								border-radius: 5px;">Search</button>
+								
 								<!-- <button style="background-color: rgb(77, 77, 142);color: white;text-decoration: none;" onclick="FilteringProduct()" type="submit">Search</button> -->
-							  </form>
+							</div>
 
 							<div class="toolbox-right">
 								<div class="toolbox-sort">
 									<label for="sortby">Sort by:</label>
 									<div class="select-custom">
 										<select onchange="FilteringProduct()" name="sortby" id="sortby" class="form-control">
-											<option value="-1" selected="selected">High Price</option>
-											<option value="1">Low Price</option>
+											<option value="null" <%= sortingValue === null ? 'selected' : '' %>>None</option>
+											<option value="-1" <%= sortingValue === -1 ? 'selected' : '' %>>High Price</option>
+											<option value="1" <%= sortingValue === 1 ? 'selected' : '' %>>Low Price</option>
 											
 										</select>
 									</div>
@@ -202,7 +211,7 @@
 										Gender
 									</a>
 								</h3><!-- End .widget-title -->
-
+                              <%if(locals.filter){%>
 								<div class="collapse show" id="widget-1">
 									<div class="widget-body">
 										<div class="filter-items filter-items-count">
@@ -215,14 +224,14 @@
 								 -->
 											<div class="filter-item">
 												<div class="custom-control custom-radio">
-													<input type="radio" value="Men" class="custom-control-input" id="gen-2" name="genderFilter">
+													<input type="radio" value="Men" class="custom-control-input" id="gen-2" name="genderFilter" <%= filter.pgender === "Men" ? 'checked' : '' %>>
 													<label class="custom-control-label" for="gen-2">Men's</label>
 												</div>
 											</div>
 								
 											<div class="filter-item">
 												<div class="custom-control custom-radio">
-													<input type="radio" value="Women" class="custom-control-input" id="gen-3" name="genderFilter">
+													<input type="radio" value="Women" class="custom-control-input" id="gen-3" name="genderFilter" <%= filter.pgender === "Women" ? 'checked' : '' %>>
 													<label class="custom-control-label" for="gen-3">Women's</label>
 												</div>
 											</div>
@@ -243,35 +252,35 @@
 											<div class="filter-items filter-items-count">
 												<div class="filter-item">
 													<div class="custom-control custom-radio">
-														<input type="radio" class="custom-control-input" value="65a4da1aff32cdddddac8134" id="cat-1" name="categoryFilter">
+														<input type="radio" class="custom-control-input" value="65a4da1aff32cdddddac8134" id="cat-1" name="categoryFilter" <%= filter.pcategory === "65a4da1aff32cdddddac8134" ? 'checked' : '' %>>
 														<label class="custom-control-label" for="cat-1">Boots</label>
 													</div><!-- End .custom-radio -->
 												</div><!-- End .filter-item -->
 								
 												<div class="filter-item">
 													<div class="custom-control custom-radio">
-														<input type="radio" class="custom-control-input" value="65a50484527de8c6c0fb870c" id="cat-2" name="categoryFilter">
+														<input type="radio" class="custom-control-input" value="65a50484527de8c6c0fb870c" id="cat-2" name="categoryFilter" <%= filter.pcategory === "65a50484527de8c6c0fb870c" ? 'checked' : '' %>>
 														<label class="custom-control-label" for="cat-2">Casuals</label>
 													</div><!-- End .custom-radio -->
 												</div><!-- End .filter-item -->
 								
 												<div class="filter-item">
 													<div class="custom-control custom-radio">
-														<input type="radio" class="custom-control-input" value="65a4df3b10b1b6aa9387780f" id="cat-3" name="categoryFilter">
-														<label class="custom-control-label" for="cat-3">Snickers</label>
+														<input type="radio" class="custom-control-input" value="65a4df3b10b1b6aa9387780f" id="cat-3" name="categoryFilter" <%= filter.pcategory === "65a4df3b10b1b6aa9387780f" ? 'checked' : '' %>>
+														<label class="custom-control-label" for="cat-3">Sneackers</label>
 													</div><!-- End .custom-radio -->
 												</div><!-- End .filter-item -->
 								
 												<div class="filter-item">
 													<div class="custom-control custom-radio">
-														<input type="radio" class="custom-control-input" value="65a4df6410b1b6aa93877813" id="cat-4" name="categoryFilter">
+														<input type="radio" class="custom-control-input" value="65a4df6410b1b6aa93877813" id="cat-4" name="categoryFilter" <%= filter.pcategory === "65a4df6410b1b6aa93877813" ? 'checked' : '' %>>
 														<label class="custom-control-label" for="cat-4">Formal</label>
 													</div><!-- End .custom-radio -->
 												</div><!-- End .filter-item -->
 								
 												<div class="filter-item">
 													<div class="custom-control custom-radio">
-														<input type="radio" class="custom-control-input" value="65a50531527de8c6c0fb88f1" id="cat-5" name="categoryFilter">
+														<input type="radio" class="custom-control-input" value="65a50531527de8c6c0fb88f1" id="cat-5" name="categoryFilter" <%= filter.pcategory === "65a50531527de8c6c0fb88f1" ? 'checked' : '' %>>
 														<label class="custom-control-label" for="cat-5">Sandal</label>
 													</div><!-- End .custom-radio -->
 												</div><!-- End .filter-item -->
@@ -292,21 +301,21 @@
 											<div class="filter-items filter-items-count">
 												<div class="filter-item">
 													<div class="custom-control custom-radio">
-														<input type="radio" class="custom-control-input" value="7" id="size-1" name="sizeFilter">
+														<input type="radio" class="custom-control-input" value="7" id="size-1" name="sizeFilter" <%= filter.psize === "7" ? 'checked' : '' %>>
 														<label class="custom-control-label" for="size-1">7</label>
 													</div><!-- End .custom-radio -->
 												</div><!-- End .filter-item -->
 								
 												<div class="filter-item">
 													<div class="custom-control custom-radio">
-														<input type="radio" class="custom-control-input" value="8" id="size-2" name="sizeFilter">
+														<input type="radio" class="custom-control-input" value="8" id="size-2" name="sizeFilter" <%= filter.psize === "8" ? 'checked' : '' %>>
 														<label class="custom-control-label" for="size-2">8</label>
 													</div><!-- End .custom-radio -->
 												</div><!-- End .filter-item -->
 								
 												<div class="filter-item">
 													<div class="custom-control custom-radio">
-														<input type="radio" class="custom-control-input" value="9" id="size-3" name="sizeFilter">
+														<input type="radio" class="custom-control-input" value="9" id="size-3" name="sizeFilter" <%= filter.psize === "9" ? 'checked' : '' %>>
 														<label class="custom-control-label" for="size-3">9</label>
 													</div><!-- End .custom-radio -->
 												</div><!-- End .filter-item -->
@@ -314,7 +323,7 @@
 										</div><!-- End .widget-body -->
 									</div><!-- End .collapse -->
 								</div><!-- End .widget -->
-								
+								<%}%>
 
 						</div><!-- End .sidebar sidebar-shop -->
 					</aside><!-- End .col-lg-3 -->
@@ -333,13 +342,14 @@
 			width: 100%;
 		}
 	</style>
+
 	<script>
 
 	// clear filter-------------------------------
 
 	function clearFilter() {
 		
-		window.location.reload()
+		window.location.href='/Shopping'
 	}
   
 	
@@ -357,78 +367,16 @@
 				const sizeValue = Size ? Size.value : null;
 				const SearchedProduct=SearchProduct ? SearchProduct.value : null;
 
-                 
-				const response = await axios.post('/FilterProduct', {
-						Gender: genderValue,
-						Category: categoryValue,
-						Size: sizeValue,
-						ProductSorting,
-						SearchedProduct
-					});
-					if (response.data.success) {
-					 let FilterdProducts=response.data.sortedProducts
-						FilterProduct(FilterdProducts);
-						
+                 if (ProductSorting!=null || SearchedProduct !=null || genderValue!=null || categoryValue!=null || sizeValue!=null ) {
+					window.location.href=(`/Shopping/?Gender=${genderValue}` +
+                 `&Category=${categoryValue}` +
+                 `&Size=${sizeValue}` +
+                 `&ProductSorting=${ProductSorting}` +
+                 `&SearchedProduct=${SearchedProduct}`);
 
-						
-					}
-					else
-					{
-						document.getElementById('ProducRow').innerHTML="<div class='error-container '>Oops! Product not found</div>"
-
-					}
-
-	
-			
-		}
-		function FilterProduct(filteredProducts) {
-    const ProductRow = filteredProducts.map((product, index) => {
-        return `
-            <div class="col-6 col-md-4 col-lg-4">
-                <div class="product product-7 text-center">
-                    <figure class="product-media">
-                        <!-- <span class="product-label label-new">New</span> -->
-                        <a href=/Product/${product._id}">
-                            <img src="/uploads/${product.productImages[0].resizedFile}" alt="Product image" class="product-image">
-                        </a>
-
-                        <div class="product-action-vertical">
-                            <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
-                            <a href="popup/quickView.html" class="btn-product-icon btn-quickview" title="Quick view"><span>Quick view</span></a>
-                            <a href="#" class="btn-product-icon btn-compare" title="Compare"><span>Compare</span></a>
-                        </div><!-- End .product-action-vertical -->
-
-                        <div class="product-action">
-                            <a href="/Product/${product._id}" class="btn-product btn-cart"><span>add to cart</span></a>
-                        </div><!-- End .product-action -->
-                    </figure><!-- End .product-media -->
-
-                    <div class="product-body">
-                        <div class="product-cat">
-                            <a href="/Product/${product._id}">${product.pcategory.Cname}</a>
-                        </div><!-- End .product-cat -->
-                        <h3 class="product-title"><a href="/product/${product._id}">${product.pname}</a></h3><!-- End .product-title -->
-                        <div class="product-price">
-                            <a href="/Product/${product._id}">
-                                <span class="new-price">Now ₹${product.offerprice}</span>
-                                <span class="old-price">₹${product.pprice}</span>
-                            </a>
-                        </div><!-- End .product-price -->
-                        <div class="ratings-container">
-                            <div class="ratings">
-                                <div class="ratings-val" style="width: 20%;"></div><!-- End .ratings-val -->
-                            </div><!-- End .ratings -->
-                            <span class="ratings-text">(2 Reviews)</span>
-                        </div><!-- End .rating-container -->
-                    </div><!-- End .product-body -->
-                </div><!-- End .product -->
-            </div><!-- End .col-sm-6 col-lg-4 -->`;
-    });
-
-    // Join the array of HTML strings into a single string
-    const Products =ProductRow.join('');
-
-	document.getElementById('ProducRow').innerHTML = Products;
+				 }
+				
+					
 
 }
 

@@ -502,56 +502,48 @@ const UpdateResetPassword = async (req, res) => {
 // shopping route-------------------
 const ShoppingPage = async (req, res) => {
   try {
+    const { Gender, Category, Size, ProductSorting, SearchedProduct } = req.query;
+
     const page = parseInt(req.query.page) || 1;
     const limit = 9; // Set the number of items per page
     const skip = (page - 1) * limit;
-    const totalProducts = await Product.find({ is_listed: 1,is_deleted: 0 }).countDocuments()
+    const totalProducts = await Product.find({ is_listed: 1, is_deleted: 0 }).countDocuments();
     const totalPages = Math.ceil(totalProducts / limit);
 
-    const product = await Product.find({ is_listed: 1, is_deleted: 0 }).skip(skip).limit(limit).populate('pcategory')
-    res.render('Shopping', { product,currentPage: page, totalPages, skip  })
+    const sortingValue = parseInt(ProductSorting);
+    const filter = { is_listed: 1, is_deleted: 0 };
+
+    if (Gender !=="null" && Gender !== undefined) filter.pgender = Gender;
+    if (Category !== "null" && Category !== undefined) {
+      filter.pcategory =  Category.toString() ;
+    }
+    if (Size && !isNaN(Number(Size))) filter.psize = Number(Size);
+    if (SearchedProduct) {
+      const regex = new RegExp(SearchedProduct.split(/\s+/).join('\\s+'), 'i');
+      filter.$or = [
+        { pname: regex },  // Assuming product name field is 'pname'
+      ];
+    }
+
+
+    const product = await Product.find(filter)
+      .populate('pcategory')
+      .sort(sortingValue ? { offerprice: 1 } : null)
+      .skip(skip)
+      .limit(limit);
+
+    if (product.length > 0) {
+      res.render('Shopping', { product, currentPage: page, totalPages, skip ,filter,SearchedProduct,sortingValue});
+    } else {
+      console.log("No products found");
+    }
 
   } catch (error) {
-    res.redirect('/500')
+    res.redirect('/500');
     console.log(error.message);
   }
-}
-// Filter products by category-----------------------
-const FilterCategory = async (req, res) => {
-  try {
-      const { Gender, Category, Size, ProductSorting, SearchedProduct } = req.body;
-      const sortingValue = parseInt(ProductSorting);
-      const filter = { is_listed: 1, is_deleted: 0 };
+};
 
-      if (Gender != null) filter.pgender = Gender;
-      if (Category != null) filter.pcategory = Category;
-      if (Size != null) filter.psize = Size;
-
-      let regex;  
-    
-      if (SearchedProduct != null && SearchedProduct.length > 1) {
-          regex = new RegExp(SearchedProduct.split(/\s+/).join('\\s+'), 'i');
-          // const regex = new RegExp(escapedProduct.split(/\s+/).join('\\s+'), 'i');
-          filter.$or = [
-              { pname: regex },  // Assuming product name field is 'pname'
-          ];
-      }
-
-      
-      const sortedProducts = await Product.find(filter).populate('pcategory').sort({ offerprice: sortingValue });
-      
-      if (sortedProducts.length > 0) {
-          console.log("sorted successfully");
-          res.json({ success: true, sortedProducts });
-      } else {
-          console.log("sorted failed");
-          res.json({ success: false });
-      }
-  } catch (error) {
-      console.log(error.message);
-      res.status(500).json({ success: false, error: error.message });
-  }
-}
 
 // Each product  details  rendering route --------------------using spcified is------------------------
 const IndividualProductPage = async (req, res) => {
@@ -1327,7 +1319,6 @@ module.exports = {
   UnknownPage,
   errorPage,
   ApplyCoupon,
-  FilterCategory,
   servereError
 
 
