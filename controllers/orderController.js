@@ -10,6 +10,7 @@ const crypto = require('crypto');
 const Razorpay = require('razorpay');
 const Wishlist = require('../models/wishlistModel');
 const puppeteer = require('puppeteer')
+const Ledger=require('../models/LedgerModel')
 
 var instance = new Razorpay({
     key_id: 'rzp_test_5MqNo4cRcOTItk',
@@ -75,7 +76,20 @@ const OrderPost = async (req, res) => {
                 const minimumAmount = 100;
                 const total = Math.max(totalpriceInPaise, minimumAmount);
                 const PlaceOrder = await orderInstance.save()
+                const ledgerData=await Ledger.findOne({Order_id:PlaceOrder._id})
+                    if (!ledgerData) {
+                        const ledgerCredit=new Ledger({
+                            Order_id:PlaceOrder._id,
+                            transactions:PlaceOrder.payment,
+                            debit:0,
+                            credit:PlaceOrder.total,
+                            balance:PlaceOrder.total-0
+                        
+                        })
+                        const LedgerDataCheck=await ledgerCredit.save()
+                    }
                 if (PlaceOrder) {
+        
                    
                     genarateRazorpay(PlaceOrder._id, total).then((response) => {
                         res.json({ Onlinepay: response,couponId:Couponid})
@@ -133,6 +147,19 @@ const OrderPost = async (req, res) => {
                        
                         
                     }
+
+                    const ledgerData=await Ledger.findOne({Order_id:OrderAdded._id})
+                    if (!ledgerData) {
+                        const ledgerCredit=new Ledger({
+                            Order_id:OrderAdded._id,
+                            transactions:OrderAdded.payment,
+                            debit:0,
+                            credit:OrderAdded.total,
+                            balance:OrderAdded.total-0
+                        
+                        })
+                        const LedgerDataCheck=await ledgerCredit.save()
+                    }
                     const deleteCartResult = await Cart.deleteOne({ _id: CartId });
 
                     if (deleteCartResult) {
@@ -153,7 +180,8 @@ const OrderPost = async (req, res) => {
             else if (payMethod == "wallet") {
                 if (UserCart.grandTotal <= UserData.walletAmount) {
                     orderInstance.paymentStatus='success'
-                    const OrderAdded = await orderInstance.save();
+                    const OrderAdded = await orderInstance.save();   
+                    
             
                     const walletData = {
                         amount: Gtotal ?? UserCart.grandTotal,
@@ -166,7 +194,6 @@ const OrderPost = async (req, res) => {
             
                     // Save the updated user data
                     await UserData.save();
-                    console.log("coupeon id",Couponid);
                     if(Couponid !=undefined)
                     {
                         const CouponData=await Coupon.findOne({_id:Couponid})
@@ -202,6 +229,20 @@ const OrderPost = async (req, res) => {
                         }
                        
                         
+                    }
+                    const ledgerData=await Ledger.findOne({Order_id:OrderAdded._id})
+                    if (!ledgerData) {
+                        const ledgerCredit=new Ledger({
+                            Order_id:OrderAdded._id,
+                            transactions:OrderAdded.payment,
+                            debit:0,
+                            credit:OrderAdded.total,
+                            balance:OrderAdded.total-0
+                        
+                        })
+                        const LedgerDataCheck=await ledgerCredit.save()
+                      
+                       
                     }
                     const deleteCartResult = await Cart.deleteOne({ _id: CartId });
 
@@ -265,9 +306,8 @@ const OrderCancel = async (req, res) => {
             })
 
             if (CancelOrder) {
-                if(Is_Order.payment=='Razorpay' || Is_Order.payment=='wallet')
+                if(Is_Order.payment=='Razorpay' || Is_Order.payment=='wallet' || Is_Order.payment=='cash on delivery')
                 {
-                    console.log("sjadhf",Is_Order.total,userData.walletAmount);
                     walletData={
                         amount:Is_Order.total,
                         message:"Cancel Order Refund",
@@ -279,6 +319,15 @@ const OrderCancel = async (req, res) => {
                     await userData.save()
                     
                 }
+
+                const LedgerUpdation=await Ledger.updateOne({Order_id:OrderId},{
+                    $set:{
+                        debit:Is_Order.total,
+                        balance:0
+                        
+
+                    }
+                })
 
                 res.json({ message: "Order Cancelled successfully" });
             }

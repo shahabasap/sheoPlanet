@@ -8,6 +8,7 @@ const moment = require('moment');
 const path=require('path')
 const sharp = require('sharp');
 const { resolve } = require('path');
+const Ledger=require('../models/LedgerModel')
 
 
 
@@ -53,7 +54,7 @@ const adminhomePage = async (req, res) => {
   try {
     const RevenueCalculation = await Order.aggregate([
       {
-        $match: { status: 'Delivered' }
+        $match: { status: 'Delivered' ,paymentStatus:"success" }
       },
       {
         $group: {
@@ -68,7 +69,7 @@ const adminhomePage = async (req, res) => {
     const salesCalculation = await Order.aggregate([
       {
         $match:
-          { status: { $nin: ['Cancel Order', 'Return Order'] } }
+          { status: { $nin: ['Cancel Order', 'Return Order'] },paymentStatus:"success" }
       },
       {
         $group: {
@@ -80,12 +81,12 @@ const adminhomePage = async (req, res) => {
     ])
     const Sales = salesCalculation.length > 0 ? salesCalculation[0].total : 0;
 
-    const OrderCalculation = await Order.countDocuments();
-    const DeliveredOrders = await Order.find({ status: 'Delivered' }).countDocuments();
+    const OrderCalculation = await Order.find({paymentStatus:"success"}).countDocuments();
+    const DeliveredOrders = await Order.find({ status: 'Delivered',paymentStatus:"success" }).countDocuments();
     const DeliveryPendings = await Order.aggregate([
       {
         $match: {
-          status: { $in: ['Placed', 'Shipping'] }
+          status: { $in: ['Placed', 'Shipping'] },paymentStatus:"success"
         }
       },
       {
@@ -141,7 +142,9 @@ const adminhomePage = async (req, res) => {
       {
         $match: {
           status: "Delivered",
+          paymentStatus:"success",
           date: { $gte: new Date(currentYear, currentMonth - 1, 1) },
+          
         },
       },
       {
@@ -173,6 +176,7 @@ const adminhomePage = async (req, res) => {
       {
         $match: {
           status: "Delivered",
+          paymentStatus:"success",
           date: { $gte: new Date(currentYear - yearsToInclude, 0, 1) }
         },
       },
@@ -204,7 +208,7 @@ const adminhomePage = async (req, res) => {
 let Productsids = [];
 let CategoryIds = [];
 const bestSellingProducts = await Order.aggregate([
-  { $match: { status: 'Delivered' } },
+  { $match: { status: 'Delivered',paymentStatus:"success"} },
   { $unwind: '$products' },
   {
     $group: {
@@ -229,7 +233,9 @@ const FindBestSellingProducts = await Product.find({ _id: { $in: Productsids } }
 const categoryCounts = await Order.aggregate([
   {
     $match: {
-      status: "Delivered"
+      status: "Delivered",
+      paymentStatus:"success"
+
     }
   },
   {
@@ -262,6 +268,32 @@ categoryCounts.forEach((n) => {
 });
 const FindBestSellingCategory = await Category.find({ _id: { $in: CategoryIds } })
 
+// ---------------------------------------------------------ledger book----------------------------------------------------------
+
+const LedgerBook=await Ledger.find().populate('Order_id')
+const TotalLedgerAmount = await Ledger.aggregate([
+  {
+    $lookup: {
+      from: "orders",
+      localField: "Order_id",
+      foreignField: "_id",
+      as: "orderInfo"
+    }
+  },
+  {
+    $match: {
+      'orderInfo.paymentStatus': 'success'
+    }
+  },
+  {
+    $group: {
+      _id: null,
+      Total: { $sum: '$balance' }
+    }
+  }
+]);
+let TotalAmountHave=TotalLedgerAmount[0].Total
+console.log("data",TotalAmountHave);
 
 
 
@@ -269,7 +301,11 @@ const FindBestSellingCategory = await Category.find({ _id: { $in: CategoryIds } 
 
 
 
-    res.render('home', { Revenue, Sales, OrderCalculation, DeliveredOrders, DeliveryPendingCount, NonProfitableOrders, updatedMonthlyValues, updatedYearlyValues,FindBestSellingProducts,FindBestSellingCategory,categoryCounts,bestSellingProducts});
+
+
+
+
+    res.render('home', { LedgerBook,Revenue, Sales, OrderCalculation, DeliveredOrders, DeliveryPendingCount, NonProfitableOrders, updatedMonthlyValues, updatedYearlyValues,FindBestSellingProducts,FindBestSellingCategory,categoryCounts,bestSellingProducts,TotalAmountHave});
 
   } catch (error) {
     console.log(error.message);
@@ -413,7 +449,7 @@ const OrderStatus = async (req, res) => {
     else {
       const UpdateOrder = await Order.updateOne({ _id: orderId }, { $set: { status: newStatus } })
       if (UpdateOrder) {
-        if (newStatus === 'Return Order' && (UserOrder.payment === 'Razorpay' || UserOrder.payment === 'wallet')) {
+        if (newStatus === 'Return Order' && (UserOrder.payment === 'Razorpay' || UserOrder.payment === 'wallet' || UserOrder.payment === 'cash on delivery')) {
           const walletHistory = {
             amount: UserOrder.total,
             reason: ReturnReason,
@@ -430,6 +466,16 @@ const OrderStatus = async (req, res) => {
 
           console.log("hi", updateWallet, ReturnReason);
         }
+
+
+        const LedgerUpdation=await Ledger.updateOne({Order_id:orderId},{
+          $set:{
+              debit:UserOrder.total,
+              balance:0
+              
+
+          }
+      })
         res.status(200).json({ success: 'Status updated', status: UserOrder.status });
       } else {
         res.status(404).json({ message: 'Status not updated' });

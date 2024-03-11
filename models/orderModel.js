@@ -111,4 +111,4 @@ const order = new mongoose.Schema({
 
 })
 
-module.exports = mongoose.model('Order', order)
+module.exports = mongoose.model('order', order)

@@ -159,6 +159,61 @@
                 </div>
               </div>
             </div>
+            <div class="container mt-4">
+              <div class="row">
+                <div class="col-lg-2 grid-margin stretch-card"></div>
+                <div class="col-lg-12">
+                  <div class="card">
+                    <div class="card-body">
+                      <h1 class="text-center">Ledger Book</h1>
+                      <div class="table-responsive">
+                        <table class="table table-striped table-bordered" id="Coupon-table">
+                          <thead class="thead-dark">
+                            <tr>
+                              <th scope="col" class="text-center">SNO</th>
+                              <th scope="col" class="text-center">Order ID</th>
+                              <th scope="col" class="text-center">Transaction Type</th>
+                              <th scope="col" class="text-center">Credit</th>
+                              <th scope="col" class="text-center">Debit</th>
+                              <th scope="col" class="text-center">Total</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <% if (locals.LedgerBook  ) { %>
+                              <% LedgerBook.forEach((n, index) => { %>
+                                <%if( n.Order_id.paymentStatus !=='pending' && (n.Order_id.status=='Delivered' || n.Order_id.status=='Cancel Order' || n.Order_id.status=='Return Order')){%>
+                                <tr>
+                                  <td class="text-center"><%= index + 1 %></td>
+                                  <td class="text-center"><%= n.Order_id.OID %></td>
+                                  <td class="text-center"><%= n.transactions %></td>
+                                  <td class="text-center "><span class="text-success">+</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= n.credit %></td>
+                                  <td class="text-center"><span class="text-danger">-</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= n.debit %></td>
+                                  <td class="text-center"><%= n.balance %></td>
+                                </tr>
+                                <%}%>
+                                <% }) %>
+                                <tr>
+                                  TotalAmountHave
+                                  <td colspan="4" class="text-center"></td>
+                                  
+                                  <td class="text-center text-primary">GrandTotal</td>
+                                  <td class="text-center"><%=TotalAmountHave%></td>
+                                </tr>
+                             
+                            <% } else { %>
+                              <tr>
+                                <td colspan="6" class="text-center">No data available</td>
+                              </tr>
+                            <% } %>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
             
           
            
