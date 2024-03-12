@@ -81,6 +81,7 @@
 
 
     <script>
+      
         const targetTime = Date.now() + 60 * 1000;
         let remainingSeconds = 60;
 
@@ -106,6 +107,8 @@
     
 
       
+   
+      
     </script>
 
     <script>
@@ -119,7 +122,6 @@
         // Making the axios POST request
         const response = await axios.post(`verify-otp/${Email}`,{otpdata:Otp});
 
-        console.log("hi dat",response.data);
         // Check if the OTP is verified
         if (response.data.verify) {
             Swal.fire({
