@@ -256,6 +256,37 @@
             </div>
         </div>
     </div>
+    <!-- Distance calculation-------------------------------------------------------- -->
+    <!-- <script>
+        // Function to handle address change
+        function handleAddressChange() {
+            const selectedAddressInput = document.querySelector('input[name="addressSelection"]:checked');
+    
+            if (selectedAddressInput) {
+                console.log("I am working",selectedAddressInput);
+                // Assuming axios is included in your project
+                axios.post('/DeliveryCharge', { address: selectedAddressInput.value })
+                    .then((response) => {
+                        // Handle the response as needed
+                        console.log(response.data);
+                    })
+                    .catch((error) => {
+                        // Handle errors
+                        console.error("Error:", error);
+                    });
+            }
+        }
+    
+        // Attach the handleAddressChange function to the change event of all radio buttons with the name "addressSelection"
+        const addressRadioButtons = document.querySelectorAll('input[name="addressSelection"]');
+        
+        addressRadioButtons.forEach((radioButton) => {
+            radioButton.addEventListener('change', handleAddressChange);
+        });
+    </script> -->
+    
+    
+
     <!-- Apply coupon---------------------------------------- -->
     <script>
        

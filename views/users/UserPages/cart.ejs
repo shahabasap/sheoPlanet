@@ -59,7 +59,7 @@
                                                     <div class="d-flex justify-content-center ">
                                                         <button onclick="decrementValue('<%=n.productid._id%>')"
                                                             class="styled-button">-</button>
-                                                        <input type="text" id="qty<%=n.productid._id%>" readonly
+                                                        <input type="text" id="qty<%=n.productid._id%>" 
                                                             value="<%= n.quantity%>" class="styled-input">
                                                         <button
                                                             onclick="incrementValue('<%=n.productid._id%>', '<%=n.productid.pquantity%>')"
@@ -139,8 +139,8 @@
 
 
 
-                                    <a href="/Checkout" class="btn btn-outline-primary-2 btn-order btn-block">PROCEED TO
-                                        CHECKOUT</a>
+                                    <div  onclick="reCheckingQuantiy('<%=cartExist.userid%>')" class="btn btn-outline-primary-2 btn-order btn-block">PROCEED TO
+                                        CHECKOUT</div>
                                 </div><!-- End .summary -->
 
                                 <a href="category.html" class="btn btn-outline-dark-2 btn-block mb-3"><span>CONTINUE
@@ -167,14 +167,52 @@
 
     </main><!-- End .main -->
 
+<!-- Recheck quantiy when proceed to checkout page----------------------- -->
+<script>
+    async function reCheckingQuantiy(UserId) {
+    console.log("is working");
+        const response=await axios.post('/proceedTocheckoutqty',{UserId})
+        .then((response)=>{
+            console.log("repo",response.data);
+            if (response.data.stockStatus) {
+
+                window.location.href='/Checkout'
+
+                
+            } else if(!response.data.stockStatus) {
+                Swal.fire({
+                        title: 'Out of stock',
+                        icon: 'warning',
+                 
+                    })
+                    .then(()=>{
+                        let abb=document.getElementById(`qty${response.data.producid}`)
+                        console.log("max=",response.data.maxquantiy);
+
+                        document.getElementById(`qty${response.data.producid}`).value=`${response.data.maxquantiy}`
+                        quantityUpdate(`${response.data.producid}`)
+
+                    })
+                  
+            
+                
+                // window.location.href='/cart'
+                
+            }
+        })
+        
+    }
+</script>
+    
+    
+    
 
 
     <script>
         //  <!-- -----------------quantity change from cart update other data------ -->
         async function quantityUpdate(Pid) {
             try {
-                console.log("Input triggered");
-                console.log(Pid);
+                
 
                 const ProductQuantity = document.getElementById(`qty${Pid}`).value;
 

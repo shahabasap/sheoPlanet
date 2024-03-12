@@ -618,6 +618,31 @@ const IndividualOrderDetails = async (req, res) => {
   
 }
 
+// quantity Check in checkout-----------------------------------
+
+const quantityInCheckout = async (req, res) => {
+    try {
+        const{UserId}=req.body
+        console.log("hi");
+        const CarData =await Cart.findOne({userid:UserId}).populate('products.productid')
+        CarData.products.forEach((n)=>{
+            if(n.productid.pquantity>=n.quantity)
+            {
+                res.json({stockStatus:true})
+            }
+            else
+            {
+                res.json({stockStatus:false,producid:n.productid._id,maxquantiy:n.productid.pquantity})
+            }
+        })
+    }
+    catch (error) {
+        res.redirect('/500')
+      console.log(error.message)
+    }
+  
+}
+
 
 // Return Order--------------------
 
@@ -724,6 +749,10 @@ const loadInvoice = async (req, res) => {
     
     }
   };
+
+
+
+
   
 
 
@@ -741,7 +770,9 @@ module.exports = {
     orderFailed,
     IndividualOrderDetails,
     retryRazorPayment,
-    retryVerifyPayment
+    retryVerifyPayment,
+    quantityInCheckout
+   
     
     
 }

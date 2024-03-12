@@ -535,6 +535,7 @@ const ShoppingPage = async (req, res) => {
     if (product.length > 0) {
       res.render('Shopping', { product, currentPage: page, totalPages, skip ,filter,SearchedProduct,sortingValue});
     } else {
+      res.render('Shopping', { product, currentPage: page, totalPages, skip ,filter,SearchedProduct,sortingValue});
       console.log("No products found");
     }
 
@@ -1027,7 +1028,7 @@ const quantityUpdate = async (req, res) => {
       const grandTotalRecheking = await Cart.findOne({ userid: UID })
       
 
-      res.send({ Gprice: grandTotalRecheking.grandTotal, ptotal: TotalPrice })
+      res.json({success:true, Gprice: grandTotalRecheking.grandTotal, ptotal: TotalPrice })
 
     }
     else {

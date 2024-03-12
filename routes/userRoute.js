@@ -7,6 +7,7 @@ const usersideMiddlware = require('../Middleware/userMiddleware')
 const cartCount = require('../Middleware/AllRounder')
 const orderController = require('../controllers/orderController')
 const wishlistController = require('../controllers/WishlistController')
+const mapController=require('../controllers/mapController.js')
 
 
 
@@ -50,17 +51,17 @@ user_route.get('/Product/:id', userController.IndividualProductPage)
 
 // user dashboard----------------------------------------.
 user_route.get('/dashboard',usersideMiddlware.UserSideSession, userController.UserDash)
-user_route.post('/UpdateUser', userController.UpdateData)
-user_route.post('/addaddress', userController.addAddress)
-user_route.post('/editAddress/:id', userController.EditAddress)
-user_route.post('/deleteAddress/', userController.deleteAddress)
-user_route.post('/resetPassword/:id', userController.resetPassword)
+user_route.post('/UpdateUser',usersideMiddlware.UserSideSession, userController.UpdateData)
+user_route.post('/addaddress',usersideMiddlware.UserSideSession, userController.addAddress)
+user_route.post('/editAddress/:id',usersideMiddlware.UserSideSession, userController.EditAddress)
+user_route.post('/deleteAddress/',usersideMiddlware.UserSideSession, userController.deleteAddress)
+user_route.post('/resetPassword/:id',usersideMiddlware.UserSideSession, userController.resetPassword)
 
 // Wish list-------------------------------------------------
 
 user_route.get('/wishlist', wishlistController.LoadWishList)
-user_route.post('/addToWishlist/:Pid', wishlistController.addToWishlist)
-user_route.get('/deleteWishlistItem/:Pid', wishlistController.deleteWishlistItem)
+user_route.post('/addToWishlist/:Pid',usersideMiddlware.UserSideSession, wishlistController.addToWishlist)
+user_route.get('/deleteWishlistItem/:Pid',usersideMiddlware.UserSideSession, wishlistController.deleteWishlistItem)
 
 
 // Usercart-----------------------------------------------------
@@ -76,24 +77,28 @@ user_route.post('/chAddadress', userController.chAddAdress)
 
 // Order rountes  of user side-----------------------------
 
-user_route.post('/placeOrder/:id', orderController.OrderPost)
-user_route.post('/orderCancellation/:id', orderController.OrderCancel)
+user_route.post('/placeOrder/:id',usersideMiddlware.UserSideSession, orderController.OrderPost)
+user_route.post('/orderCancellation/:id',usersideMiddlware.UserSideSession, orderController.OrderCancel)
 user_route.get('/OrderSuccess',usersideMiddlware.UserSideSession,  orderController.OrderSuccess)
 user_route.get('/orderFailed/:id',usersideMiddlware.UserSideSession,  orderController.orderFailed)
-user_route.post('/verify-Payment', orderController.VerifyPayment)
-user_route.post('/failedRazorPayment', orderController.failedRazorPayment)
-user_route.post('/retryRazorPayment', orderController.retryRazorPayment )
-user_route.post('/retryVerifyPayment', orderController.retryVerifyPayment )
-user_route.get('/orderDetails/', orderController.OrderDetails)
-user_route.post('/ReturnOrderRequest/:id', orderController.ReturnOrder)
-user_route.get('/loadInvoice/:id', orderController.loadInvoice)
-user_route.get('/IndividualOrderDetails/:id', orderController.IndividualOrderDetails)
+user_route.post('/verify-Payment',usersideMiddlware.UserSideSession, orderController.VerifyPayment)
+user_route.post('/failedRazorPayment',usersideMiddlware.UserSideSession, orderController.failedRazorPayment)
+user_route.post('/retryRazorPayment',usersideMiddlware.UserSideSession, orderController.retryRazorPayment )
+user_route.post('/retryVerifyPayment',usersideMiddlware.UserSideSession, orderController.retryVerifyPayment )
+user_route.get('/orderDetails/',usersideMiddlware.UserSideSession, orderController.OrderDetails)
+user_route.post('/ReturnOrderRequest/:id',usersideMiddlware.UserSideSession, orderController.ReturnOrder)
+user_route.get('/loadInvoice/:id',usersideMiddlware.UserSideSession, orderController.loadInvoice)
+user_route.get('/IndividualOrderDetails/:id',usersideMiddlware.UserSideSession, orderController.IndividualOrderDetails)
+user_route.post('/proceedTocheckoutqty/',usersideMiddlware.UserSideSession, orderController.quantityInCheckout)
+
+// delivery charge using google map
+user_route.post('/DeliveryCharge/',usersideMiddlware.UserSideSession, mapController.getDistance)
 
 
 
 // Coupons-------------------------------------
 
-user_route.post('/ApplyCoupon', userController.ApplyCoupon)
+user_route.post('/ApplyCoupon',usersideMiddlware.UserSideSession, userController.ApplyCoupon)
 
 
 // Undefined Route comes------------------------------

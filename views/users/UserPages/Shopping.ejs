@@ -94,7 +94,7 @@
 
 						<div class="products mb-3">
 							<div class="row justify-content-center" id="ProducRow">
-								<%if(locals.product){%>
+								<%if(locals.product && product.length != 0){%>
 									<%product.forEach((n)=>{%>
 										<div class="col-6 col-md-4 col-lg-4">
 											<div class="product product-7 text-center">
@@ -152,10 +152,20 @@
 
 											</div><!-- End .product -->
 										</div><!-- End .col-sm-6 col-lg-4 -->
-										<%})}%>
+										<%})}else{%>
+                                              
+											<div class="col-6">
+												<div class="card mt-5">
+												  <div class="card-body text-center " style="border:1px solid; color: #721c24;">
+													<h5 class="card-title p-3">Oops! There is no product found</h5>
+													<!-- You can add additional content or styling here -->
+												  </div>
+												</div>
+											  </div>
+											<%}%>
 							</div><!-- End .row -->
 						</div><!-- End .products -->
-
+                     <%if(product.length !=0){%>
 						<nav aria-label="Page navigation">
 							<ul class="pagination justify-content-center mt-4">
 						  
@@ -195,6 +205,7 @@
 						  
 							</ul>
 						  </nav>
+						  <%}%>
 						  
 					</div><!-- End .col-lg-9 -->
 					<aside class="col-lg-3 order-lg-first">
